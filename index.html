@@ -13,14 +13,16 @@
     --muted:#8cb0d0; --accent:#4ea8ff; --accent2:#2b86e0;
     --border:#1d3a52; --input-bg:#0b1c2b;
     --shadow:0 10px 30px rgba(0,0,0,.5);
-    --warn:#f0b45a;
+    --warn:#f0b45a; --warn2:#c4761a;
+    --ok:#3ecf8e; --ok2:#2ba876;
   }
   html[data-theme="light"]{
     --bg:#e8f2fd; --bg2:#f8fbff; --card:#ffffff; --text:#0e2740;
     --muted:#5c7c9b; --accent:#1d78d8; --accent2:#0a5cb0;
     --border:#d2e5f9; --input-bg:#f3f8ff;
     --shadow:0 10px 30px rgba(20,80,150,.10);
-    --warn:#e08b1f;
+    --warn:#e08b1f; --warn2:#b96f10;
+    --ok:#1ea76a; --ok2:#158a55;
   }
 
   html{font-size:16px;}
@@ -39,10 +41,7 @@
 
   .wrap{max-width:62rem;margin:0 auto;width:100%;}
 
-  .topbar{
-    display:flex;justify-content:space-between;align-items:center;
-    gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem;
-  }
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem;}
   .brand{display:flex;align-items:center;gap:.75rem;min-width:0;}
   .logo{
     width:2.9rem;height:2.9rem;border-radius:.9rem;flex:0 0 auto;
@@ -59,23 +58,120 @@
     background:var(--card);border:1px solid var(--border);color:var(--text);
     padding:.5rem .72rem;border-radius:.65rem;cursor:pointer;
     font-size:.9rem;font-weight:700;font-family:inherit;
-    transition:.2s;box-shadow:0 2px 6px rgba(20,80,150,.06);
-    line-height:1;
+    transition:.2s;box-shadow:0 2px 6px rgba(20,80,150,.06);line-height:1;
   }
   .tbtn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
   .tbtn:active{transform:translateY(0) scale(.97);}
 
   .report{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:1.25rem;
-    padding:1.25rem;
-    box-shadow:var(--shadow);
+    background:var(--card);border:1px solid var(--border);border-radius:1.25rem;
+    padding:1.25rem;box-shadow:var(--shadow);
     transition:background .3s,border-color .3s,box-shadow .3s;
-    width:100%;
-    max-width:100%;
-    overflow:hidden;
+    width:100%;max-width:100%;overflow:hidden;
   }
+
+  .arrears-top{
+    background:linear-gradient(135deg, rgba(240,180,90,.10), rgba(240,180,90,.03));
+    border:1px solid rgba(240,180,90,.30);border-radius:1rem;
+    padding:.9rem 1rem;margin-bottom:1.1rem;
+    position:relative;overflow:hidden;
+  }
+  html[data-theme="light"] .arrears-top{
+    background:linear-gradient(135deg, rgba(224,139,31,.08), rgba(224,139,31,.02));
+    border-color:rgba(224,139,31,.30);
+  }
+  .arrears-top::before{
+    content:'';position:absolute;top:0;right:0;width:4px;height:100%;
+    background:linear-gradient(180deg,var(--warn),var(--warn2));
+  }
+  .arrears-top-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;}
+  .arrears-top-head .panel-icon{
+    font-size:1.1rem;line-height:1;flex:0 0 auto;
+    width:1.9rem;height:1.9rem;border-radius:.55rem;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--warn),var(--warn2));color:#fff;
+    box-shadow:0 .3rem .7rem rgba(224,139,31,.3);
+  }
+  .arrears-top-head h3{
+    font-size:.9rem;color:var(--warn);font-weight:800;
+    display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  }
+  .arrears-top-head h3 .badge{
+    font-size:.6rem;background:rgba(240,180,90,.18);color:var(--warn);
+    padding:.15rem .5rem;border-radius:.35rem;font-weight:800;letter-spacing:.3px;
+    border:1px solid rgba(240,180,90,.30);
+  }
+  .arrears-top-head p{font-size:.7rem;color:var(--muted);margin-top:.15rem;line-height:1.4;}
+
+  .arr-inputs{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%, 13rem), 1fr));
+    gap:.7rem;
+  }
+  .arr-field label{display:block;font-size:.74rem;color:var(--muted);font-weight:700;margin-bottom:.3rem;}
+  .arr-input-wrap{
+    display:flex;align-items:center;gap:.4rem;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:.6rem;padding:.45rem .7rem;
+    transition:border-color .2s,box-shadow .2s;min-width:0;
+  }
+  .arr-input-wrap:focus-within{border-color:var(--warn);box-shadow:0 0 0 3px rgba(224,139,31,.15);}
+  .arr-input-wrap input{
+    flex:1 1 0;min-width:0;width:100%;
+    background:transparent;border:none;outline:none;
+    color:var(--text);font-weight:800;font-size:1rem;
+    font-family:inherit;text-align:center;direction:ltr;padding:.2rem 0;
+  }
+  .arr-input-wrap input::placeholder{color:var(--muted);opacity:.5;font-weight:400;}
+  .arr-input-wrap span{font-size:.75rem;color:var(--warn);font-weight:800;white-space:nowrap;flex:0 0 auto;}
+
+  .legend-bar{
+    display:none;align-items:center;gap:.75rem;
+    padding:.75rem .9rem;margin-bottom:1.1rem;
+    background:linear-gradient(135deg, rgba(62,207,142,.12), rgba(62,207,142,.03));
+    border:1px solid rgba(62,207,142,.35);border-radius:.9rem;
+    position:relative;overflow:hidden;flex-wrap:wrap;
+    animation:legendIn .35s ease;
+  }
+  html[data-theme="light"] .legend-bar{
+    background:linear-gradient(135deg, rgba(30,167,106,.08), rgba(30,167,106,.02));
+    border-color:rgba(30,167,106,.35);
+  }
+  .legend-bar.show{display:flex;}
+  .legend-bar::before{
+    content:'';position:absolute;top:0;right:0;width:4px;height:100%;
+    background:linear-gradient(180deg,var(--ok),var(--ok2));
+  }
+  @keyframes legendIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+  .legend-icon{
+    width:2.2rem;height:2.2rem;border-radius:50%;
+    background:linear-gradient(135deg, var(--ok), var(--ok2));
+    color:#fff;display:grid;place-items:center;
+    font-weight:900;font-size:1.05rem;flex:0 0 auto;
+    box-shadow:0 3px 10px rgba(62,207,142,.4);position:relative;
+  }
+  .legend-icon::after{
+    content:'';position:absolute;inset:-3px;border-radius:50%;
+    border:1.5px dashed rgba(62,207,142,.4);
+    animation:legendPulse 2s ease-in-out infinite;
+  }
+  @keyframes legendPulse{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.08);opacity:.9;}}
+
+  .legend-text{flex:1 1 12rem;min-width:0;}
+  .legend-text strong{
+    display:block;font-size:.88rem;color:var(--ok);font-weight:800;
+    margin-bottom:.15rem;line-height:1.3;
+  }
+  .legend-text span{display:block;font-size:.72rem;color:var(--muted);line-height:1.45;}
+
+  .legend-value{
+    flex:0 0 auto;display:flex;align-items:baseline;gap:.3rem;
+    background:var(--card);border:1.5px solid var(--ok);
+    border-radius:.65rem;padding:.45rem .75rem;direction:ltr;
+    box-shadow:0 2px 6px rgba(62,207,142,.15);
+  }
+  .legend-value-num{font-size:1.05rem;font-weight:900;color:var(--ok);letter-spacing:.3px;}
+  .legend-value-cur{font-size:.72rem;font-weight:800;color:var(--muted);}
 
   .report-head{
     display:flex;justify-content:space-between;align-items:center;
@@ -85,93 +181,206 @@
   .report-head h2{font-size:1.1rem;color:var(--accent);font-weight:800;}
   .report-date{font-size:.82rem;color:var(--muted);}
 
-  /* ====== شبكة الأشهر (معدّلة) ====== */
   .months{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
-    gap:.7rem;
-    width:100%;
-    max-width:100%;
+    grid-template-columns:repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap:.7rem;width:100%;max-width:100%;
   }
   .month{
     display:flex;align-items:center;gap:.5rem;
-    background:var(--input-bg);
-    border:1px solid var(--border);
-    border-radius:.8rem;
-    padding:.45rem .65rem;
+    background:var(--input-bg);border:1px solid var(--border);
+    border-radius:.8rem;padding:.45rem .6rem;
     transition:border-color .2s,box-shadow .2s,background .3s;
-    min-width:0;
-    max-width:100%;
-    overflow:hidden;
-    box-sizing:border-box;
+    min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box;
   }
-  .month:focus-within{
-    border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(29,120,216,.15);
-  }
+  .month:not(.paid):focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,120,216,.15);}
   .month label{
     font-size:.85rem;color:var(--muted);font-weight:700;
-    flex:0 1 auto;
-    min-width:0;
-    max-width:45%;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    flex:0 1 auto;min-width:0;max-width:40%;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    transition:color .25s;
   }
   .month input{
     flex:1 1 0;min-width:0;width:100%;
     background:transparent;border:none;outline:none;
     color:var(--text);font-size:1rem;font-weight:800;
     font-family:inherit;text-align:center;padding:.3rem .1rem;
-    letter-spacing:.4px;
+    letter-spacing:.4px;transition:color .25s,opacity .25s;
   }
   .month input::placeholder{color:var(--muted);opacity:.45;font-weight:400;}
-  .month .cur{font-size:.78rem;color:var(--accent);font-weight:800;white-space:nowrap;flex:0 0 auto;}
+  .month .cur{
+    font-size:.75rem;color:var(--accent);font-weight:800;
+    white-space:nowrap;flex:0 0 auto;transition:color .25s,opacity .25s;
+  }
+
+  .paid-btn{
+    width:2rem;height:2rem;border-radius:.55rem;
+    border:1.5px solid var(--border);background:var(--card);
+    color:var(--muted);cursor:pointer;font-size:.95rem;font-weight:900;
+    display:grid;place-items:center;transition:all .22s ease;
+    font-family:inherit;line-height:1;flex:0 0 auto;padding:0;position:relative;
+  }
+  .paid-btn:hover{border-color:var(--ok);color:var(--ok);transform:scale(1.08);background:rgba(62,207,142,.08);}
+  .paid-btn:active{transform:scale(.92);}
+
+  .month.paid{
+    background:linear-gradient(135deg, rgba(62,207,142,.10), rgba(62,207,142,.02));
+    border-color:rgba(62,207,142,.35);
+  }
+  html[data-theme="light"] .month.paid{
+    background:linear-gradient(135deg, rgba(30,167,106,.08), rgba(30,167,106,.01));
+    border-color:rgba(30,167,106,.35);
+  }
+  .month.paid label{color:var(--ok);}
+  .month.paid .paid-btn{
+    background:linear-gradient(135deg,var(--ok),var(--ok2));
+    border-color:transparent;color:#fff;
+    box-shadow:0 3px 10px rgba(62,207,142,.45);
+  }
+  .month.paid .paid-btn:hover{color:#fff;transform:scale(1.08);}
+  .month.paid .paid-btn::after{
+    content:'';position:absolute;top:-3px;left:-3px;
+    width:8px;height:8px;background:#fff;border-radius:50%;
+    border:2px solid var(--ok);
+  }
+
+  /* ====== حقول مُقفلة ====== */
+  .month.paid input{
+    cursor:not-allowed;
+    color:var(--ok);
+    -webkit-text-fill-color:var(--ok);
+    opacity:.85;
+  }
+  .month.paid input:focus{
+    cursor:not-allowed;
+    outline:none;
+  }
+  /* أيقونة قفل صغيرة على الحدود */
+  .month.paid::after{
+    content:'🔒';
+    position:absolute;
+    top:50%;left:.35rem;
+    transform:translateY(-50%);
+    font-size:.6rem;
+    opacity:.55;
+    pointer-events:none;
+  }
+  .month.paid{position:relative;}
+  /* منع الأسهم */
+  .month.paid input::-webkit-outer-spin-button,
+  .month.paid input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 
+  /* ====== النتائج ====== */
   .results{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     gap:.8rem;margin-top:1.2rem;
   }
   .res-card{
     background:linear-gradient(135deg,var(--input-bg),var(--card));
-    border:1px solid var(--border);
-    border-radius:.95rem;
-    padding:.95rem 1rem;text-align:center;
-    transition:background .3s,border-color .3s;
-    min-width:0;
+    border:1px solid var(--border);border-radius:1rem;
+    padding:1rem 1.05rem;text-align:center;
+    transition:background .3s,border-color .3s,transform .2s;
+    min-width:0;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;
   }
   .res-card.accent{
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     border-color:transparent;color:#fff;
-    box-shadow:0 .5rem 1.2rem rgba(29,120,216,.3);
+    box-shadow:0 .55rem 1.4rem rgba(29,120,216,.35);
   }
-  .res-card.accent .res-label{color:rgba(255,255,255,.88);}
-  .res-label{font-size:.8rem;color:var(--muted);font-weight:700;margin-bottom:.3rem;}
+  .res-card.accent .res-label{color:rgba(255,255,255,.9);}
+  .res-card.accent .res-sub{color:rgba(255,255,255,.82);}
+  .res-card.accent .res-sub strong{color:#fff;}
+  .res-label{font-size:.82rem;color:var(--muted);font-weight:800;margin-bottom:.4rem;letter-spacing:.2px;}
   .res-value{
-    font-size:1.55rem;font-weight:900;letter-spacing:.5px;
-    display:flex;align-items:baseline;justify-content:center;gap:.32rem;
-    direction:ltr;
+    font-size:1.65rem;font-weight:900;letter-spacing:.5px;
+    display:flex;align-items:baseline;justify-content:center;gap:.35rem;
+    direction:ltr;line-height:1.15;
   }
-  .res-value .cur{font-size:.82rem;font-weight:700;opacity:.85;}
+  .res-value .cur{font-size:.85rem;font-weight:700;opacity:.9;}
+  .res-sub{
+    margin-top:.5rem;padding-top:.5rem;
+    border-top:1px dashed rgba(140,176,208,.3);
+    font-size:.72rem;color:var(--muted);font-weight:700;
+    direction:ltr;letter-spacing:.2px;
+    display:flex;align-items:center;justify-content:center;gap:.35rem;flex-wrap:wrap;
+  }
+  .res-card.accent .res-sub{border-top-color:rgba(255,255,255,.28);}
+  .res-sub strong{color:var(--text);font-weight:800;}
+  .res-sub .sep{opacity:.55;}
+
+  .installment-card{padding:1rem 1.05rem;}
+  .installment-card .res-value{font-size:1.65rem;}
+  .installment-card .res-eq{
+    margin-top:.4rem;font-size:.7rem;color:rgba(255,255,255,.82);
+    font-weight:700;direction:ltr;letter-spacing:.2px;
+    padding-bottom:.6rem;border-bottom:1px dashed rgba(255,255,255,.28);
+    word-break:break-word;line-height:1.4;
+  }
+  .installment-card .inst-remaining-inline{
+    display:flex;align-items:center;justify-content:center;gap:.4rem;
+    flex-wrap:wrap;font-size:.75rem;color:rgba(255,255,255,.9);
+    font-weight:700;margin-top:.6rem;
+  }
+  .installment-card .inst-remaining-inline strong{
+    color:#fff;font-weight:900;direction:ltr;font-size:.95rem;letter-spacing:.2px;
+  }
+  .installment-card .inst-fully-paid{
+    display:flex;align-items:center;justify-content:center;gap:.35rem;
+    color:#fff;font-weight:900;font-size:.85rem;margin-top:.6rem;
+  }
+  .installment-card .inst-progress-wrap{margin-top:.65rem;width:100%;}
+  .installment-card .inst-progress{
+    height:7px;background:rgba(255,255,255,.20);border-radius:4px;
+    overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.18);
+  }
+  .installment-card .inst-progress-fill{
+    height:100%;background:#fff;border-radius:4px;width:0%;
+    transition:width .4s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 10px rgba(255,255,255,.6);
+  }
+  .installment-card .inst-progress-text{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:.68rem;color:rgba(255,255,255,.88);font-weight:700;margin-top:.4rem;
+  }
+  .installment-card .inst-progress-text .pct{color:#fff;font-weight:900;direction:ltr;}
+
+  .paid-info{
+    display:none;margin-top:.7rem;
+    align-items:center;justify-content:center;gap:.55rem;
+    font-size:.8rem;color:var(--ok);font-weight:800;
+    background:rgba(62,207,142,.10);border:1px solid rgba(62,207,142,.32);
+    border-radius:.75rem;padding:.55rem .9rem;flex-wrap:wrap;transition:.25s;
+  }
+  html[data-theme="light"] .paid-info{background:rgba(30,167,106,.08);border-color:rgba(30,167,106,.32);}
+  .paid-info .paid-icon{
+    width:1.5rem;height:1.5rem;border-radius:50%;
+    background:linear-gradient(135deg,var(--ok),var(--ok2));color:#fff;
+    display:grid;place-items:center;font-size:.85rem;font-weight:900;
+    box-shadow:0 .2rem .5rem rgba(62,207,142,.35);
+  }
+  .paid-info strong{font-size:.98rem;direction:ltr;font-weight:900;}
+  .paid-info .paid-count{color:var(--muted);font-weight:700;font-size:.72rem;}
 
   .hint{
     margin-top:.9rem;font-size:.76rem;color:var(--muted);
     text-align:center;line-height:1.6;
   }
+  .hint kbd{
+    background:var(--input-bg);border:1px solid var(--border);
+    padding:.1rem .4rem;border-radius:.35rem;
+    font-family:inherit;font-weight:800;color:var(--ok);font-size:.72rem;
+  }
 
   .panel{
-    margin-top:1.2rem;
-    border:1px solid var(--border);
-    border-radius:1rem;
-    background:var(--input-bg);
-    padding:1rem;
-    transition:background .3s,border-color .3s;
-    max-width:100%;
-    overflow:hidden;
+    margin-top:1.2rem;border:1px solid var(--border);
+    border-radius:1rem;background:var(--input-bg);padding:1rem;
+    transition:background .3s,border-color .3s;max-width:100%;overflow:hidden;
   }
   .panel-head{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.9rem;}
   .panel-icon{
@@ -179,20 +388,12 @@
     width:2rem;height:2rem;border-radius:.55rem;display:grid;place-items:center;
     background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
   }
-  .panel-icon.warn{
-    background:linear-gradient(135deg,var(--warn),#c4761a);
-    box-shadow:0 .35rem .9rem rgba(224,139,31,.3);
-  }
   .panel-head h3{font-size:.95rem;color:var(--accent);font-weight:800;}
-  .panel-icon.warn + div h3{color:var(--warn);}
   .panel-head p{font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.5;}
 
   .fc-label{font-size:.8rem;color:var(--muted);font-weight:700;display:block;margin-bottom:.5rem;}
   .fc-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
-  .fc-row input[type=range]{
-    flex:1 1 9rem;min-width:6rem;accent-color:var(--accent);
-    height:.35rem;cursor:pointer;
-  }
+  .fc-row input[type=range]{flex:1 1 9rem;min-width:6rem;accent-color:var(--accent);height:.35rem;cursor:pointer;}
   .fc-num{
     display:flex;align-items:center;gap:.2rem;flex:0 0 auto;
     background:var(--card);border:1px solid var(--border);
@@ -218,15 +419,11 @@
   .fc-compare{
     flex:1 1 13rem;display:flex;align-items:center;gap:.5rem;
     background:var(--card);border:1px solid var(--border);
-    border-radius:.85rem;padding:.7rem .85rem;
-    min-width:0;
+    border-radius:.85rem;padding:.7rem .85rem;min-width:0;
   }
   .fc-col{flex:1;text-align:center;min-width:0;}
   .fc-col span{display:block;font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:.25rem;}
-  .fc-col strong{
-    display:block;font-size:.95rem;font-weight:900;
-    direction:ltr;letter-spacing:.2px;
-  }
+  .fc-col strong{display:block;font-size:.95rem;font-weight:900;direction:ltr;letter-spacing:.2px;}
   .fc-col.highlight strong{color:var(--accent);font-size:1.05rem;}
   .fc-arrow{color:var(--accent);font-size:1.15rem;font-weight:900;flex:0 0 auto;line-height:1;}
 
@@ -239,65 +436,6 @@
   }
   .fc-diff span{font-size:.68rem;opacity:.92;font-weight:700;}
   .fc-diff strong{font-size:1rem;font-weight:900;direction:ltr;margin-top:.2rem;}
-
-  .arr-inputs{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
-    gap:.7rem;
-    margin-bottom:.9rem;
-  }
-  .arr-field label{
-    display:block;font-size:.78rem;color:var(--muted);
-    font-weight:700;margin-bottom:.35rem;
-  }
-  .arr-input-wrap{
-    display:flex;align-items:center;gap:.4rem;
-    background:var(--card);border:1px solid var(--border);
-    border-radius:.6rem;padding:.4rem .65rem;
-    transition:border-color .2s,box-shadow .2s;
-    min-width:0;
-  }
-  .arr-input-wrap:focus-within{
-    border-color:var(--warn);
-    box-shadow:0 0 0 3px rgba(224,139,31,.15);
-  }
-  .arr-input-wrap input{
-    flex:1 1 0;min-width:0;width:100%;
-    background:transparent;border:none;outline:none;
-    color:var(--text);font-weight:800;font-size:.95rem;
-    font-family:inherit;text-align:center;direction:ltr;
-  }
-  .arr-input-wrap span{
-    font-size:.75rem;color:var(--warn);
-    font-weight:800;white-space:nowrap;flex:0 0 auto;
-  }
-
-  .arr-results{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));
-    gap:.55rem;
-  }
-  .arr-res{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:.75rem;padding:.65rem .8rem;text-align:center;
-    transition:background .2s,border-color .2s;
-    min-width:0;
-  }
-  .arr-res.highlight{
-    background:linear-gradient(135deg,var(--warn),#c4761a);
-    color:#fff;border-color:transparent;
-    box-shadow:0 .35rem .9rem rgba(224,139,31,.25);
-  }
-  .arr-res span{
-    display:block;font-size:.7rem;color:var(--muted);
-    font-weight:700;margin-bottom:.25rem;
-  }
-  .arr-res.highlight span{color:rgba(255,255,255,.88);}
-  .arr-res strong{
-    display:block;font-size:.95rem;font-weight:900;
-    direction:ltr;letter-spacing:.2px;
-  }
-  .arr-res.highlight strong{font-size:1.05rem;}
 
   .panel-note{
     margin-top:.8rem;font-size:.7rem;color:var(--muted);
@@ -312,24 +450,14 @@
 
   .actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;}
   .abtn{
-    flex:1 1 9rem;
-    padding:.9rem 1.2rem;border-radius:.9rem;border:none;cursor:pointer;
+    flex:1 1 9rem;padding:.9rem 1.2rem;border-radius:.9rem;border:none;cursor:pointer;
     font-family:inherit;font-size:1rem;font-weight:800;
     display:flex;align-items:center;justify-content:center;gap:.5rem;
     transition:.2s;
   }
-  .abtn.primary{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    color:#fff;box-shadow:0 .4rem 1rem rgba(29,120,216,.3);
-  }
-  .abtn.share{
-    background:var(--card);color:var(--accent);
-    border:1.5px solid var(--accent);
-  }
-  .abtn.sitelink{
-    background:var(--card);color:var(--text);
-    border:1.5px solid var(--border);
-  }
+  .abtn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 .4rem 1rem rgba(29,120,216,.3);}
+  .abtn.share{background:var(--card);color:var(--accent);border:1.5px solid var(--accent);}
+  .abtn.sitelink{background:var(--card);color:var(--text);border:1.5px solid var(--border);}
   .abtn.sitelink:hover{border-color:var(--accent);color:var(--accent);}
   .abtn:hover{transform:translateY(-2px);}
   .abtn:active{transform:translateY(0) scale(.98);}
@@ -346,43 +474,29 @@
     box-shadow:0 .5rem 1.5rem rgba(0,0,0,.25);
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+  .toast.ok{background:linear-gradient(135deg,var(--ok),var(--ok2));}
 
-  /* ====== نافذة التعليمات ====== */
   .modal-overlay{
-    display:none;
-    position:fixed;inset:0;
-    background:rgba(0,0,0,.65);
-    backdrop-filter:blur(4px);
-    z-index:200;
-    padding:1rem;
-    overflow-y:auto;
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
+    z-index:200;padding:1rem;overflow-y:auto;
   }
   .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;}
   .modal{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:1.25rem;
-    max-width:52rem;width:100%;
-    margin:2rem auto;
-    box-shadow:0 20px 60px rgba(0,0,0,.4);
-    animation:modalIn .3s ease;
-    overflow:hidden;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:1.25rem;max-width:52rem;width:100%;
+    margin:2rem auto;box-shadow:0 20px 60px rgba(0,0,0,.4);
+    animation:modalIn .3s ease;overflow:hidden;
   }
-  @keyframes modalIn{
-    from{opacity:0;transform:translateY(-20px) scale(.97);}
-    to{opacity:1;transform:translateY(0) scale(1);}
-  }
+  @keyframes modalIn{from{opacity:0;transform:translateY(-20px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
   .modal-head{
     display:flex;justify-content:space-between;align-items:center;
-    padding:1rem 1.25rem;
-    border-bottom:2px solid var(--border);
-    background:linear-gradient(135deg,var(--input-bg),var(--card));
-    gap:.5rem;
+    padding:1rem 1.25rem;border-bottom:2px solid var(--border);
+    background:linear-gradient(135deg,var(--input-bg),var(--card));gap:.5rem;
   }
   .modal-head h2{
     font-size:1.05rem;color:var(--accent);font-weight:800;
-    display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
-    min-width:0;
+    display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;min-width:0;
   }
   .modal-close{
     background:var(--input-bg);border:1px solid var(--border);
@@ -399,117 +513,103 @@
   .info-section h3{
     font-size:.95rem;color:var(--accent);font-weight:800;
     margin-bottom:.6rem;display:flex;align-items:center;gap:.45rem;
-    padding-bottom:.5rem;border-bottom:1px solid var(--border);
-    flex-wrap:wrap;
+    padding-bottom:.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;
   }
   .info-section h3 .badge{
     font-size:.62rem;background:var(--accent);color:#fff;
     padding:.15rem .45rem;border-radius:.35rem;font-weight:800;
   }
-
   .tariff-table{
-    width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-    font-size:.8rem;
-    border-radius:.75rem;
-    overflow:hidden;
-    border:1px solid var(--border);
-    margin-bottom:.6rem;
+    width:100%;border-collapse:separate;border-spacing:0;
+    font-size:.8rem;border-radius:.75rem;overflow:hidden;
+    border:1px solid var(--border);margin-bottom:.6rem;
   }
   .tariff-table thead th{
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     color:#fff;padding:.6rem .7rem;font-weight:800;
-    text-align:center;font-size:.78rem;
-    white-space:nowrap;
+    text-align:center;font-size:.78rem;white-space:nowrap;
   }
   .tariff-table tbody td{
     padding:.55rem .7rem;text-align:center;
     border-bottom:1px solid var(--border);
-    background:var(--input-bg);
-    font-weight:700;font-size:.8rem;
+    background:var(--input-bg);font-weight:700;font-size:.8rem;
   }
   .tariff-table tbody tr:last-child td{border-bottom:none;}
   .tariff-table tbody tr:nth-child(even) td{background:var(--card);}
-  .tariff-table tbody td:first-child{
-    font-weight:800;color:var(--accent);
-    white-space:nowrap;font-size:.78rem;
-  }
-  .tariff-table tbody td.price{
-    font-weight:900;direction:ltr;letter-spacing:.3px;
-    color:var(--warn);
-  }
-  .tariff-table tbody td.range{
-    font-weight:700;direction:ltr;font-size:.78rem;
-  }
+  .tariff-table tbody td:first-child{font-weight:800;color:var(--accent);white-space:nowrap;font-size:.78rem;}
+  .tariff-table tbody td.price{font-weight:900;direction:ltr;letter-spacing:.3px;color:var(--warn);}
+  .tariff-table tbody td.range{font-weight:700;direction:ltr;font-size:.78rem;}
 
   .unit-note{
     font-size:.72rem;color:var(--muted);line-height:1.7;
     background:var(--input-bg);border-radius:.6rem;
-    padding:.6rem .8rem;border:1px dashed var(--border);
-    margin-top:.4rem;
+    padding:.6rem .8rem;border:1px dashed var(--border);margin-top:.4rem;
   }
   .unit-note strong{color:var(--accent);}
 
   .info-disclaimer{
     font-size:.7rem;color:var(--muted);line-height:1.7;
     padding:.7rem .9rem;border-radius:.6rem;
-    background:var(--input-bg);border:1px solid var(--border);
-    margin-top:.8rem;
+    background:var(--input-bg);border:1px solid var(--border);margin-top:.8rem;
   }
-  .info-disclaimer a{
-    color:var(--accent);font-weight:800;text-decoration:none;
-    border-bottom:1px dashed var(--accent);
-  }
+  .info-disclaimer a{color:var(--accent);font-weight:800;text-decoration:none;border-bottom:1px dashed var(--accent);}
   .info-disclaimer a:hover{color:var(--accent2);}
 
   @media print{
     :root, html[data-theme="dark"], html[data-theme="light"]{
       --bg:#fff; --bg2:#fff; --card:#fff; --text:#000; --muted:#555;
       --accent:#0a5cb0; --accent2:#0a5cb0; --border:#bbb;
-      --input-bg:#fff; --shadow:none; --warn:#c4761a;
+      --input-bg:#fff; --shadow:none; --warn:#c4761a; --warn2:#c4761a;
+      --ok:#1ea76a; --ok2:#158a55;
     }
     html{font-size:14px !important;}
     body{background:#fff !important;color:#000 !important;padding:0 !important;}
     .topbar,.actions,.toast{display:none !important;}
     .wrap{max-width:none;}
-    .report{
-      box-shadow:none !important;border:none !important;border-radius:0 !important;
-      background:#fff !important;padding:0 !important;
-    }
+    .report{box-shadow:none !important;border:none !important;border-radius:0 !important;background:#fff !important;padding:0 !important;}
+    .arrears-top{background:#fff !important;border:1px solid #c4761a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .legend-bar{background:#eaf8f0 !important;border:1px solid #1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .legend-icon::after{display:none !important;}
     .month{border:1px solid #ccc !important;background:#fff !important;}
+    .month.paid{background:#eaf8f0 !important;border-color:#1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .month.paid .paid-btn{background:#1ea76a !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .month.paid .paid-btn::after{display:none !important;}
+    .month.paid::after{display:none !important;}
     .res-card{border:1px solid #999 !important;background:#fff !important;}
-    .res-card.accent{
-      background:#0a5cb0 !important;color:#fff !important;
-      -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    }
+    .res-card.accent{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .installment-card .inst-progress{background:rgba(255,255,255,.3) !important;}
+    .installment-card .inst-progress-fill{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .paid-info{background:#eaf8f0 !important;border:1px solid #1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .panel{border:1px solid #999 !important;background:#fff !important;}
-    .fc-diff{
-      background:#0a5cb0 !important;color:#fff !important;
-      -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    }
-    .arr-res.highlight{
-      background:#c4761a !important;color:#fff !important;
-      -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    }
+    .fc-diff{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .fc-presets,.fc-row input[type=range]{display:none !important;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 
-  /* ====== استعلام الجوال (معدّل) ====== */
   @media (max-width:520px){
     body{padding:.8rem;}
     .months{grid-template-columns:1fr;gap:.55rem;}
-    .month{padding:.5rem .6rem;gap:.4rem;}
-    .month label{font-size:.8rem;max-width:42%;}
+    .month{padding:.5rem .55rem;gap:.4rem;}
+    .month label{font-size:.8rem;max-width:38%;}
     .month input{font-size:.95rem;padding:.3rem 0;}
+    .month.paid::after{left:.3rem;font-size:.55rem;}
+    .paid-btn{width:1.85rem;height:1.85rem;font-size:.85rem;}
     .brand-txt h1{font-size:1rem;}
     .report{padding:.9rem;border-radius:1rem;}
+    .arrears-top{padding:.75rem .85rem;margin-bottom:.9rem;}
+    .res-value{font-size:1.4rem;}
+    .installment-card .res-value{font-size:1.4rem;}
     .fc-diff{min-width:100%;}
     .modal{margin:1rem auto;}
     .modal-body{padding:1rem;max-height:75vh;}
     .tariff-table{font-size:.72rem;}
     .tariff-table thead th,.tariff-table tbody td{padding:.4rem .5rem;}
+    .legend-bar{flex-wrap:wrap;gap:.55rem;padding:.65rem .75rem;}
+    .legend-text{flex:1 1 100%;order:2;}
+    .legend-value{flex:0 0 100%;order:3;justify-content:center;padding:.4rem .6rem;}
+    .legend-icon{order:1;}
+    .legend-text strong{font-size:.82rem;}
+    .legend-text span{font-size:.68rem;}
   }
 </style>
 </head>
@@ -536,6 +636,45 @@
   </header>
 
   <section class="report" id="report">
+
+    <div class="arrears-top" id="arrearsBox">
+      <div class="arrears-top-head">
+        <div class="panel-icon">💳</div>
+        <div style="min-width:0;">
+          <h3 id="arrTitle">الأبيال المتراكمة <span class="badge" id="arrBadge">اختياري</span></h3>
+          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر الاحتساب — ثم استخدم الزر ✓ لتسجيل دفع كل قسط</p>
+        </div>
+      </div>
+      <div class="arr-inputs">
+        <div class="arr-field">
+          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم من قبل</label>
+          <div class="arr-input-wrap">
+            <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
+            <span id="arrAmtCur">د.ب</span>
+          </div>
+        </div>
+        <div class="arr-field">
+          <label for="arrMonths" id="arrMonLbl">عدد أشهر الاحتساب</label>
+          <div class="arr-input-wrap">
+            <input type="number" id="arrMonths" min="1" max="120" step="1" inputmode="numeric" value="12">
+            <span id="arrMonUnit">شهر</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend-bar" id="legendBar">
+      <div class="legend-icon">✓</div>
+      <div class="legend-text">
+        <strong id="legendTitle">دفعت قسط الشهر</strong>
+        <span id="legendSub">اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع</span>
+      </div>
+      <div class="legend-value">
+        <span class="legend-value-num" id="legendValueNum">0.000</span>
+        <span class="legend-value-cur" id="legendValueCur">د.ب</span>
+      </div>
+    </div>
+
     <div class="report-head">
       <h2 id="reportTitle">أشهر السنة</h2>
       <div class="report-date" id="reportDate"></div>
@@ -545,68 +684,49 @@
 
     <div class="results">
       <div class="res-card">
-        <div class="res-label" id="lblTotal">المجمع الكلي</div>
+        <div class="res-label" id="lblGrand">إجمالي السداد</div>
         <div class="res-value">
-          <span id="valTotal">0.000</span>
-          <span class="cur" id="curTotal">د.ب</span>
+          <span id="valGrand">0.000</span>
+          <span class="cur" id="curGrand">د.ب</span>
         </div>
+        <div class="res-sub" id="subGrand"></div>
       </div>
-      <div class="res-card accent">
-        <div class="res-label" id="lblAvg">متوسط السعر</div>
+
+      <div class="res-card accent installment-card" id="installmentCard">
+        <div class="res-label" id="lblInst">قسط الشهر</div>
         <div class="res-value">
-          <span id="valAvg">0.000</span>
-          <span class="cur" id="curAvg">د.ب</span>
+          <span id="valInst">0.000</span>
+          <span class="cur" id="curInst">د.ب</span>
+        </div>
+        <div class="res-eq" id="instEq"></div>
+        <div class="inst-remaining-inline" id="instRemRow">
+          <span id="instRemLbl">المتبقي:</span>
+          <strong id="instRemaining">0.000 د.ب</strong>
+        </div>
+        <div class="inst-fully-paid" id="instFullyPaidRow" style="display:none">
+          <span>✓</span>
+          <span id="instFullyPaidTxt">تم سداد كامل المبلغ</span>
+        </div>
+        <div class="inst-progress-wrap">
+          <div class="inst-progress">
+            <div class="inst-progress-fill" id="instProgressFill"></div>
+          </div>
+          <div class="inst-progress-text">
+            <span id="instProgressCount">0 / 12</span>
+            <span class="pct" id="instProgressPct">0%</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <p class="hint" id="hintTxt">متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة</p>
-
-    <div class="panel" id="arrearsBox">
-      <div class="panel-head">
-        <div class="panel-icon warn">💳</div>
-        <div>
-          <h3 id="arrTitle">الأبيال المتراكمة</h3>
-          <p id="arrNote">عليك فواتير متراكمة؟ احسب قسطها الشهري وأثره على متوسطك</p>
-        </div>
-      </div>
-
-      <div class="arr-inputs">
-        <div class="arr-field">
-          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم</label>
-          <div class="arr-input-wrap">
-            <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
-            <span id="arrAmtCur">د.ب</span>
-          </div>
-        </div>
-        <div class="arr-field">
-          <label for="arrMonths" id="arrMonLbl">عدد أشهر السداد</label>
-          <div class="arr-input-wrap">
-            <input type="number" id="arrMonths" min="1" max="60" step="1" inputmode="numeric" value="12">
-            <span id="arrMonUnit">شهر</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="arr-results">
-        <div class="arr-res">
-          <span id="arrInstallLbl">القسط الشهري</span>
-          <strong id="arrInstallVal">0.000 د.ب</strong>
-        </div>
-        <div class="arr-res highlight">
-          <span id="arrNewAvgLbl">المتوسط الجديد</span>
-          <strong id="arrNewAvgVal">0.000 د.ب</strong>
-        </div>
-        <div class="arr-res">
-          <span id="arrGrandLbl">إجمالي السداد</span>
-          <strong id="arrGrandVal">0.000 د.ب</strong>
-        </div>
-      </div>
-
-      <p class="panel-note" id="arrNote2">
-        💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.
-      </p>
+    <div class="paid-info" id="paidInfo">
+      <span class="paid-icon">✓</span>
+      <span id="paidLbl">دفعات مسجلة</span>
+      <strong id="paidVal">0.000 د.ب</strong>
+      <span class="paid-count" id="paidCount"></span>
     </div>
+
+    <p class="hint" id="hintTxt">اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر</p>
 
     <div class="panel" id="forecastBox">
       <div class="panel-head">
@@ -637,12 +757,12 @@
       <div class="fc-result">
         <div class="fc-compare">
           <div class="fc-col">
-            <span id="fcNowLbl">المتوسط الحالي</span>
+            <span id="fcNowLbl">المتوسط السعري الحالي</span>
             <strong id="fcNowVal">0.000 د.ب</strong>
           </div>
           <div class="fc-arrow" id="fcArrow">←</div>
           <div class="fc-col highlight">
-            <span id="fcNextLbl">المتوسط المتوقع</span>
+            <span id="fcNextLbl">المتوسط السعري المتوقع</span>
             <strong id="fcNextVal">0.000 د.ب</strong>
           </div>
         </div>
@@ -671,7 +791,6 @@
 
 </div>
 
-<!-- ====== نافذة التعليمات ====== -->
 <div class="modal-overlay" id="infoModal">
   <div class="modal">
     <div class="modal-head">
@@ -691,26 +810,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td id="el1Lbl">الشريحة الأولى</td>
-              <td class="range" id="el1Rng">0 – 3,000</td>
-              <td class="price" id="el1Prc">3 فلس</td>
-            </tr>
-            <tr>
-              <td id="el2Lbl">الشريحة الثانية</td>
-              <td class="range" id="el2Rng">3,001 – 5,000</td>
-              <td class="price" id="el2Prc">9 فلس</td>
-            </tr>
-            <tr>
-              <td id="el3Lbl">الشريحة الثالثة</td>
-              <td class="range" id="el3Rng">5,001 – 7,000</td>
-              <td class="price" id="el3Prc">16 فلس</td>
-            </tr>
-            <tr>
-              <td id="el4Lbl">الشريحة الرابعة</td>
-              <td class="range" id="el4Rng">7,001 فأكثر</td>
-              <td class="price" id="el4Prc">32 فلس</td>
-            </tr>
+            <tr><td id="el1Lbl">الشريحة الأولى</td><td class="range" id="el1Rng">0 – 3,000</td><td class="price" id="el1Prc">3 فلس</td></tr>
+            <tr><td id="el2Lbl">الشريحة الثانية</td><td class="range" id="el2Rng">3,001 – 5,000</td><td class="price" id="el2Prc">9 فلس</td></tr>
+            <tr><td id="el3Lbl">الشريحة الثالثة</td><td class="range" id="el3Rng">5,001 – 7,000</td><td class="price" id="el3Prc">16 فلس</td></tr>
+            <tr><td id="el4Lbl">الشريحة الرابعة</td><td class="range" id="el4Rng">7,001 فأكثر</td><td class="price" id="el4Prc">32 فلس</td></tr>
           </tbody>
         </table>
         <div class="unit-note">
@@ -729,21 +832,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td id="wa1Lbl">الشريحة الأولى</td>
-              <td class="range" id="wa1Rng">0 – 60</td>
-              <td class="price" id="wa1Prc">25 فلس</td>
-            </tr>
-            <tr>
-              <td id="wa2Lbl">الشريحة الثانية</td>
-              <td class="range" id="wa2Rng">61 – 100</td>
-              <td class="price" id="wa2Prc">80 فلس</td>
-            </tr>
-            <tr>
-              <td id="wa3Lbl">الشريحة الثالثة</td>
-              <td class="range" id="wa3Rng">101 فأكثر</td>
-              <td class="price" id="wa3Prc">775 فلس</td>
-            </tr>
+            <tr><td id="wa1Lbl">الشريحة الأولى</td><td class="range" id="wa1Rng">0 – 60</td><td class="price" id="wa1Prc">25 فلس</td></tr>
+            <tr><td id="wa2Lbl">الشريحة الثانية</td><td class="range" id="wa2Rng">61 – 100</td><td class="price" id="wa2Prc">80 فلس</td></tr>
+            <tr><td id="wa3Lbl">الشريحة الثالثة</td><td class="range" id="wa3Rng">101 فأكثر</td><td class="price" id="wa3Prc">775 فلس</td></tr>
           </tbody>
         </table>
         <div class="unit-note">
@@ -769,7 +860,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v6';
+  const STORE = 'muharraqi_bahrain_elec_v15';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -791,21 +882,24 @@
       title:'متوسط السعري للكهرباء البحرين',
       subtitle:'حساب المجمع الكلي ومتوسط السعر',
       reportTitle:'أشهر السنة',
-      total:'المجمع الكلي',
-      avg:'متوسط السعر',
+      grandTotal:'إجمالي السداد',
+      instLabel:'قسط الشهر',
       currency:'د.ب',
       print:'طباعة',
       share:'مشاركة PDF',
       shareSite:'مشاركة الموقع',
       rights:'جميع الحقوق محفوظة',
-      hint:'متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة',
-      confirmReset:'هل تريد تفريغ جميع الحقول؟',
+      hint:'اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر',
+      confirmReset:'هل تريد تفريغ جميع الحقول وإلغاء كل الدفعات؟',
       reset:'تفريغ الحقول',
       toastPrint:'جاري تحضير الطباعة...',
       toastPdf:'جاري تجهيز الملف للمشاركة...',
       toastShared:'تمت المشاركة بنجاح',
       toastSaved:'متصفحك لا يدعم المشاركة، تم تنزيل الملف',
       toastReset:'تم تفريغ جميع الحقول',
+      toastPaid:'تم تسجيل دفع القسط — تم قفل حقل الفاتورة',
+      toastUnpaid:'تم إلغاء الدفع — يمكنك الآن تعديل الفاتورة',
+      toastNoDebt:'أدخل المبلغ المتراكم أولاً',
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
       toastAbort:'تم إلغاء المشاركة',
@@ -816,20 +910,25 @@
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
-      fcNow:'المتوسط الحالي',
-      fcNext:'المتوسط المتوقع',
+      fcNow:'المتوسط السعري الحالي',
+      fcNext:'المتوسط السعري المتوقع',
       fcDiff:'الفرق',
       fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
       arrow:'←',
       arrTitle:'الأبيال المتراكمة',
-      arrNote:'عليك فواتير متراكمة؟ احسب قسطها الشهري وأثره على متوسطك',
-      arrAmtLbl:'المبلغ المتراكم',
-      arrMonLbl:'عدد أشهر السداد',
+      arrBadge:'اختياري',
+      arrNote:'أدخل المبلغ المتراكم وعدد أشهر الاحتساب — ثم استخدم الزر ✓ لتسجيل دفع كل قسط',
+      arrAmtLbl:'المبلغ المتراكم من قبل',
+      arrMonLbl:'عدد أشهر الاحتساب',
       arrMonUnit:'شهر',
-      arrInstallLbl:'القسط الشهري',
-      arrNewAvgLbl:'المتوسط الجديد',
-      arrGrandLbl:'إجمالي السداد',
-      arrNote2:'💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.',
+      instRemLbl:'المتبقي:',
+      instFullyPaid:'تم سداد كامل المبلغ',
+      paidLbl:'دفعات مسجلة',
+      paidUnit:'دفعة',
+      paidBtnTitle:'اضغط لتسجيل دفع قسط هذا الشهر — سيُقفل حقل الفاتورة',
+      paidBtnTitleUnpaid:'اضغط لإلغاء الدفع — سيُفتح حقل الفاتورة',
+      legendTitle:'دفعت قسط الشهر',
+      legendSub:'اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع',
       infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
       infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
       infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
@@ -849,21 +948,24 @@
       title:'Bahrain Electricity Average Price',
       subtitle:'Calculate total & average price',
       reportTitle:'Months of the Year',
-      total:'Grand Total',
-      avg:'Average Price',
+      grandTotal:'Total to Pay',
+      instLabel:'Monthly Installment',
       currency:'BHD',
       print:'Print',
       share:'Share PDF',
       shareSite:'Share Site',
       rights:'All rights reserved',
-      hint:'Average = Grand Total ÷ number of entered months',
-      confirmReset:'Clear all fields?',
+      hint:'Tap <kbd>✓</kbd> next to a month to confirm its installment — installment = (accumulated + total bills) ÷ months',
+      confirmReset:'Clear all fields and remove all payments?',
       reset:'Clear fields',
       toastPrint:'Preparing print...',
       toastPdf:'Preparing file to share...',
       toastShared:'Shared successfully',
       toastSaved:'Sharing not supported, file downloaded',
       toastReset:'All fields cleared',
+      toastPaid:'Installment recorded — invoice field is now locked',
+      toastUnpaid:'Payment removed — invoice field is now editable',
+      toastNoDebt:'Enter the accumulated amount first',
       toastErr:'Could not create file, opening print dialog',
       toastNoLib:'PDF library not available',
       toastAbort:'Share cancelled',
@@ -874,20 +976,25 @@
       fcTitle:'Next Year Forecast',
       fcNote:'Tariffs may rise — try an expected increase and see the impact',
       fcLabel:'Expected increase',
-      fcNow:'Current average',
-      fcNext:'Projected average',
+      fcNow:'Current average price',
+      fcNext:'Projected average price',
       fcDiff:'Difference',
       fcDisclaimer:'⚠️ This is an estimate based on the percentage you enter — not an official forecast of the Electricity & Water Authority tariff. The average above reflects your entered figures only.',
       arrow:'→',
       arrTitle:'Accumulated Bills',
-      arrNote:'Have overdue bills? Calculate a monthly installment and its impact on your average',
-      arrAmtLbl:'Accumulated amount',
-      arrMonLbl:'Payment months',
+      arrBadge:'Optional',
+      arrNote:'Enter the previous accumulated amount and period — then use the ✓ button to record each installment',
+      arrAmtLbl:'Previous Accumulated Amount',
+      arrMonLbl:'Period (months)',
       arrMonUnit:'mo',
-      arrInstallLbl:'Monthly installment',
-      arrNewAvgLbl:'New average',
-      arrGrandLbl:'Total to pay',
-      arrNote2:'💡 Monthly installment = Accumulated amount ÷ months — New average = your current average + monthly installment.',
+      instRemLbl:'Remaining:',
+      instFullyPaid:'Fully paid off',
+      paidLbl:'Payments recorded',
+      paidUnit:'payment(s)',
+      paidBtnTitle:'Click to record this month\'s installment — invoice field will be locked',
+      paidBtnTitleUnpaid:'Click to remove payment — invoice field will be unlocked',
+      legendTitle:'Paid this month\'s installment',
+      legendSub:'Tap the ✓ button next to any month to record its installment — the invoice field will be locked',
       infoTitle:'📋 Electricity & Water Tariff — Bahrain',
       infoBadgeElec:'Domestic — Bahraini citizen (one account)',
       infoBadgeWater:'Domestic — Bahraini citizen (one account)',
@@ -908,10 +1015,18 @@
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
+  function initialPaid(){
+    if(Array.isArray(saved.paid) && saved.paid.length === 12){
+      return saved.paid.map(v => !!v);
+    }
+    return new Array(12).fill(false);
+  }
+
   const state = {
     lang : saved.lang  || 'ar',
     theme: saved.theme || 'dark',
-    font : saved.font  || 16
+    font : saved.font  || 16,
+    paid : initialPaid()
   };
 
   const $ = id => document.getElementById(id);
@@ -931,6 +1046,7 @@
         theme: state.theme,
         font : state.font,
         values: getValues(),
+        paid : state.paid,
         fcPct: parseFloat($('fcNum').value) || 0,
         arrAmount: $('arrAmount').value,
         arrMonths: $('arrMonths').value
@@ -939,12 +1055,13 @@
   }
 
   let toastTimer;
-  function toast(msg){
+  function toast(msg, kind){
     const el = $('toast');
     el.textContent = msg;
+    el.classList.toggle('ok', kind === 'ok');
     el.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=> el.classList.remove('show'), 2800);
+    toastTimer = setTimeout(()=> el.classList.remove('show'), 2400);
   }
 
   function getStats(){
@@ -958,16 +1075,76 @@
       total += v;
       count++;
     });
-    return { total, count, avg: count ? total / count : 0 };
+    return { total, count };
   }
 
   function calc(){
     const s = getStats();
     const t = I18N[state.lang];
-    $('valTotal').textContent = fmt(s.total);
-    $('valAvg').textContent   = fmt(s.avg);
-    updateForecast(s.avg, t);
-    updateArrears(s.avg, s.total, t);
+
+    const initialDebt = parseFloat($('arrAmount').value) || 0;
+    let months   = parseFloat($('arrMonths').value);
+    if(isNaN(months) || months < 1) months = 12;
+    if(months > 120) months = 120;
+
+    const initialTotal = initialDebt + s.total;
+    const installment  = initialTotal / months;
+
+    const paidCount    = state.paid.filter(Boolean).length;
+    const totalPaid    = Math.min(initialTotal, installment * paidCount);
+    const grand        = Math.max(0, initialTotal - totalPaid);
+    const finalAvg     = grand / months;
+
+    $('valGrand').textContent = fmt(grand);
+    $('subGrand').innerHTML =
+      `<span>${fmt(initialTotal)}</span><span class="sep">−</span><span>${fmt(totalPaid)}</span>`;
+
+    if(initialDebt > 0){
+      $('installmentCard').style.display = '';
+      $('valInst').textContent = fmt(installment);
+      $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
+
+      const fullyPaid = grand <= 0 && paidCount > 0;
+
+      if(fullyPaid){
+        $('instRemRow').style.display = 'none';
+        $('instFullyPaidRow').style.display = 'flex';
+        $('instFullyPaidTxt').textContent = t.instFullyPaid;
+      } else {
+        $('instRemRow').style.display = 'flex';
+        $('instFullyPaidRow').style.display = 'none';
+        $('instRemLbl').textContent = t.instRemLbl;
+        $('instRemaining').textContent = fmt(grand) + ' ' + t.currency;
+      }
+
+      const pct = Math.min(100, (paidCount / months) * 100);
+      $('instProgressFill').style.width = pct + '%';
+      $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
+      $('instProgressPct').textContent = Math.round(pct) + '%';
+    } else {
+      $('installmentCard').style.display = 'none';
+    }
+
+    if(initialDebt > 0){
+      $('legendBar').classList.add('show');
+      $('legendTitle').textContent = t.legendTitle;
+      $('legendSub').textContent = t.legendSub;
+      $('legendValueNum').textContent = fmt(installment);
+      $('legendValueCur').textContent = t.currency;
+    } else {
+      $('legendBar').classList.remove('show');
+    }
+
+    if(paidCount > 0 && initialDebt > 0){
+      $('paidInfo').style.display = 'flex';
+      $('paidVal').textContent = fmt(totalPaid) + ' ' + t.currency;
+      $('paidCount').textContent =
+        `(${paidCount} ${t.paidUnit} × ${fmt(installment)})`;
+    } else {
+      $('paidInfo').style.display = 'none';
+    }
+
+    updateForecast(finalAvg, t);
   }
 
   function updateForecast(avg, t){
@@ -993,23 +1170,7 @@
     save();
   }
 
-  function updateArrears(avg, total, t){
-    t = t || I18N[state.lang];
-
-    const amount = parseFloat($('arrAmount').value) || 0;
-    let months   = parseFloat($('arrMonths').value) || 1;
-    if(months < 1) months = 1;
-    if(months > 120) months = 120;
-
-    const install = amount / months;
-    const newAvg  = avg + install;
-    const grand   = total + amount;
-
-    $('arrInstallVal').textContent = fmt(install) + ' ' + t.currency;
-    $('arrNewAvgVal').textContent  = fmt(newAvg)  + ' ' + t.currency;
-    $('arrGrandVal').textContent   = fmt(grand)   + ' ' + t.currency;
-  }
-
+  /* ============ رسم الأشهر ============ */
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
@@ -1018,6 +1179,7 @@
     MONTHS.forEach((m, i) => {
       const row = document.createElement('div');
       row.className = 'month';
+      if(state.paid[i]) row.classList.add('paid');
 
       const lbl = document.createElement('label');
       lbl.textContent = state.lang === 'ar' ? m.ar : m.en;
@@ -1031,13 +1193,42 @@
       inp.setAttribute('aria-label', lbl.textContent);
       if(values && values[i] !== undefined) inp.value = values[i];
 
+      // إذا الشهر مدفوع → اقفل الحقل
+      if(state.paid[i]) inp.disabled = true;
+
       inp.addEventListener('input', () => { calc(); save(); });
 
       const cur = document.createElement('span');
       cur.className = 'cur';
       cur.textContent = t.currency;
 
-      row.append(lbl, inp, cur);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'paid-btn';
+      btn.textContent = '✓';
+      btn.setAttribute('aria-label', state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
+      btn.setAttribute('title',      state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
+
+      btn.addEventListener('click', () => {
+        const debt = parseFloat($('arrAmount').value) || 0;
+        if(debt <= 0){
+          toast(I18N[state.lang].toastNoDebt);
+          return;
+        }
+        state.paid[i] = !state.paid[i];
+        row.classList.toggle('paid', state.paid[i]);
+
+        // قفل/فتح حقل الفاتورة
+        inp.disabled = state.paid[i];
+        btn.setAttribute('aria-label', state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
+        btn.setAttribute('title',      state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
+
+        calc();
+        save();
+        toast(state.paid[i] ? I18N[state.lang].toastPaid : I18N[state.lang].toastUnpaid, state.paid[i] ? 'ok' : '');
+      });
+
+      row.append(lbl, inp, cur, btn);
       grid.appendChild(row);
     });
 
@@ -1065,18 +1256,29 @@
     $('appTitle').textContent    = t.title;
     $('appSub').textContent      = t.subtitle;
     $('reportTitle').textContent = t.reportTitle;
-    $('lblTotal').textContent    = t.total;
-    $('lblAvg').textContent      = t.avg;
-    $('curTotal').textContent    = t.currency;
-    $('curAvg').textContent      = t.currency;
+    $('lblGrand').textContent    = t.grandTotal;
+    $('lblInst').textContent     = t.instLabel;
+    $('curGrand').textContent    = t.currency;
+    $('curInst').textContent     = t.currency;
     $('printTxt').textContent    = t.print;
     $('shareTxt').textContent    = t.share;
     $('siteTxt').textContent     = t.shareSite;
     $('rightsTxt').textContent   = t.rights;
-    $('hintTxt').textContent     = t.hint;
+    $('hintTxt').innerHTML       = t.hint;
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
     $('btnInfo').title           = ar ? 'تعليمات التعرفة' : 'Tariff Info';
+
+    $('arrTitle').innerHTML = t.arrTitle + ' <span class="badge">' + t.arrBadge + '</span>';
+    $('arrNote').textContent = t.arrNote;
+    $('arrAmtLbl').textContent = t.arrAmtLbl;
+    $('arrMonLbl').textContent = t.arrMonLbl;
+    $('arrMonUnit').textContent = t.arrMonUnit;
+    $('arrAmtCur').textContent = t.currency;
+
+    $('paidLbl').textContent = t.paidLbl;
+    $('legendTitle').textContent = t.legendTitle;
+    $('legendSub').textContent = t.legendSub;
 
     $('fcTitle').textContent      = t.fcTitle;
     $('fcNote').textContent       = t.fcNote;
@@ -1086,17 +1288,6 @@
     $('fcDiffLbl').textContent    = t.fcDiff;
     $('fcDisclaimer').textContent = t.fcDisclaimer;
     $('fcArrow').textContent      = t.arrow;
-
-    $('arrTitle').textContent     = t.arrTitle;
-    $('arrNote').textContent      = t.arrNote;
-    $('arrAmtLbl').textContent    = t.arrAmtLbl;
-    $('arrMonLbl').textContent    = t.arrMonLbl;
-    $('arrMonUnit').textContent   = t.arrMonUnit;
-    $('arrAmtCur').textContent    = t.currency;
-    $('arrInstallLbl').textContent= t.arrInstallLbl;
-    $('arrNewAvgLbl').textContent = t.arrNewAvgLbl;
-    $('arrGrandLbl').textContent  = t.arrGrandLbl;
-    $('arrNote2').textContent     = t.arrNote2;
 
     $('infoModalTitle').textContent = t.infoTitle;
     $('badgeElec').textContent = t.infoBadgeElec;
@@ -1127,8 +1318,7 @@
 
     renderMonths(getValues());
     updateDate();
-    updateForecast(getStats().avg, t);
-    updateArrears(getStats().avg, getStats().total, t);
+    calc();
   }
 
   function applyTheme(){
@@ -1147,11 +1337,7 @@
 
   async function sharePDF(){
     const t = I18N[state.lang];
-
-    if(typeof html2pdf === 'undefined'){
-      toast(t.toastNoLib);
-      return;
-    }
+    if(typeof html2pdf === 'undefined'){ toast(t.toastNoLib); return; }
 
     const btn = $('btnShare');
     btn.disabled = true;
@@ -1207,7 +1393,6 @@
       document.body.removeChild(a);
       setTimeout(()=> URL.revokeObjectURL(url), 4000);
       toast(t.toastSaved);
-
     }catch(err){
       console.error(err);
       toast(t.toastErr);
@@ -1231,10 +1416,7 @@
         toast(t.toastSiteShared);
         return;
       }catch(err){
-        if(err && err.name === 'AbortError'){
-          toast(t.toastAbort);
-          return;
-        }
+        if(err && err.name === 'AbortError'){ toast(t.toastAbort); return; }
         console.warn('Site share failed, falling back to clipboard:', err);
       }
     }
@@ -1297,10 +1479,18 @@
 
   $('btnReset').addEventListener('click', () => {
     if(!confirm(I18N[state.lang].confirmReset)) return;
-    document.querySelectorAll('.month input').forEach(i => i.value = '');
+    state.paid = new Array(12).fill(false);
+    document.querySelectorAll('.month input').forEach(i => { i.value = ''; i.disabled = false; });
+    document.querySelectorAll('.month').forEach(m => m.classList.remove('paid'));
+    document.querySelectorAll('.paid-btn').forEach(b => {
+      b.setAttribute('aria-label', I18N[state.lang].paidBtnTitle);
+      b.setAttribute('title', I18N[state.lang].paidBtnTitle);
+    });
     $('arrAmount').value = '';
     $('arrMonths').value = '12';
     setPct(0);
+    calc();
+    save();
     toast(I18N[state.lang].toastReset);
   });
 
@@ -1333,7 +1523,7 @@
   $('arrMonths').addEventListener('input', () => { calc(); save(); });
   $('arrMonths').addEventListener('blur', e => {
     let v = parseFloat(e.target.value);
-    if(isNaN(v) || v < 1) v = 1;
+    if(isNaN(v) || v < 1) v = 12;
     if(v > 120) v = 120;
     e.target.value = v;
     calc(); save();
