@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متوسط السعري للكهرباء البحرين | Muharraqi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --bg:#e8f2fd; --bg2:#f8fbff; --card:#ffffff; --text:#0e2740;
+    --muted:#5c7c9b; --accent:#1d78d8; --accent2:#0a5cb0;
+    --border:#d2e5f9; --input-bg:#f3f8ff;
+    --shadow:0 10px 30px rgba(20,80,150,.10);
+  }
+  html[data-theme="dark"]{
+    --bg:#07121d; --bg2:#0b1b2b; --card:#0f2233; --text:#e8f2fc;
+    --muted:#8cb0d0; --accent:#4ea8ff; --accent2:#2b86e0;
+    --border:#1d3a52; --input-bg:#0b1c2b;
+    --shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+
+  html{font-size:16px;}
+
+  body{
+    font-family:"Segoe UI",Tahoma,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(165deg,var(--bg) 0%,var(--bg2) 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    min-height:100vh;
+    padding:1.25rem;
+    transition:background .3s ease,color .3s ease;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:62rem;margin:0 auto;}
+
+  /* ====== الشريط العلوي ====== */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem;
+  }
+  .brand{display:flex;align-items:center;gap:.75rem;min-width:0;}
+  .logo{
+    width:2.9rem;height:2.9rem;border-radius:.9rem;flex:0 0 auto;
+    display:grid;place-items:center;font-size:1.45rem;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;box-shadow:0 .4rem 1rem rgba(29,120,216,.35);
+  }
+  .brand-txt{min-width:0;}
+  .brand-txt h1{font-size:1.12rem;line-height:1.35;font-weight:800;}
+  .brand-txt p{font-size:.76rem;color:var(--muted);margin-top:.1rem;}
+
+  .tools{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;}
+  .tbtn{
+    background:var(--card);border:1px solid var(--border);color:var(--text);
+    padding:.5rem .72rem;border-radius:.65rem;cursor:pointer;
+    font-size:.9rem;font-weight:700;font-family:inherit;
+    transition:.2s;box-shadow:0 2px 6px rgba(20,80,150,.06);
+    line-height:1;
+  }
+  .tbtn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+  .tbtn:active{transform:translateY(0) scale(.97);}
+
+  /* ====== بطاقة التقرير ====== */
+  .report{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:1.25rem;
+    padding:1.25rem;
+    box-shadow:var(--shadow);
+    transition:background .3s,border-color .3s,box-shadow .3s;
+  }
+
+  .report-head{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:.5rem;
+    padding-bottom:.85rem;border-bottom:2px solid var(--border);margin-bottom:1.05rem;
+  }
+  .report-head h2{font-size:1.1rem;color:var(--accent);font-weight:800;}
+  .report-date{font-size:.82rem;color:var(--muted);}
+
+  /* ====== شبكة الأشهر ====== */
+  .months{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(14.5rem,1fr));
+    gap:.7rem;
+  }
+  .month{
+    display:flex;align-items:center;gap:.5rem;
+    background:var(--input-bg);
+    border:1px solid var(--border);
+    border-radius:.8rem;
+    padding:.45rem .65rem;
+    transition:border-color .2s,box-shadow .2s,background .3s;
+  }
+  .month:focus-within{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(29,120,216,.15);
+  }
+  .month label{
+    font-size:.85rem;color:var(--muted);font-weight:700;
+    flex:0 0 auto;min-width:4.4rem;
+  }
+  .month input{
+    flex:1 1 auto;min-width:0;
+    background:transparent;border:none;outline:none;
+    color:var(--text);font-size:1rem;font-weight:800;
+    font-family:inherit;text-align:center;padding:.3rem .1rem;
+    letter-spacing:.4px;
+  }
+  .month input::placeholder{color:var(--muted);opacity:.45;font-weight:400;}
+  .month .cur{font-size:.78rem;color:var(--accent);font-weight:800;white-space:nowrap;}
+
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]{-moz-appearance:textfield;appearance:textfield;}
+
+  /* ====== النتائج ====== */
+  .results{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));
+    gap:.8rem;margin-top:1.2rem;
+  }
+  .res-card{
+    background:linear-gradient(135deg,var(--input-bg),var(--card));
+    border:1px solid var(--border);
+    border-radius:.95rem;
+    padding:.95rem 1rem;text-align:center;
+    transition:background .3s,border-color .3s;
+  }
+  .res-card.accent{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-color:transparent;color:#fff;
+    box-shadow:0 .5rem 1.2rem rgba(29,120,216,.3);
+  }
+  .res-card.accent .res-label{color:rgba(255,255,255,.88);}
+  .res-label{font-size:.8rem;color:var(--muted);font-weight:700;margin-bottom:.3rem;}
+  .res-value{
+    font-size:1.55rem;font-weight:900;letter-spacing:.5px;
+    display:flex;align-items:baseline;justify-content:center;gap:.32rem;
+    direction:ltr;
+  }
+  .res-value .cur{font-size:.82rem;font-weight:700;opacity:.85;}
+
+  .hint{
+    margin-top:.9rem;font-size:.76rem;color:var(--muted);
+    text-align:center;line-height:1.6;
+  }
+
+  /* ====== قسم توقع السنة القادمة ====== */
+  .forecast{
+    margin-top:1.2rem;
+    border:1px solid var(--border);
+    border-radius:1rem;
+    background:var(--input-bg);
+    padding:1rem;
+    transition:background .3s,border-color .3s;
+  }
+  .forecast-head{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.9rem;}
+  .forecast-icon{
+    font-size:1.15rem;line-height:1;flex:0 0 auto;
+    width:2rem;height:2rem;border-radius:.55rem;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+  }
+  .forecast-head h3{font-size:.95rem;color:var(--accent);font-weight:800;}
+  .forecast-head p{font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.5;}
+
+  .fc-label{font-size:.8rem;color:var(--muted);font-weight:700;display:block;margin-bottom:.5rem;}
+  .fc-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+  .fc-row input[type=range]{
+    flex:1 1 9rem;min-width:6rem;accent-color:var(--accent);
+    height:.35rem;cursor:pointer;
+  }
+  .fc-num{
+    display:flex;align-items:center;gap:.2rem;flex:0 0 auto;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:.6rem;padding:.3rem .55rem;
+  }
+  .fc-num input{
+    width:3.4rem;border:none;background:transparent;outline:none;
+    color:var(--text);font-weight:900;font-family:inherit;
+    text-align:center;font-size:.95rem;
+  }
+  .fc-num span{font-size:.82rem;color:var(--accent);font-weight:800;}
+
+  .fc-presets{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.65rem;}
+  .fc-presets button{
+    background:var(--card);border:1px solid var(--border);color:var(--muted);
+    padding:.32rem .62rem;border-radius:.5rem;font-family:inherit;font-size:.76rem;
+    font-weight:800;cursor:pointer;transition:.2s;
+  }
+  .fc-presets button:hover{border-color:var(--accent);color:var(--accent);}
+  .fc-presets button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  .fc-result{display:flex;gap:.65rem;align-items:stretch;flex-wrap:wrap;margin-top:1rem;}
+  .fc-compare{
+    flex:1 1 13rem;display:flex;align-items:center;gap:.5rem;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:.85rem;padding:.7rem .85rem;
+  }
+  .fc-col{flex:1;text-align:center;min-width:0;}
+  .fc-col span{display:block;font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:.25rem;}
+  .fc-col strong{
+    display:block;font-size:.95rem;font-weight:900;
+    direction:ltr;letter-spacing:.2px;
+  }
+  .fc-col.highlight strong{color:var(--accent);font-size:1.05rem;}
+  .fc-arrow{color:var(--accent);font-size:1.15rem;font-weight:900;flex:0 0 auto;line-height:1;}
+
+  .fc-diff{
+    flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;min-width:7rem;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;border-radius:.85rem;padding:.7rem 1rem;
+    box-shadow:0 .35rem .9rem rgba(29,120,216,.28);
+  }
+  .fc-diff span{font-size:.68rem;opacity:.92;font-weight:700;}
+  .fc-diff strong{font-size:1rem;font-weight:900;direction:ltr;margin-top:.2rem;}
+
+  .fc-disclaimer{
+    margin-top:.8rem;font-size:.7rem;color:var(--muted);
+    line-height:1.6;padding-top:.65rem;border-top:1px dashed var(--border);
+  }
+
+  .report-foot{
+    margin-top:1.1rem;padding-top:.8rem;border-top:1px dashed var(--border);
+    text-align:center;font-size:.78rem;color:var(--muted);line-height:1.6;
+  }
+  .report-foot strong{color:var(--accent);letter-spacing:.5px;}
+
+  /* ====== الأزرار السفلية ====== */
+  .actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;}
+  .abtn{
+    flex:1 1 9rem;
+    padding:.9rem 1.2rem;border-radius:.9rem;border:none;cursor:pointer;
+    font-family:inherit;font-size:1rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;gap:.5rem;
+    transition:.2s;
+  }
+  .abtn.primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;box-shadow:0 .4rem 1rem rgba(29,120,216,.3);
+  }
+  .abtn.share{
+    background:var(--card);color:var(--accent);
+    border:1.5px solid var(--accent);
+  }
+  .abtn:hover{transform:translateY(-2px);}
+  .abtn:active{transform:translateY(0) scale(.98);}
+  .abtn:disabled{opacity:.6;cursor:wait;transform:none;}
+
+  /* ====== التوست ====== */
+  .toast{
+    position:fixed;bottom:1.5rem;left:50%;
+    transform:translateX(-50%) translateY(150%);
+    background:var(--accent);color:#fff;
+    padding:.7rem 1.25rem;border-radius:.75rem;
+    font-size:.88rem;font-weight:700;
+    opacity:0;transition:.35s ease;z-index:99;
+    max-width:90vw;text-align:center;
+    box-shadow:0 .5rem 1.5rem rgba(0,0,0,.25);
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+  /* ====== الطباعة ====== */
+  @media print{
+    :root, html[data-theme="dark"], html[data-theme="light"]{
+      --bg:#fff; --bg2:#fff; --card:#fff; --text:#000; --muted:#555;
+      --accent:#0a5cb0; --accent2:#0a5cb0; --border:#bbb;
+      --input-bg:#fff; --shadow:none;
+    }
+    html{font-size:14px !important;}
+    body{background:#fff !important;color:#000 !important;padding:0 !important;}
+    .topbar,.actions,.toast{display:none !important;}
+    .wrap{max-width:none;}
+    .report{
+      box-shadow:none !important;border:none !important;border-radius:0 !important;
+      background:#fff !important;padding:0 !important;
+    }
+    .month{border:1px solid #ccc !important;background:#fff !important;}
+    .res-card{border:1px solid #999 !important;background:#fff !important;}
+    .res-card.accent{
+      background:#0a5cb0 !important;color:#fff !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .forecast{border:1px solid #999 !important;background:#fff !important;}
+    .fc-diff{
+      background:#0a5cb0 !important;color:#fff !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .fc-presets,.fc-row input[type=range]{display:none !important;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+
+  @media (max-width:520px){
+    body{padding:.8rem;}
+    .months{grid-template-columns:1fr;}
+    .brand-txt h1{font-size:1rem;}
+    .report{padding:1rem;}
+    .fc-diff{min-width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- الشريط العلوي -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">⚡</div>
+      <div class="brand-txt">
+        <h1 id="appTitle">متوسط السعري للكهرباء البحرين</h1>
+        <p id="appSub">حساب المجمع الكلي ومتوسط السعر</p>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="tbtn" id="btnLang" title="Language">EN</button>
+      <button class="tbtn" id="btnTheme" title="Theme">🌙</button>
+      <button class="tbtn" id="btnFontDown" title="تصغير الخط">A-</button>
+      <button class="tbtn" id="btnFontUp" title="تكبير الخط">A+</button>
+      <button class="tbtn" id="btnReset" title="تفريغ">↺</button>
+    </div>
+  </header>
+
+  <!-- منطقة التقرير -->
+  <section class="report" id="report">
+    <div class="report-head">
+      <h2 id="reportTitle">أشهر السنة</h2>
+      <div class="report-date" id="reportDate"></div>
+    </div>
+
+    <div class="months" id="monthsGrid"></div>
+
+    <div class="results">
+      <div class="res-card">
+        <div class="res-label" id="lblTotal">المجمع الكلي</div>
+        <div class="res-value">
+          <span id="valTotal">0.000</span>
+          <span class="cur" id="curTotal">د.ب</span>
+        </div>
+      </div>
+      <div class="res-card accent">
+        <div class="res-label" id="lblAvg">متوسط السعر</div>
+        <div class="res-value">
+          <span id="valAvg">0.000</span>
+          <span class="cur" id="curAvg">د.ب</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint" id="hintTxt">متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة</p>
+
+    <!-- ====== قسم محاكي الزيادة المتوقعة ====== -->
+    <div class="forecast" id="forecastBox">
+      <div class="forecast-head">
+        <div class="forecast-icon">📈</div>
+        <div>
+          <h3 id="fcTitle">توقّع السنة القادمة</h3>
+          <p id="fcNote">التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر</p>
+        </div>
+      </div>
+
+      <label class="fc-label" for="fcRange" id="fcLabel">نسبة الزيادة المتوقعة</label>
+      <div class="fc-row">
+        <input type="range" id="fcRange" min="0" max="30" step="1" value="0">
+        <div class="fc-num">
+          <input type="number" id="fcNum" min="0" max="100" step="0.5" value="0" inputmode="decimal">
+          <span>%</span>
+        </div>
+      </div>
+
+      <div class="fc-presets" id="fcPresets">
+        <button type="button" data-p="0">0%</button>
+        <button type="button" data-p="5">5%</button>
+        <button type="button" data-p="10">10%</button>
+        <button type="button" data-p="15">15%</button>
+        <button type="button" data-p="20">20%</button>
+      </div>
+
+      <div class="fc-result">
+        <div class="fc-compare">
+          <div class="fc-col">
+            <span id="fcNowLbl">المتوسط الحالي</span>
+            <strong id="fcNowVal">0.000 د.ب</strong>
+          </div>
+          <div class="fc-arrow" id="fcArrow">←</div>
+          <div class="fc-col highlight">
+            <span id="fcNextLbl">المتوسط المتوقع</span>
+            <strong id="fcNextVal">0.000 د.ب</strong>
+          </div>
+        </div>
+        <div class="fc-diff">
+          <span id="fcDiffLbl">الفرق</span>
+          <strong id="fcDiffVal">+0.000 د.ب</strong>
+        </div>
+      </div>
+
+      <p class="fc-disclaimer" id="fcDisclaimer">
+        ⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء.
+        المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.
+      </p>
+    </div>
+
+    <div class="report-foot">
+      <span id="rightsTxt">جميع الحقوق محفوظة</span> © <span id="yearTxt"></span>
+      — <strong>Muharraqi</strong>
+    </div>
+  </section>
+
+  <!-- الأزرار -->
+  <div class="actions">
+    <button class="abtn primary" id="btnPrint">🖨️ <span id="printTxt">طباعة</span></button>
+    <button class="abtn share" id="btnShare">📄 <span id="shareTxt">مشاركة PDF</span></button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  const STORE = 'muharraqi_bahrain_elec_v2';
+
+  const MONTHS = [
+    {ar:'يناير',  en:'January'},
+    {ar:'فبراير', en:'February'},
+    {ar:'مارس',   en:'March'},
+    {ar:'أبريل',  en:'April'},
+    {ar:'مايو',   en:'May'},
+    {ar:'يونيو',  en:'June'},
+    {ar:'يوليو',  en:'July'},
+    {ar:'أغسطس',  en:'August'},
+    {ar:'سبتمبر', en:'September'},
+    {ar:'أكتوبر', en:'October'},
+    {ar:'نوفمبر', en:'November'},
+    {ar:'ديسمبر', en:'December'}
+  ];
+
+  const I18N = {
+    ar:{
+      title:'متوسط السعري للكهرباء البحرين',
+      subtitle:'حساب المجمع الكلي ومتوسط السعر',
+      reportTitle:'أشهر السنة',
+      total:'المجمع الكلي',
+      avg:'متوسط السعر',
+      currency:'د.ب',
+      print:'طباعة',
+      share:'مشاركة PDF',
+      rights:'جميع الحقوق محفوظة',
+      hint:'متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة',
+      confirmReset:'هل تريد تفريغ جميع الحقول؟',
+      reset:'تفريغ الحقول',
+      toastPrint:'جاري تحضير الطباعة...',
+      toastPdf:'جاري إنشاء ملف PDF...',
+      toastShared:'تمت مشاركة الملف بنجاح',
+      toastSaved:'تم تنزيل ملف PDF',
+      toastReset:'تم تفريغ جميع الحقول',
+      toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
+      toastNoLib:'مكتبة PDF غير متوفرة',
+      // توقع
+      fcTitle:'توقّع السنة القادمة',
+      fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
+      fcLabel:'نسبة الزيادة المتوقعة',
+      fcNow:'المتوسط الحالي',
+      fcNext:'المتوسط المتوقع',
+      fcDiff:'الفرق',
+      fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
+      arrow:'←'
+    },
+    en:{
+      title:'Bahrain Electricity Average Price',
+      subtitle:'Calculate total & average price',
+      reportTitle:'Months of the Year',
+      total:'Grand Total',
+      avg:'Average Price',
+      currency:'BHD',
+      print:'Print',
+      share:'Share PDF',
+      rights:'All rights reserved',
+      hint:'Average = Grand Total ÷ number of entered months',
+      confirmReset:'Clear all fields?',
+      reset:'Clear fields',
+      toastPrint:'Preparing print...',
+      toastPdf:'Generating PDF...',
+      toastShared:'File shared successfully',
+      toastSaved:'PDF downloaded',
+      toastReset:'All fields cleared',
+      toastErr:'Could not create file, opening print dialog',
+      toastNoLib:'PDF library not available',
+      fcTitle:'Next Year Forecast',
+      fcNote:'Tariffs may rise — try an expected increase and see the impact',
+      fcLabel:'Expected increase',
+      fcNow:'Current average',
+      fcNext:'Projected average',
+      fcDiff:'Difference',
+      fcDisclaimer:'⚠️ This is an estimate based on the percentage you enter — not an official forecast of the Electricity & Water Authority tariff. The average above reflects your entered figures only.',
+      arrow:'→'
+    }
+  };
+
+  /* ============ الحالة ============ */
+  let saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
+
+  const state = {
+    lang : saved.lang  || 'ar',
+    theme: saved.theme || 'light',
+    font : saved.font  || 16
+  };
+
+  const $ = id => document.getElementById(id);
+
+  function fmt(n){
+    return Number(n).toLocaleString('en-US',{minimumFractionDigits:3, maximumFractionDigits:3});
+  }
+
+  function getValues(){
+    return Array.from(document.querySelectorAll('.month input')).map(i => i.value);
+  }
+
+  function save(){
+    try{
+      localStorage.setItem(STORE, JSON.stringify({
+        lang : state.lang,
+        theme: state.theme,
+        font : state.font,
+        values: getValues(),
+        fcPct: parseFloat($('fcNum').value) || 0
+      }));
+    }catch(e){}
+  }
+
+  let toastTimer;
+  function toast(msg){
+    const el = $('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
+  }
+
+  /* ============ الإحصائيات ============ */
+  function getStats(){
+    const inputs = document.querySelectorAll('.month input');
+    let total = 0, count = 0;
+    inputs.forEach(inp => {
+      const raw = inp.value.trim();
+      if(raw === '') return;
+      const v = parseFloat(raw);
+      if(isNaN(v)) return;
+      total += v;
+      count++;
+    });
+    return { total, count, avg: count ? total / count : 0 };
+  }
+
+  /* ============ الحساب الرئيسي ============ */
+  function calc(){
+    const s = getStats();
+    const t = I18N[state.lang];
+
+    $('valTotal').textContent = fmt(s.total);
+    $('valAvg').textContent   = fmt(s.avg);
+
+    updateForecast(s.avg, t);
+  }
+
+  /* ============ محاكي الزيادة ============ */
+  function updateForecast(avg, t){
+    t = t || I18N[state.lang];
+    const pct  = parseFloat($('fcNum').value) || 0;
+    const proj = avg * (1 + pct / 100);
+    const diff = proj - avg;
+
+    $('fcNowVal').textContent  = fmt(avg)  + ' ' + t.currency;
+    $('fcNextVal').textContent = fmt(proj) + ' ' + t.currency;
+    $('fcDiffVal').textContent = (diff >= 0 ? '+' : '') + fmt(diff) + ' ' + t.currency;
+
+    // إبراز النسبة المختارة
+    document.querySelectorAll('#fcPresets button').forEach(b => {
+      b.classList.toggle('active', parseFloat(b.dataset.p) === pct);
+    });
+  }
+
+  function setPct(p, fromRange){
+    p = Math.max(0, Math.min(100, p));
+    $('fcNum').value = p;
+    $('fcRange').value = Math.min(30, p);
+    calc();
+    save();
+  }
+
+  /* ============ رسم الأشهر ============ */
+  function renderMonths(values){
+    const t   = I18N[state.lang];
+    const grid = $('monthsGrid');
+    grid.innerHTML = '';
+
+    MONTHS.forEach((m, i) => {
+      const row = document.createElement('div');
+      row.className = 'month';
+
+      const lbl = document.createElement('label');
+      lbl.textContent = state.lang === 'ar' ? m.ar : m.en;
+
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.step = '0.001';
+      inp.min = '0';
+      inp.inputMode = 'decimal';
+      inp.placeholder = '0.000';
+      inp.setAttribute('aria-label', lbl.textContent);
+      if(values && values[i] !== undefined) inp.value = values[i];
+
+      inp.addEventListener('input', () => { calc(); save(); });
+
+      const cur = document.createElement('span');
+      cur.className = 'cur';
+      cur.textContent = t.currency;
+
+      row.append(lbl, inp, cur);
+      grid.appendChild(row);
+    });
+
+    calc();
+  }
+
+  /* ============ التاريخ ============ */
+  function updateDate(){
+    const d = new Date();
+    const loc = state.lang === 'ar' ? 'ar-BH' : 'en-GB';
+    try{
+      $('reportDate').textContent = d.toLocaleDateString(loc, {year:'numeric', month:'long', day:'numeric'});
+    }catch(e){
+      $('reportDate').textContent = d.toLocaleDateString();
+    }
+  }
+
+  /* ============ اللغة ============ */
+  function applyLang(){
+    const t  = I18N[state.lang];
+    const ar = state.lang === 'ar';
+
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir  = ar ? 'rtl' : 'ltr';
+    document.title = t.title + ' | Muharraqi';
+
+    $('appTitle').textContent    = t.title;
+    $('appSub').textContent      = t.subtitle;
+    $('reportTitle').textContent = t.reportTitle;
+    $('lblTotal').textContent    = t.total;
+    $('lblAvg').textContent      = t.avg;
+    $('curTotal').textContent    = t.currency;
+    $('curAvg').textContent      = t.currency;
+    $('printTxt').textContent    = t.print;
+    $('shareTxt').textContent    = t.share;
+    $('rightsTxt').textContent   = t.rights;
+    $('hintTxt').textContent     = t.hint;
+    $('btnLang').textContent     = ar ? 'EN' : 'ع';
+    $('btnReset').title          = t.reset;
+
+    // التوقع
+    $('fcTitle').textContent      = t.fcTitle;
+    $('fcNote').textContent       = t.fcNote;
+    $('fcLabel').textContent      = t.fcLabel;
+    $('fcNowLbl').textContent     = t.fcNow;
+    $('fcNextLbl').textContent    = t.fcNext;
+    $('fcDiffLbl').textContent    = t.fcDiff;
+    $('fcDisclaimer').textContent = t.fcDisclaimer;
+    $('fcArrow').textContent      = t.arrow;
+
+    renderMonths(getValues());
+    updateDate();
+    updateForecast(getStats().avg, t);
+  }
+
+  /* ============ الثيم ============ */
+  function applyTheme(){
+    document.documentElement.setAttribute('data-theme', state.theme);
+    $('btnTheme').textContent = state.theme === 'light' ? '🌙' : '☀️';
+  }
+
+  /* ============ حجم الخط ============ */
+  function applyFont(){
+    document.documentElement.style.fontSize = state.font + 'px';
+  }
+
+  /* ============ الطباعة ============ */
+  function doPrint(){
+    toast(I18N[state.lang].toastPrint);
+    setTimeout(() => window.print(), 300);
+  }
+
+  /* ============ مشاركة PDF ============ */
+  async function sharePDF(){
+    const t = I18N[state.lang];
+
+    if(typeof html2pdf === 'undefined'){
+      toast(t.toastNoLib);
+      return;
+    }
+
+    const btn = $('btnShare');
+    btn.disabled = true;
+    toast(t.toastPdf);
+
+    const filename = 'Muharraqi-Bahrain-Electricity-Average.pdf';
+    const el = $('report');
+
+    try{
+      const opt = {
+        margin: [0.35, 0.35, 0.35, 0.35],
+        filename: filename,
+        image: {type:'jpeg', quality:0.98},
+        html2canvas: {scale:2, useCORS:true, backgroundColor:'#ffffff', scrollY:0},
+        jsPDF: {unit:'in', format:'a4', orientation:'portrait'}
+      };
+
+      const blob = await html2pdf().set(opt).from(el).outputPdf('blob');
+      const file = new File([blob], filename, {type:'application/pdf'});
+
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({
+          files:[file],
+          title: t.title,
+          text : t.title + ' — Muharraqi'
+        });
+        toast(t.toastShared);
+      }else{
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(()=> URL.revokeObjectURL(url), 4000);
+        toast(t.toastSaved);
+      }
+    }catch(err){
+      if(err && err.name === 'AbortError'){ /* ألغى المستخدم */ }
+      else{
+        console.error(err);
+        toast(t.toastErr);
+        setTimeout(()=> window.print(), 900);
+      }
+    }finally{
+      btn.disabled = false;
+    }
+  }
+
+  /* ============ الأحداث ============ */
+  $('btnLang').addEventListener('click', () => {
+    state.lang = state.lang === 'ar' ? 'en' : 'ar';
+    applyLang(); save();
+  });
+
+  $('btnTheme').addEventListener('click', () => {
+    state.theme = state.theme === 'light' ? 'dark' : 'light';
+    applyTheme(); save();
+  });
+
+  $('btnFontUp').addEventListener('click', () => {
+    if(state.font < 22){ state.font += 1; applyFont(); save(); }
+  });
+
+  $('btnFontDown').addEventListener('click', () => {
+    if(state.font > 13){ state.font -= 1; applyFont(); save(); }
+  });
+
+  $('btnReset').addEventListener('click', () => {
+    if(!confirm(I18N[state.lang].confirmReset)) return;
+    document.querySelectorAll('.month input').forEach(i => i.value = '');
+    setPct(0);
+    toast(I18N[state.lang].toastReset);
+  });
+
+  $('btnPrint').addEventListener('click', doPrint);
+  $('btnShare').addEventListener('click', sharePDF);
+
+  // محاكي الزيادة
+  $('fcRange').addEventListener('input', e => setPct(parseFloat(e.target.value)));
+
+  $('fcNum').addEventListener('input', e => {
+    let v = parseFloat(e.target.value);
+    if(isNaN(v)) v = 0;
+    $('fcRange').value = Math.min(30, Math.max(0, v));
+    calc(); save();
+  });
+
+  $('fcNum').addEventListener('blur', e => {
+    let v = parseFloat(e.target.value);
+    if(isNaN(v)) v = 0;
+    setPct(v);
+  });
+
+  $('fcPresets').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-p]');
+    if(!btn) return;
+    setPct(parseFloat(btn.dataset.p));
+  });
+
+  /* ============ التشغيل ============ */
+  $('yearTxt').textContent = new Date().getFullYear();
+
+  applyTheme();
+  applyFont();
+
+  if(saved.values && Array.isArray(saved.values)){
+    // سيتم تطبيقها في renderMonths
+  }
+
+  applyLang();
+
+  // استرجاع القيم بعد الرسم
+  if(saved.values && Array.isArray(saved.values)){
+    const inputs = document.querySelectorAll('.month input');
+    saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
+    if(typeof saved.fcPct === 'number') setPct(saved.fcPct);
+    else calc();
+  }
+
+})();
+</script>
+</body>
+</html>
