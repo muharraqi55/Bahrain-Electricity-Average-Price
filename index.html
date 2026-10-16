@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +9,18 @@
   *{box-sizing:border-box;margin:0;padding:0;}
 
   :root{
-    --bg:#e8f2fd; --bg2:#f8fbff; --card:#ffffff; --text:#0e2740;
-    --muted:#5c7c9b; --accent:#1d78d8; --accent2:#0a5cb0;
-    --border:#d2e5f9; --input-bg:#f3f8ff;
-    --shadow:0 10px 30px rgba(20,80,150,.10);
-    --warn:#e08b1f;
-  }
-  html[data-theme="dark"]{
     --bg:#07121d; --bg2:#0b1b2b; --card:#0f2233; --text:#e8f2fc;
     --muted:#8cb0d0; --accent:#4ea8ff; --accent2:#2b86e0;
     --border:#1d3a52; --input-bg:#0b1c2b;
     --shadow:0 10px 30px rgba(0,0,0,.5);
     --warn:#f0b45a;
+  }
+  html[data-theme="light"]{
+    --bg:#e8f2fd; --bg2:#f8fbff; --card:#ffffff; --text:#0e2740;
+    --muted:#5c7c9b; --accent:#1d78d8; --accent2:#0a5cb0;
+    --border:#d2e5f9; --input-bg:#f3f8ff;
+    --shadow:0 10px 30px rgba(20,80,150,.10);
+    --warn:#e08b1f;
   }
 
   html{font-size:16px;}
@@ -146,7 +146,6 @@
     text-align:center;line-height:1.6;
   }
 
-  /* ====== الأقسام المشتركة (توقع + تراكمات) ====== */
   .panel{
     margin-top:1.2rem;
     border:1px solid var(--border);
@@ -221,7 +220,6 @@
   .fc-diff span{font-size:.68rem;opacity:.92;font-weight:700;}
   .fc-diff strong{font-size:1rem;font-weight:900;direction:ltr;margin-top:.2rem;}
 
-  /* ====== قسم الأبيال المتراكمة ====== */
   .arr-inputs{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
@@ -306,6 +304,11 @@
     background:var(--card);color:var(--accent);
     border:1.5px solid var(--accent);
   }
+  .abtn.sitelink{
+    background:var(--card);color:var(--text);
+    border:1.5px solid var(--border);
+  }
+  .abtn.sitelink:hover{border-color:var(--accent);color:var(--accent);}
   .abtn:hover{transform:translateY(-2px);}
   .abtn:active{transform:translateY(0) scale(.98);}
   .abtn:disabled{opacity:.6;cursor:wait;transform:none;}
@@ -378,7 +381,7 @@
     </div>
     <div class="tools">
       <button class="tbtn" id="btnLang" title="Language">EN</button>
-      <button class="tbtn" id="btnTheme" title="Theme">🌙</button>
+      <button class="tbtn" id="btnTheme" title="Theme">☀️</button>
       <button class="tbtn" id="btnFontDown" title="تصغير الخط">A-</button>
       <button class="tbtn" id="btnFontUp" title="تكبير الخط">A+</button>
       <button class="tbtn" id="btnReset" title="تفريغ">↺</button>
@@ -412,7 +415,6 @@
 
     <p class="hint" id="hintTxt">متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة</p>
 
-    <!-- ====== قسم الأبيال المتراكمة ====== -->
     <div class="panel" id="arrearsBox">
       <div class="panel-head">
         <div class="panel-icon warn">💳</div>
@@ -459,7 +461,6 @@
       </p>
     </div>
 
-    <!-- ====== قسم توقع السنة القادمة ====== -->
     <div class="panel" id="forecastBox">
       <div class="panel-head">
         <div class="panel-icon">📈</div>
@@ -517,7 +518,8 @@
 
   <div class="actions">
     <button class="abtn primary" id="btnPrint">🖨️ <span id="printTxt">طباعة</span></button>
-    <button class="abtn share" id="btnShare">📤 <span id="shareTxt">مشاركة للتطبيقات</span></button>
+    <button class="abtn share" id="btnShare">📤 <span id="shareTxt">مشاركة PDF</span></button>
+    <button class="abtn sitelink" id="btnSite">🔗 <span id="siteTxt">مشاركة الموقع</span></button>
   </div>
 
 </div>
@@ -528,7 +530,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v4';
+  const STORE = 'muharraqi_bahrain_elec_v5';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -554,7 +556,8 @@
       avg:'متوسط السعر',
       currency:'د.ب',
       print:'طباعة',
-      share:'مشاركة للتطبيقات',
+      share:'مشاركة PDF',
+      shareSite:'مشاركة الموقع',
       rights:'جميع الحقوق محفوظة',
       hint:'متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة',
       confirmReset:'هل تريد تفريغ جميع الحقول؟',
@@ -567,7 +570,10 @@
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
       toastAbort:'تم إلغاء المشاركة',
-      // توقع
+      toastSiteCopied:'تم نسخ رابط الموقع',
+      toastSiteShared:'تمت مشاركة الرابط',
+      toastSiteErr:'تعذّر نسخ الرابط',
+      siteShareText:'جرّب هذا الموقع لحساب متوسط سعر الكهرباء في البحرين',
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
@@ -576,7 +582,6 @@
       fcDiff:'الفرق',
       fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
       arrow:'←',
-      // تراكمات
       arrTitle:'الأبيال المتراكمة',
       arrNote:'عليك فواتير متراكمة؟ احسب قسطها الشهري وأثره على متوسطك',
       arrAmtLbl:'المبلغ المتراكم',
@@ -595,7 +600,8 @@
       avg:'Average Price',
       currency:'BHD',
       print:'Print',
-      share:'Share to Apps',
+      share:'Share PDF',
+      shareSite:'Share Site',
       rights:'All rights reserved',
       hint:'Average = Grand Total ÷ number of entered months',
       confirmReset:'Clear all fields?',
@@ -608,6 +614,10 @@
       toastErr:'Could not create file, opening print dialog',
       toastNoLib:'PDF library not available',
       toastAbort:'Share cancelled',
+      toastSiteCopied:'Site link copied',
+      toastSiteShared:'Link shared',
+      toastSiteErr:'Could not copy link',
+      siteShareText:'Try this site to calculate Bahrain electricity average price',
       fcTitle:'Next Year Forecast',
       fcNote:'Tariffs may rise — try an expected increase and see the impact',
       fcLabel:'Expected increase',
@@ -631,9 +641,10 @@
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
+  // ===== الوضع الليلي افتراضي =====
   const state = {
     lang : saved.lang  || 'ar',
-    theme: saved.theme || 'light',
+    theme: saved.theme || 'dark',
     font : saved.font  || 16
   };
 
@@ -693,7 +704,6 @@
     updateArrears(s.avg, s.total, t);
   }
 
-  /* ============ محاكي الزيادة ============ */
   function updateForecast(avg, t){
     t = t || I18N[state.lang];
     const pct  = parseFloat($('fcNum').value) || 0;
@@ -717,7 +727,6 @@
     save();
   }
 
-  /* ============ حساب الأبيال المتراكمة ============ */
   function updateArrears(avg, total, t){
     t = t || I18N[state.lang];
 
@@ -735,7 +744,6 @@
     $('arrGrandVal').textContent   = fmt(grand)   + ' ' + t.currency;
   }
 
-  /* ============ رسم الأشهر ============ */
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
@@ -797,12 +805,12 @@
     $('curAvg').textContent      = t.currency;
     $('printTxt').textContent    = t.print;
     $('shareTxt').textContent    = t.share;
+    $('siteTxt').textContent     = t.shareSite;
     $('rightsTxt').textContent   = t.rights;
     $('hintTxt').textContent     = t.hint;
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
 
-    // توقع
     $('fcTitle').textContent      = t.fcTitle;
     $('fcNote').textContent       = t.fcNote;
     $('fcLabel').textContent      = t.fcLabel;
@@ -812,7 +820,6 @@
     $('fcDisclaimer').textContent = t.fcDisclaimer;
     $('fcArrow').textContent      = t.arrow;
 
-    // تراكمات
     $('arrTitle').textContent     = t.arrTitle;
     $('arrNote').textContent      = t.arrNote;
     $('arrAmtLbl').textContent    = t.arrAmtLbl;
@@ -832,7 +839,8 @@
 
   function applyTheme(){
     document.documentElement.setAttribute('data-theme', state.theme);
-    $('btnTheme').textContent = state.theme === 'light' ? '🌙' : '☀️';
+    // الأيقونة تُعرض حسب الوضع الحالي: إن كان ليلي نُظهر شمس (للتبديل للنهاري)
+    $('btnTheme').textContent = state.theme === 'dark' ? '☀️' : '🌙';
   }
 
   function applyFont(){
@@ -844,7 +852,7 @@
     setTimeout(() => window.print(), 300);
   }
 
-  /* ============ مشاركة للتطبيقات ============ */
+  /* ============ مشاركة PDF للتطبيقات ============ */
   async function sharePDF(){
     const t = I18N[state.lang];
 
@@ -917,6 +925,52 @@
     }
   }
 
+  /* ============ مشاركة رابط الموقع ============ */
+  async function shareSite(){
+    const t = I18N[state.lang];
+    const url = window.location.href;
+
+    // 1) مشاركة عبر Web Share API (الأولوية للتطبيقات)
+    if(navigator.share){
+      try{
+        await navigator.share({
+          title: t.title + ' — Muharraqi',
+          text : t.siteShareText,
+          url  : url
+        });
+        toast(t.toastSiteShared);
+        return;
+      }catch(err){
+        if(err && err.name === 'AbortError'){
+          toast(t.toastAbort);
+          return;
+        }
+        console.warn('Site share failed, falling back to clipboard:', err);
+      }
+    }
+
+    // 2) احتياطي: نسخ الرابط للحافظة
+    try{
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(url);
+      }else{
+        // طريقة قديمة للحواف
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      toast(t.toastSiteCopied);
+    }catch(err){
+      console.error(err);
+      toast(t.toastSiteErr);
+    }
+  }
+
   /* ============ الأحداث ============ */
   $('btnLang').addEventListener('click', () => {
     state.lang = state.lang === 'ar' ? 'en' : 'ar';
@@ -924,7 +978,7 @@
   });
 
   $('btnTheme').addEventListener('click', () => {
-    state.theme = state.theme === 'light' ? 'dark' : 'light';
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
     applyTheme(); save();
   });
 
@@ -947,8 +1001,8 @@
 
   $('btnPrint').addEventListener('click', doPrint);
   $('btnShare').addEventListener('click', sharePDF);
+  $('btnSite').addEventListener('click', shareSite);
 
-  // محاكي الزيادة
   $('fcRange').addEventListener('input', e => setPct(parseFloat(e.target.value)));
 
   $('fcNum').addEventListener('input', e => {
@@ -970,7 +1024,6 @@
     setPct(parseFloat(btn.dataset.p));
   });
 
-  // الأبيال المتراكمة
   $('arrAmount').addEventListener('input', () => { calc(); save(); });
   $('arrMonths').addEventListener('input', () => { calc(); save(); });
   $('arrMonths').addEventListener('blur', e => {
