@@ -325,6 +325,119 @@
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
+  /* ====== نافذة التعليمات المنبثقة ====== */
+  .modal-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(4px);
+    z-index:200;
+    padding:1rem;
+    overflow-y:auto;
+  }
+  .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;}
+  .modal{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:1.25rem;
+    max-width:52rem;width:100%;
+    margin:2rem auto;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+    animation:modalIn .3s ease;
+    overflow:hidden;
+  }
+  @keyframes modalIn{
+    from{opacity:0;transform:translateY(-20px) scale(.97);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  .modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:1rem 1.25rem;
+    border-bottom:2px solid var(--border);
+    background:linear-gradient(135deg,var(--input-bg),var(--card));
+  }
+  .modal-head h2{
+    font-size:1.05rem;color:var(--accent);font-weight:800;
+    display:flex;align-items:center;gap:.5rem;
+  }
+  .modal-close{
+    background:var(--input-bg);border:1px solid var(--border);
+    color:var(--muted);width:2rem;height:2rem;border-radius:.5rem;
+    cursor:pointer;font-size:1.1rem;font-weight:800;
+    display:grid;place-items:center;transition:.2s;font-family:inherit;
+    line-height:1;
+  }
+  .modal-close:hover{background:#e04848;color:#fff;border-color:#e04848;}
+  .modal-body{padding:1.25rem;max-height:70vh;overflow-y:auto;}
+
+  .info-section{margin-bottom:1.5rem;}
+  .info-section:last-child{margin-bottom:0;}
+  .info-section h3{
+    font-size:.95rem;color:var(--accent);font-weight:800;
+    margin-bottom:.6rem;display:flex;align-items:center;gap:.45rem;
+    padding-bottom:.5rem;border-bottom:1px solid var(--border);
+  }
+  .info-section h3 .badge{
+    font-size:.62rem;background:var(--accent);color:#fff;
+    padding:.15rem .45rem;border-radius:.35rem;font-weight:800;
+  }
+
+  .tariff-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:.8rem;
+    border-radius:.75rem;
+    overflow:hidden;
+    border:1px solid var(--border);
+    margin-bottom:.6rem;
+  }
+  .tariff-table thead th{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;padding:.6rem .7rem;font-weight:800;
+    text-align:center;font-size:.78rem;
+    white-space:nowrap;
+  }
+  .tariff-table tbody td{
+    padding:.55rem .7rem;text-align:center;
+    border-bottom:1px solid var(--border);
+    background:var(--input-bg);
+    font-weight:700;font-size:.8rem;
+  }
+  .tariff-table tbody tr:last-child td{border-bottom:none;}
+  .tariff-table tbody tr:nth-child(even) td{background:var(--card);}
+  .tariff-table tbody td:first-child{
+    font-weight:800;color:var(--accent);
+    white-space:nowrap;font-size:.78rem;
+  }
+  .tariff-table tbody td.price{
+    font-weight:900;direction:ltr;letter-spacing:.3px;
+    color:var(--warn);
+  }
+  .tariff-table tbody td.range{
+    font-weight:700;direction:ltr;font-size:.78rem;
+  }
+
+  .unit-note{
+    font-size:.72rem;color:var(--muted);line-height:1.7;
+    background:var(--input-bg);border-radius:.6rem;
+    padding:.6rem .8rem;border:1px dashed var(--border);
+    margin-top:.4rem;
+  }
+  .unit-note strong{color:var(--accent);}
+
+  .info-disclaimer{
+    font-size:.7rem;color:var(--muted);line-height:1.7;
+    padding:.7rem .9rem;border-radius:.6rem;
+    background:var(--input-bg);border:1px solid var(--border);
+    margin-top:.8rem;
+  }
+  .info-disclaimer a{
+    color:var(--accent);font-weight:800;text-decoration:none;
+    border-bottom:1px dashed var(--accent);
+  }
+  .info-disclaimer a:hover{color:var(--accent2);}
+
   @media print{
     :root, html[data-theme="dark"], html[data-theme="light"]{
       --bg:#fff; --bg2:#fff; --card:#fff; --text:#000; --muted:#555;
@@ -364,6 +477,10 @@
     .brand-txt h1{font-size:1rem;}
     .report{padding:1rem;}
     .fc-diff{min-width:100%;}
+    .modal{margin:1rem auto;}
+    .modal-body{padding:1rem;max-height:75vh;}
+    .tariff-table{font-size:.72rem;}
+    .tariff-table thead th,.tariff-table tbody td{padding:.4rem .5rem;}
   }
 </style>
 </head>
@@ -384,6 +501,7 @@
       <button class="tbtn" id="btnTheme" title="Theme">☀️</button>
       <button class="tbtn" id="btnFontDown" title="تصغير الخط">A-</button>
       <button class="tbtn" id="btnFontUp" title="تكبير الخط">A+</button>
+      <button class="tbtn" id="btnInfo" title="تعليمات التعرفة">؟</button>
       <button class="tbtn" id="btnReset" title="تفريغ">↺</button>
     </div>
   </header>
@@ -524,13 +642,107 @@
 
 </div>
 
+<!-- ====== نافذة التعليمات ====== -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="infoModalTitle">📋 تعرفة الكهرباء والماء — البحرين</h2>
+      <button class="modal-close" id="infoClose" aria-label="إغلاق">✕</button>
+    </div>
+    <div class="modal-body" id="infoModalBody">
+
+      <!-- الكهرباء -->
+      <div class="info-section">
+        <h3><span>⚡</span> تعرفة الكهرباء <span class="badge" id="badgeElec">المنزلي — مواطن بحريني (حساب واحد)</span></h3>
+        <table class="tariff-table">
+          <thead>
+            <tr>
+              <th id="thElecBand">الشريحة</th>
+              <th id="thElecRange">نطاق الاستهلاك (ك.و.س/شهر)</th>
+              <th id="thElecPrice">التعرفة (فلس/ك.و.س)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="el1Lbl">الشريحة الأولى</td>
+              <td class="range" id="el1Rng">0 – 3,000</td>
+              <td class="price" id="el1Prc">3 فلس</td>
+            </tr>
+            <tr>
+              <td id="el2Lbl">الشريحة الثانية</td>
+              <td class="range" id="el2Rng">3,001 – 5,000</td>
+              <td class="price" id="el2Prc">9 فلس</td>
+            </tr>
+            <tr>
+              <td id="el3Lbl">الشريحة الثالثة</td>
+              <td class="range" id="el3Rng">5,001 – 7,000</td>
+              <td class="price" id="el3Prc">16 فلس</td>
+            </tr>
+            <tr>
+              <td id="el4Lbl">الشريحة الرابعة</td>
+              <td class="range" id="el4Rng">7,001 فأكثر</td>
+              <td class="price" id="el4Prc">32 فلس</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="unit-note">
+          <strong>كيلووات/ساعة (ك.و.س):</strong> وحدة طاقة تمثل مقدار الطاقة المستهلكة عند استخدام كيلووات واحد من الطاقة بشكل مستمر لمدة ساعة واحدة.
+        </div>
+      </div>
+
+      <!-- الماء -->
+      <div class="info-section">
+        <h3><span>💧</span> تعرفة الماء <span class="badge" id="badgeWater">المنزلي — مواطن بحريني (حساب واحد)</span></h3>
+        <table class="tariff-table">
+          <thead>
+            <tr>
+              <th id="thWaterBand">الشريحة</th>
+              <th id="thWaterRange">نطاق الاستهلاك (م³/شهر)</th>
+              <th id="thWaterPrice">التعرفة (فلس/م³)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="wa1Lbl">الشريحة الأولى</td>
+              <td class="range" id="wa1Rng">0 – 60</td>
+              <td class="price" id="wa1Prc">25 فلس</td>
+            </tr>
+            <tr>
+              <td id="wa2Lbl">الشريحة الثانية</td>
+              <td class="range" id="wa2Rng">61 – 100</td>
+              <td class="price" id="wa2Prc">80 فلس</td>
+            </tr>
+            <tr>
+              <td id="wa3Lbl">الشريحة الثالثة</td>
+              <td class="range" id="wa3Rng">101 فأكثر</td>
+              <td class="price" id="wa3Prc">775 فلس</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="unit-note">
+          <strong>المتر المكعب (م³):</strong> وحدة قياس مقدار المساحة التي تشغلها المياه (1 م³ = 1000 لتر تقريباً).
+        </div>
+      </div>
+
+      <div class="info-disclaimer" id="infoDisclaimer">
+        📌 <strong>ملاحظة:</strong> الجداول أعلاه خاصة بفئة <strong>الاستهلاك المنزلي للمواطن البحريني على حساب واحد فقط</strong> (المدعومة حكومياً).
+        للاطلاع على الفئات الأخرى (أكثر من حساب، غير بحريني، تجاري)، يُرجى زيارة الموقع الرسمي لهيئة الكهرباء والماء:
+        <a href="https://www.ewa.bh/ar/tariff" target="_blank" rel="noopener">ewa.bh/ar/tariff</a>.
+        <br><br>
+        ⚠️ هذه المعلومات لأغراض التوضيح فقط، وقد تُحدَّث التعرفة من وقت لآخر. يُرجى الرجوع للموقع الرسمي للتأكد من أحدث الأرقام.
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v5';
+  const STORE = 'muharraqi_bahrain_elec_v6';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -590,7 +802,22 @@
       arrInstallLbl:'القسط الشهري',
       arrNewAvgLbl:'المتوسط الجديد',
       arrGrandLbl:'إجمالي السداد',
-      arrNote2:'💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.'
+      arrNote2:'💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.',
+      // نافذة التعليمات
+      infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
+      infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
+      infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
+      thElecBand:'الشريحة',
+      thElecRange:'نطاق الاستهلاك (ك.و.س/شهر)',
+      thElecPrice:'التعرفة (فلس/ك.و.س)',
+      thWaterBand:'الشريحة',
+      thWaterRange:'نطاق الاستهلاك (م³/شهر)',
+      thWaterPrice:'التعرفة (فلس/م³)',
+      el1Lbl:'الشريحة الأولى', el2Lbl:'الشريحة الثانية', el3Lbl:'الشريحة الثالثة', el4Lbl:'الشريحة الرابعة',
+      wa1Lbl:'الشريحة الأولى', wa2Lbl:'الشريحة الثانية', wa3Lbl:'الشريحة الثالثة',
+      el1Prc:'3 فلس', el2Prc:'9 فلس', el3Prc:'16 فلس', el4Prc:'32 فلس',
+      wa1Prc:'25 فلس', wa2Prc:'80 فلس', wa3Prc:'775 فلس',
+      infoDisclaimer:'📌 <strong>ملاحظة:</strong> الجداول أعلاه خاصة بفئة <strong>الاستهلاك المنزلي للمواطن البحريني على حساب واحد فقط</strong> (المدعومة حكومياً). للاطلاع على الفئات الأخرى (أكثر من حساب، غير بحريني، تجاري)، يُرجى زيارة الموقع الرسمي لهيئة الكهرباء والماء: <a href="https://www.ewa.bh/ar/tariff" target="_blank" rel="noopener">ewa.bh/ar/tariff</a>.<br><br>⚠️ هذه المعلومات لأغراض التوضيح فقط، وقد تُحدَّث التعرفة من وقت لآخر. يُرجى الرجوع للموقع الرسمي للتأكد من أحدث الأرقام.'
     },
     en:{
       title:'Bahrain Electricity Average Price',
@@ -634,14 +861,28 @@
       arrInstallLbl:'Monthly installment',
       arrNewAvgLbl:'New average',
       arrGrandLbl:'Total to pay',
-      arrNote2:'💡 Monthly installment = Accumulated amount ÷ months — New average = your current average + monthly installment.'
+      arrNote2:'💡 Monthly installment = Accumulated amount ÷ months — New average = your current average + monthly installment.',
+      // Info modal
+      infoTitle:'📋 Electricity & Water Tariff — Bahrain',
+      infoBadgeElec:'Domestic — Bahraini citizen (one account)',
+      infoBadgeWater:'Domestic — Bahraini citizen (one account)',
+      thElecBand:'Band',
+      thElecRange:'Consumption range (kWh/month)',
+      thElecPrice:'Tariff (fils/kWh)',
+      thWaterBand:'Band',
+      thWaterRange:'Consumption range (m³/month)',
+      thWaterPrice:'Tariff (fils/m³)',
+      el1Lbl:'First band', el2Lbl:'Second band', el3Lbl:'Third band', el4Lbl:'Fourth band',
+      wa1Lbl:'First band', wa2Lbl:'Second band', wa3Lbl:'Third band',
+      el1Prc:'3 fils', el2Prc:'9 fils', el3Prc:'16 fils', el4Prc:'32 fils',
+      wa1Prc:'25 fils', wa2Prc:'80 fils', wa3Prc:'775 fils',
+      infoDisclaimer:'📌 <strong>Note:</strong> The tables above apply to the <strong>domestic consumption category for Bahraini citizens with one account only</strong> (government-subsidised). For other categories (multiple accounts, non-Bahraini, commercial), please visit the official Electricity & Water Authority website: <a href="https://www.ewa.bh/en/ewa-tariffs" target="_blank" rel="noopener">ewa.bh/en/ewa-tariffs</a>.<br><br>⚠️ This information is for reference only; tariffs may be updated from time to time. Please refer to the official website for the latest figures.'
     }
   };
 
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
-  // ===== الوضع الليلي افتراضي =====
   const state = {
     lang : saved.lang  || 'ar',
     theme: saved.theme || 'dark',
@@ -810,6 +1051,7 @@
     $('hintTxt').textContent     = t.hint;
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
+    $('btnInfo').title           = ar ? 'تعليمات التعرفة' : 'Tariff Info';
 
     $('fcTitle').textContent      = t.fcTitle;
     $('fcNote').textContent       = t.fcNote;
@@ -831,6 +1073,35 @@
     $('arrGrandLbl').textContent  = t.arrGrandLbl;
     $('arrNote2').textContent     = t.arrNote2;
 
+    // نافذة التعليمات
+    $('infoModalTitle').textContent = t.infoTitle;
+    $('badgeElec').textContent = t.infoBadgeElec;
+    $('badgeWater').textContent = t.infoBadgeWater;
+    $('thElecBand').textContent = t.thElecBand;
+    $('thElecRange').textContent = t.thElecRange;
+    $('thElecPrice').textContent = t.thElecPrice;
+    $('thWaterBand').textContent = t.thWaterBand;
+    $('thWaterRange').textContent = t.thWaterRange;
+    $('thWaterPrice').textContent = t.thWaterPrice;
+    $('el1Lbl').textContent = t.el1Lbl; $('el2Lbl').textContent = t.el2Lbl;
+    $('el3Lbl').textContent = t.el3Lbl; $('el4Lbl').textContent = t.el4Lbl;
+    $('wa1Lbl').textContent = t.wa1Lbl; $('wa2Lbl').textContent = t.wa2Lbl;
+    $('wa3Lbl').textContent = t.wa3Lbl;
+    $('el1Prc').textContent = t.el1Prc; $('el2Prc').textContent = t.el2Prc;
+    $('el3Prc').textContent = t.el3Prc; $('el4Prc').textContent = t.el4Prc;
+    $('wa1Prc').textContent = t.wa1Prc; $('wa2Prc').textContent = t.wa2Prc;
+    $('wa3Prc').textContent = t.wa3Prc;
+    $('infoDisclaimer').innerHTML = t.infoDisclaimer;
+
+    // نطاقات الأرقام ثابتة
+    $('el1Rng').textContent = '0 – 3,000';
+    $('el2Rng').textContent = '3,001 – 5,000';
+    $('el3Rng').textContent = '5,001 – 7,000';
+    $('el4Rng').textContent = '7,001 +';
+    $('wa1Rng').textContent = '0 – 60';
+    $('wa2Rng').textContent = '61 – 100';
+    $('wa3Rng').textContent = '101 +';
+
     renderMonths(getValues());
     updateDate();
     updateForecast(getStats().avg, t);
@@ -839,7 +1110,6 @@
 
   function applyTheme(){
     document.documentElement.setAttribute('data-theme', state.theme);
-    // الأيقونة تُعرض حسب الوضع الحالي: إن كان ليلي نُظهر شمس (للتبديل للنهاري)
     $('btnTheme').textContent = state.theme === 'dark' ? '☀️' : '🌙';
   }
 
@@ -852,7 +1122,6 @@
     setTimeout(() => window.print(), 300);
   }
 
-  /* ============ مشاركة PDF للتطبيقات ============ */
   async function sharePDF(){
     const t = I18N[state.lang];
 
@@ -925,12 +1194,10 @@
     }
   }
 
-  /* ============ مشاركة رابط الموقع ============ */
   async function shareSite(){
     const t = I18N[state.lang];
     const url = window.location.href;
 
-    // 1) مشاركة عبر Web Share API (الأولوية للتطبيقات)
     if(navigator.share){
       try{
         await navigator.share({
@@ -949,12 +1216,10 @@
       }
     }
 
-    // 2) احتياطي: نسخ الرابط للحافظة
     try{
       if(navigator.clipboard && window.isSecureContext){
         await navigator.clipboard.writeText(url);
       }else{
-        // طريقة قديمة للحواف
         const ta = document.createElement('textarea');
         ta.value = url;
         ta.style.position = 'fixed';
@@ -970,6 +1235,25 @@
       toast(t.toastSiteErr);
     }
   }
+
+  /* ============ نافذة التعليمات ============ */
+  function openInfo(){
+    $('infoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeInfo(){
+    $('infoModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  $('btnInfo').addEventListener('click', openInfo);
+  $('infoClose').addEventListener('click', closeInfo);
+  $('infoModal').addEventListener('click', e => {
+    if(e.target === $('infoModal')) closeInfo();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && $('infoModal').classList.contains('open')) closeInfo();
+  });
 
   /* ============ الأحداث ============ */
   $('btnLang').addEventListener('click', () => {
