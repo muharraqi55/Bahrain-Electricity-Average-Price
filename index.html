@@ -222,6 +222,7 @@
   }
   .paid-btn:hover{border-color:var(--ok);color:var(--ok);transform:scale(1.08);background:rgba(62,207,142,.08);}
   .paid-btn:active{transform:scale(.92);}
+  .paid-btn.hidden{display:none !important;}
 
   .month.paid{
     background:linear-gradient(135deg, rgba(62,207,142,.10), rgba(62,207,142,.02));
@@ -568,6 +569,7 @@
     .month.paid .paid-btn{background:#1ea76a !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .month.paid .paid-btn::after{display:none !important;}
     .month.paid::after{display:none !important;}
+    .paid-btn{display:none !important;}
     .res-card{border:1px solid #999 !important;background:#fff !important;}
     .res-card.accent{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .installment-card .inst-progress{background:rgba(255,255,255,.3) !important;}
@@ -635,7 +637,7 @@
         <div class="panel-icon">💳</div>
         <div style="min-width:0;">
           <h3 id="arrTitle">الأبيال المتراكمة <span class="badge" id="arrBadge">اختياري</span></h3>
-          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر التقسيط — ثم استخدم الزر ✓ لتسجيل دفع كل قسط</p>
+          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي</p>
         </div>
       </div>
       <div class="arr-inputs">
@@ -700,7 +702,7 @@
           <span>✓</span>
           <span id="instFullyPaidTxt">تم سداد كامل المبلغ</span>
         </div>
-        <div class="inst-progress-wrap">
+        <div class="inst-progress-wrap" id="instProgressWrap">
           <div class="inst-progress">
             <div class="inst-progress-fill" id="instProgressFill"></div>
           </div>
@@ -853,7 +855,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v16';
+  const STORE = 'muharraqi_bahrain_elec_v17';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -877,12 +879,14 @@
       reportTitle:'الفاتورة الشهرية للسنة الحالية',
       grandTotal:'إجمالي السداد',
       instLabel:'قسط الشهر',
+      avgLabel:'المتوسط الشهري',
       currency:'د.ب',
       print:'طباعة',
       share:'مشاركة PDF',
       shareSite:'مشاركة الموقع',
       rights:'جميع الحقوق محفوظة',
       hint:'اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر',
+      hintNoDebt:'أدخل الفواتير الشهرية للحصول على المجموع والمتوسط الشهري — ولا حاجة لأي إعدادات إضافية',
       confirmReset:'هل تريد تفريغ جميع الحقول وإلغاء كل الدفعات؟',
       reset:'تفريغ الحقول',
       toastPrint:'جاري تحضير الطباعة...',
@@ -892,7 +896,6 @@
       toastReset:'تم تفريغ جميع الحقول',
       toastPaid:'تم تسجيل دفع القسط — تم قفل حقل الفاتورة',
       toastUnpaid:'تم إلغاء الدفع — يمكنك الآن تعديل الفاتورة',
-      toastNoDebt:'أدخل المبلغ المتراكم أولاً',
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
       toastAbort:'تم إلغاء المشاركة',
@@ -910,7 +913,7 @@
       arrow:'←',
       arrTitle:'الأبيال المتراكمة',
       arrBadge:'اختياري',
-      arrNote:'أدخل المبلغ المتراكم وعدد أشهر التقسيط — ثم استخدم الزر ✓ لتسجيل دفع كل قسط',
+      arrNote:'أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي',
       arrAmtLbl:'المبلغ المتراكم للعام الماضي أو ما مضى',
       arrMonLbl:'عدد أشهر التقسيط',
       arrMonUnit:'شهر',
@@ -943,12 +946,14 @@
       reportTitle:'Current Year Monthly Bills',
       grandTotal:'Total to Pay',
       instLabel:'Monthly Installment',
+      avgLabel:'Monthly Average',
       currency:'BHD',
       print:'Print',
       share:'Share PDF',
       shareSite:'Share Site',
       rights:'All rights reserved',
       hint:'Tap <kbd>✓</kbd> next to a month to confirm its installment — installment = (accumulated + total bills) ÷ months',
+      hintNoDebt:'Enter monthly bills to get the total and monthly average — no extra setup required',
       confirmReset:'Clear all fields and remove all payments?',
       reset:'Clear fields',
       toastPrint:'Preparing print...',
@@ -958,7 +963,6 @@
       toastReset:'All fields cleared',
       toastPaid:'Installment recorded — invoice field is now locked',
       toastUnpaid:'Payment removed — invoice field is now editable',
-      toastNoDebt:'Enter the accumulated amount first',
       toastErr:'Could not create file, opening print dialog',
       toastNoLib:'PDF library not available',
       toastAbort:'Share cancelled',
@@ -976,7 +980,7 @@
       arrow:'→',
       arrTitle:'Accumulated Bills',
       arrBadge:'Optional',
-      arrNote:'Enter the accumulated amount and installment period — then use the ✓ button to record each installment',
+      arrNote:'Enter the accumulated amount and installment period — or skip for a simple calculation',
       arrAmtLbl:'Accumulated Amount from Last Year or Before',
       arrMonLbl:'Installment Period (months)',
       arrMonUnit:'mo',
@@ -1071,6 +1075,14 @@
     return { total, count };
   }
 
+  /* ============ الحساب ============
+     - إن كان هناك مبلغ متراكم:
+         القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر
+         إجمالي السداد = (المتراكم + الفواتير) − (عدد الدفعات × القسط)
+     - إن لم يكن هناك متراكم:
+         المتوسط الشهري = مجموع الفواتير ÷ عدد الأشهر
+         إجمالي السداد = مجموع الفواتير (بدون قسائم)
+  ============================================ */
   function calc(){
     const s = getStats();
     const t = I18N[state.lang];
@@ -1080,45 +1092,69 @@
     if(isNaN(months) || months < 1) months = 12;
     if(months > 120) months = 120;
 
+    const hasDebt = initialDebt > 0;
+
     const initialTotal = initialDebt + s.total;
     const installment  = initialTotal / months;
 
-    const paidCount    = state.paid.filter(Boolean).length;
-    const totalPaid    = Math.min(initialTotal, installment * paidCount);
-    const grand        = Math.max(0, initialTotal - totalPaid);
-    const finalAvg     = grand / months;
+    // في حال عدم وجود متراكم، نتجاهل الدفعات تماماً
+    const paidCount = hasDebt ? state.paid.filter(Boolean).length : 0;
+    const totalPaid = hasDebt ? Math.min(initialTotal, installment * paidCount) : 0;
+    const grand     = Math.max(0, initialTotal - totalPaid);
+    const finalAvg  = grand / months;
 
+    // ---- بطاقة إجمالي السداد ----
     $('valGrand').textContent = fmt(grand);
-    $('subGrand').innerHTML =
-      `<span>${fmt(initialTotal)}</span><span class="sep">−</span><span>${fmt(totalPaid)}</span>`;
+    if(hasDebt){
+      $('subGrand').innerHTML =
+        `<span>${fmt(initialTotal)}</span><span class="sep">−</span><span>${fmt(totalPaid)}</span>`;
+    } else {
+      $('subGrand').innerHTML = `<span>${fmt(s.total)}</span>`;
+    }
 
-    if(initialDebt > 0){
+    // ---- بطاقة القسط / المتوسط ----
+    if(s.total > 0 || initialDebt > 0){
       $('installmentCard').style.display = '';
       $('valInst').textContent = fmt(installment);
-      $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
 
-      const fullyPaid = grand <= 0 && paidCount > 0;
+      if(hasDebt){
+        // الوضع الطبيعي مع متراكم
+        $('lblInst').textContent = t.instLabel;
+        $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
 
-      if(fullyPaid){
-        $('instRemRow').style.display = 'none';
-        $('instFullyPaidRow').style.display = 'flex';
-        $('instFullyPaidTxt').textContent = t.instFullyPaid;
+        const fullyPaid = grand <= 0 && paidCount > 0;
+
+        if(fullyPaid){
+          $('instRemRow').style.display = 'none';
+          $('instFullyPaidRow').style.display = 'flex';
+          $('instFullyPaidTxt').textContent = t.instFullyPaid;
+        } else {
+          $('instRemRow').style.display = 'flex';
+          $('instFullyPaidRow').style.display = 'none';
+          $('instRemLbl').textContent = t.instRemLbl;
+          $('instRemaining').textContent = fmt(grand) + ' ' + t.currency;
+        }
+
+        // شريط التقدم
+        $('instProgressWrap').style.display = '';
+        const pct = Math.min(100, (paidCount / months) * 100);
+        $('instProgressFill').style.width = pct + '%';
+        $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
+        $('instProgressPct').textContent = Math.round(pct) + '%';
       } else {
-        $('instRemRow').style.display = 'flex';
+        // بدون متراكم → المتوسط الشهري
+        $('lblInst').textContent = t.avgLabel;
+        $('instEq').textContent  = `${fmt(s.total)} ÷ ${months}`;
+        $('instRemRow').style.display = 'none';
         $('instFullyPaidRow').style.display = 'none';
-        $('instRemLbl').textContent = t.instRemLbl;
-        $('instRemaining').textContent = fmt(grand) + ' ' + t.currency;
+        $('instProgressWrap').style.display = 'none';
       }
-
-      const pct = Math.min(100, (paidCount / months) * 100);
-      $('instProgressFill').style.width = pct + '%';
-      $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
-      $('instProgressPct').textContent = Math.round(pct) + '%';
     } else {
       $('installmentCard').style.display = 'none';
     }
 
-    if(initialDebt > 0){
+    // ---- شريط Legend ----
+    if(hasDebt){
       $('legendBar').classList.add('show');
       $('legendTitle').textContent = t.legendTitle;
       $('legendSub').textContent = t.legendSub;
@@ -1128,7 +1164,8 @@
       $('legendBar').classList.remove('show');
     }
 
-    if(paidCount > 0 && initialDebt > 0){
+    // ---- شارة الدفعات ----
+    if(paidCount > 0 && hasDebt){
       $('paidInfo').style.display = 'flex';
       $('paidVal').textContent = fmt(totalPaid) + ' ' + t.currency;
       $('paidCount').textContent =
@@ -1136,6 +1173,14 @@
     } else {
       $('paidInfo').style.display = 'none';
     }
+
+    // ---- إظهار/إخفاء أزرار ✓ على الأشهر ----
+    document.querySelectorAll('.month .paid-btn').forEach(btn => {
+      btn.classList.toggle('hidden', !hasDebt);
+    });
+
+    // ---- نص التلميح ----
+    $('hintTxt').innerHTML = hasDebt ? t.hint : t.hintNoDebt;
 
     updateForecast(finalAvg, t);
   }
@@ -1168,10 +1213,12 @@
     const grid = $('monthsGrid');
     grid.innerHTML = '';
 
+    const hasDebt = (parseFloat($('arrAmount').value) || 0) > 0;
+
     MONTHS.forEach((m, i) => {
       const row = document.createElement('div');
       row.className = 'month';
-      if(state.paid[i]) row.classList.add('paid');
+      if(state.paid[i] && hasDebt) row.classList.add('paid');
 
       const lbl = document.createElement('label');
       lbl.textContent = state.lang === 'ar' ? m.ar : m.en;
@@ -1185,7 +1232,7 @@
       inp.setAttribute('aria-label', lbl.textContent);
       if(values && values[i] !== undefined) inp.value = values[i];
 
-      if(state.paid[i]) inp.disabled = true;
+      if(state.paid[i] && hasDebt) inp.disabled = true;
 
       inp.addEventListener('input', () => { calc(); save(); });
 
@@ -1199,13 +1246,9 @@
       btn.textContent = '✓';
       btn.setAttribute('aria-label', state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
       btn.setAttribute('title',      state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
+      if(!hasDebt) btn.classList.add('hidden');
 
       btn.addEventListener('click', () => {
-        const debt = parseFloat($('arrAmount').value) || 0;
-        if(debt <= 0){
-          toast(I18N[state.lang].toastNoDebt);
-          return;
-        }
         state.paid[i] = !state.paid[i];
         row.classList.toggle('paid', state.paid[i]);
 
@@ -1254,7 +1297,6 @@
     $('shareTxt').textContent    = t.share;
     $('siteTxt').textContent     = t.shareSite;
     $('rightsTxt').textContent   = t.rights;
-    $('hintTxt').innerHTML       = t.hint;
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
     $('btnInfo').title           = ar ? 'تعليمات التعرفة' : 'Tariff Info';
