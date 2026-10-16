@@ -244,18 +244,13 @@
     border:2px solid var(--ok);
   }
 
-  /* ====== حقول مُقفلة ====== */
   .month.paid input{
     cursor:not-allowed;
     color:var(--ok);
     -webkit-text-fill-color:var(--ok);
     opacity:.85;
   }
-  .month.paid input:focus{
-    cursor:not-allowed;
-    outline:none;
-  }
-  /* أيقونة قفل صغيرة على الحدود */
+  .month.paid input:focus{cursor:not-allowed;outline:none;}
   .month.paid::after{
     content:'🔒';
     position:absolute;
@@ -266,7 +261,6 @@
     pointer-events:none;
   }
   .month.paid{position:relative;}
-  /* منع الأسهم */
   .month.paid input::-webkit-outer-spin-button,
   .month.paid input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 
@@ -274,7 +268,6 @@
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 
-  /* ====== النتائج ====== */
   .results{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -642,19 +635,19 @@
         <div class="panel-icon">💳</div>
         <div style="min-width:0;">
           <h3 id="arrTitle">الأبيال المتراكمة <span class="badge" id="arrBadge">اختياري</span></h3>
-          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر الاحتساب — ثم استخدم الزر ✓ لتسجيل دفع كل قسط</p>
+          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر التقسيط — ثم استخدم الزر ✓ لتسجيل دفع كل قسط</p>
         </div>
       </div>
       <div class="arr-inputs">
         <div class="arr-field">
-          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم من قبل</label>
+          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم للعام الماضي أو ما مضى</label>
           <div class="arr-input-wrap">
             <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
             <span id="arrAmtCur">د.ب</span>
           </div>
         </div>
         <div class="arr-field">
-          <label for="arrMonths" id="arrMonLbl">عدد أشهر الاحتساب</label>
+          <label for="arrMonths" id="arrMonLbl">عدد أشهر التقسيط</label>
           <div class="arr-input-wrap">
             <input type="number" id="arrMonths" min="1" max="120" step="1" inputmode="numeric" value="12">
             <span id="arrMonUnit">شهر</span>
@@ -676,7 +669,7 @@
     </div>
 
     <div class="report-head">
-      <h2 id="reportTitle">أشهر السنة</h2>
+      <h2 id="reportTitle">الفاتورة الشهرية للسنة الحالية</h2>
       <div class="report-date" id="reportDate"></div>
     </div>
 
@@ -860,7 +853,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v15';
+  const STORE = 'muharraqi_bahrain_elec_v16';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -881,7 +874,7 @@
     ar:{
       title:'متوسط السعري للكهرباء البحرين',
       subtitle:'حساب المجمع الكلي ومتوسط السعر',
-      reportTitle:'أشهر السنة',
+      reportTitle:'الفاتورة الشهرية للسنة الحالية',
       grandTotal:'إجمالي السداد',
       instLabel:'قسط الشهر',
       currency:'د.ب',
@@ -917,9 +910,9 @@
       arrow:'←',
       arrTitle:'الأبيال المتراكمة',
       arrBadge:'اختياري',
-      arrNote:'أدخل المبلغ المتراكم وعدد أشهر الاحتساب — ثم استخدم الزر ✓ لتسجيل دفع كل قسط',
-      arrAmtLbl:'المبلغ المتراكم من قبل',
-      arrMonLbl:'عدد أشهر الاحتساب',
+      arrNote:'أدخل المبلغ المتراكم وعدد أشهر التقسيط — ثم استخدم الزر ✓ لتسجيل دفع كل قسط',
+      arrAmtLbl:'المبلغ المتراكم للعام الماضي أو ما مضى',
+      arrMonLbl:'عدد أشهر التقسيط',
       arrMonUnit:'شهر',
       instRemLbl:'المتبقي:',
       instFullyPaid:'تم سداد كامل المبلغ',
@@ -947,7 +940,7 @@
     en:{
       title:'Bahrain Electricity Average Price',
       subtitle:'Calculate total & average price',
-      reportTitle:'Months of the Year',
+      reportTitle:'Current Year Monthly Bills',
       grandTotal:'Total to Pay',
       instLabel:'Monthly Installment',
       currency:'BHD',
@@ -983,9 +976,9 @@
       arrow:'→',
       arrTitle:'Accumulated Bills',
       arrBadge:'Optional',
-      arrNote:'Enter the previous accumulated amount and period — then use the ✓ button to record each installment',
-      arrAmtLbl:'Previous Accumulated Amount',
-      arrMonLbl:'Period (months)',
+      arrNote:'Enter the accumulated amount and installment period — then use the ✓ button to record each installment',
+      arrAmtLbl:'Accumulated Amount from Last Year or Before',
+      arrMonLbl:'Installment Period (months)',
       arrMonUnit:'mo',
       instRemLbl:'Remaining:',
       instFullyPaid:'Fully paid off',
@@ -1170,7 +1163,6 @@
     save();
   }
 
-  /* ============ رسم الأشهر ============ */
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
@@ -1193,7 +1185,6 @@
       inp.setAttribute('aria-label', lbl.textContent);
       if(values && values[i] !== undefined) inp.value = values[i];
 
-      // إذا الشهر مدفوع → اقفل الحقل
       if(state.paid[i]) inp.disabled = true;
 
       inp.addEventListener('input', () => { calc(); save(); });
@@ -1218,7 +1209,6 @@
         state.paid[i] = !state.paid[i];
         row.classList.toggle('paid', state.paid[i]);
 
-        // قفل/فتح حقل الفاتورة
         inp.disabled = state.paid[i];
         btn.setAttribute('aria-label', state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
         btn.setAttribute('title',      state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
