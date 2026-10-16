@@ -34,9 +34,10 @@
     padding:1.25rem;
     transition:background .3s ease,color .3s ease;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
 
-  .wrap{max-width:62rem;margin:0 auto;}
+  .wrap{max-width:62rem;margin:0 auto;width:100%;}
 
   .topbar{
     display:flex;justify-content:space-between;align-items:center;
@@ -71,6 +72,9 @@
     padding:1.25rem;
     box-shadow:var(--shadow);
     transition:background .3s,border-color .3s,box-shadow .3s;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
   }
 
   .report-head{
@@ -81,10 +85,13 @@
   .report-head h2{font-size:1.1rem;color:var(--accent);font-weight:800;}
   .report-date{font-size:.82rem;color:var(--muted);}
 
+  /* ====== شبكة الأشهر (معدّلة) ====== */
   .months{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(14.5rem,1fr));
+    grid-template-columns:repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
     gap:.7rem;
+    width:100%;
+    max-width:100%;
   }
   .month{
     display:flex;align-items:center;gap:.5rem;
@@ -93,6 +100,10 @@
     border-radius:.8rem;
     padding:.45rem .65rem;
     transition:border-color .2s,box-shadow .2s,background .3s;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+    box-sizing:border-box;
   }
   .month:focus-within{
     border-color:var(--accent);
@@ -100,24 +111,29 @@
   }
   .month label{
     font-size:.85rem;color:var(--muted);font-weight:700;
-    flex:0 0 auto;min-width:4.4rem;
+    flex:0 1 auto;
+    min-width:0;
+    max-width:45%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .month input{
-    flex:1 1 auto;min-width:0;
+    flex:1 1 0;min-width:0;width:100%;
     background:transparent;border:none;outline:none;
     color:var(--text);font-size:1rem;font-weight:800;
     font-family:inherit;text-align:center;padding:.3rem .1rem;
     letter-spacing:.4px;
   }
   .month input::placeholder{color:var(--muted);opacity:.45;font-weight:400;}
-  .month .cur{font-size:.78rem;color:var(--accent);font-weight:800;white-space:nowrap;}
+  .month .cur{font-size:.78rem;color:var(--accent);font-weight:800;white-space:nowrap;flex:0 0 auto;}
 
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 
   .results{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
     gap:.8rem;margin-top:1.2rem;
   }
   .res-card{
@@ -126,6 +142,7 @@
     border-radius:.95rem;
     padding:.95rem 1rem;text-align:center;
     transition:background .3s,border-color .3s;
+    min-width:0;
   }
   .res-card.accent{
     background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -153,6 +170,8 @@
     background:var(--input-bg);
     padding:1rem;
     transition:background .3s,border-color .3s;
+    max-width:100%;
+    overflow:hidden;
   }
   .panel-head{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.9rem;}
   .panel-icon{
@@ -200,6 +219,7 @@
     flex:1 1 13rem;display:flex;align-items:center;gap:.5rem;
     background:var(--card);border:1px solid var(--border);
     border-radius:.85rem;padding:.7rem .85rem;
+    min-width:0;
   }
   .fc-col{flex:1;text-align:center;min-width:0;}
   .fc-col span{display:block;font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:.25rem;}
@@ -222,7 +242,7 @@
 
   .arr-inputs{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
     gap:.7rem;
     margin-bottom:.9rem;
   }
@@ -235,31 +255,33 @@
     background:var(--card);border:1px solid var(--border);
     border-radius:.6rem;padding:.4rem .65rem;
     transition:border-color .2s,box-shadow .2s;
+    min-width:0;
   }
   .arr-input-wrap:focus-within{
     border-color:var(--warn);
     box-shadow:0 0 0 3px rgba(224,139,31,.15);
   }
   .arr-input-wrap input{
-    flex:1;min-width:0;
+    flex:1 1 0;min-width:0;width:100%;
     background:transparent;border:none;outline:none;
     color:var(--text);font-weight:800;font-size:.95rem;
     font-family:inherit;text-align:center;direction:ltr;
   }
   .arr-input-wrap span{
     font-size:.75rem;color:var(--warn);
-    font-weight:800;white-space:nowrap;
+    font-weight:800;white-space:nowrap;flex:0 0 auto;
   }
 
   .arr-results{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));
     gap:.55rem;
   }
   .arr-res{
     background:var(--card);border:1px solid var(--border);
     border-radius:.75rem;padding:.65rem .8rem;text-align:center;
     transition:background .2s,border-color .2s;
+    min-width:0;
   }
   .arr-res.highlight{
     background:linear-gradient(135deg,var(--warn),#c4761a);
@@ -325,7 +347,7 @@
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-  /* ====== نافذة التعليمات المنبثقة ====== */
+  /* ====== نافذة التعليمات ====== */
   .modal-overlay{
     display:none;
     position:fixed;inset:0;
@@ -355,17 +377,19 @@
     padding:1rem 1.25rem;
     border-bottom:2px solid var(--border);
     background:linear-gradient(135deg,var(--input-bg),var(--card));
+    gap:.5rem;
   }
   .modal-head h2{
     font-size:1.05rem;color:var(--accent);font-weight:800;
-    display:flex;align-items:center;gap:.5rem;
+    display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+    min-width:0;
   }
   .modal-close{
     background:var(--input-bg);border:1px solid var(--border);
     color:var(--muted);width:2rem;height:2rem;border-radius:.5rem;
     cursor:pointer;font-size:1.1rem;font-weight:800;
     display:grid;place-items:center;transition:.2s;font-family:inherit;
-    line-height:1;
+    line-height:1;flex:0 0 auto;
   }
   .modal-close:hover{background:#e04848;color:#fff;border-color:#e04848;}
   .modal-body{padding:1.25rem;max-height:70vh;overflow-y:auto;}
@@ -376,6 +400,7 @@
     font-size:.95rem;color:var(--accent);font-weight:800;
     margin-bottom:.6rem;display:flex;align-items:center;gap:.45rem;
     padding-bottom:.5rem;border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
   }
   .info-section h3 .badge{
     font-size:.62rem;background:var(--accent);color:#fff;
@@ -471,11 +496,15 @@
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 
+  /* ====== استعلام الجوال (معدّل) ====== */
   @media (max-width:520px){
     body{padding:.8rem;}
-    .months{grid-template-columns:1fr;}
+    .months{grid-template-columns:1fr;gap:.55rem;}
+    .month{padding:.5rem .6rem;gap:.4rem;}
+    .month label{font-size:.8rem;max-width:42%;}
+    .month input{font-size:.95rem;padding:.3rem 0;}
     .brand-txt h1{font-size:1rem;}
-    .report{padding:1rem;}
+    .report{padding:.9rem;border-radius:1rem;}
     .fc-diff{min-width:100%;}
     .modal{margin:1rem auto;}
     .modal-body{padding:1rem;max-height:75vh;}
@@ -651,7 +680,6 @@
     </div>
     <div class="modal-body" id="infoModalBody">
 
-      <!-- الكهرباء -->
       <div class="info-section">
         <h3><span>⚡</span> تعرفة الكهرباء <span class="badge" id="badgeElec">المنزلي — مواطن بحريني (حساب واحد)</span></h3>
         <table class="tariff-table">
@@ -690,7 +718,6 @@
         </div>
       </div>
 
-      <!-- الماء -->
       <div class="info-section">
         <h3><span>💧</span> تعرفة الماء <span class="badge" id="badgeWater">المنزلي — مواطن بحريني (حساب واحد)</span></h3>
         <table class="tariff-table">
@@ -803,7 +830,6 @@
       arrNewAvgLbl:'المتوسط الجديد',
       arrGrandLbl:'إجمالي السداد',
       arrNote2:'💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.',
-      // نافذة التعليمات
       infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
       infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
       infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
@@ -862,7 +888,6 @@
       arrNewAvgLbl:'New average',
       arrGrandLbl:'Total to pay',
       arrNote2:'💡 Monthly installment = Accumulated amount ÷ months — New average = your current average + monthly installment.',
-      // Info modal
       infoTitle:'📋 Electricity & Water Tariff — Bahrain',
       infoBadgeElec:'Domestic — Bahraini citizen (one account)',
       infoBadgeWater:'Domestic — Bahraini citizen (one account)',
@@ -1073,7 +1098,6 @@
     $('arrGrandLbl').textContent  = t.arrGrandLbl;
     $('arrNote2').textContent     = t.arrNote2;
 
-    // نافذة التعليمات
     $('infoModalTitle').textContent = t.infoTitle;
     $('badgeElec').textContent = t.infoBadgeElec;
     $('badgeWater').textContent = t.infoBadgeWater;
@@ -1093,7 +1117,6 @@
     $('wa3Prc').textContent = t.wa3Prc;
     $('infoDisclaimer').innerHTML = t.infoDisclaimer;
 
-    // نطاقات الأرقام ثابتة
     $('el1Rng').textContent = '0 – 3,000';
     $('el2Rng').textContent = '3,001 – 5,000';
     $('el3Rng').textContent = '5,001 – 7,000';
@@ -1236,7 +1259,6 @@
     }
   }
 
-  /* ============ نافذة التعليمات ============ */
   function openInfo(){
     $('infoModal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1255,7 +1277,6 @@
     if(e.key === 'Escape' && $('infoModal').classList.contains('open')) closeInfo();
   });
 
-  /* ============ الأحداث ============ */
   $('btnLang').addEventListener('click', () => {
     state.lang = state.lang === 'ar' ? 'en' : 'ar';
     applyLang(); save();
@@ -1318,7 +1339,6 @@
     calc(); save();
   });
 
-  /* ============ التشغيل ============ */
   $('yearTxt').textContent = new Date().getFullYear();
 
   applyTheme();
