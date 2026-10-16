@@ -13,12 +13,14 @@
     --muted:#5c7c9b; --accent:#1d78d8; --accent2:#0a5cb0;
     --border:#d2e5f9; --input-bg:#f3f8ff;
     --shadow:0 10px 30px rgba(20,80,150,.10);
+    --warn:#e08b1f;
   }
   html[data-theme="dark"]{
     --bg:#07121d; --bg2:#0b1b2b; --card:#0f2233; --text:#e8f2fc;
     --muted:#8cb0d0; --accent:#4ea8ff; --accent2:#2b86e0;
     --border:#1d3a52; --input-bg:#0b1c2b;
     --shadow:0 10px 30px rgba(0,0,0,.5);
+    --warn:#f0b45a;
   }
 
   html{font-size:16px;}
@@ -144,7 +146,8 @@
     text-align:center;line-height:1.6;
   }
 
-  .forecast{
+  /* ====== الأقسام المشتركة (توقع + تراكمات) ====== */
+  .panel{
     margin-top:1.2rem;
     border:1px solid var(--border);
     border-radius:1rem;
@@ -152,14 +155,19 @@
     padding:1rem;
     transition:background .3s,border-color .3s;
   }
-  .forecast-head{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.9rem;}
-  .forecast-icon{
+  .panel-head{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.9rem;}
+  .panel-icon{
     font-size:1.15rem;line-height:1;flex:0 0 auto;
     width:2rem;height:2rem;border-radius:.55rem;display:grid;place-items:center;
     background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
   }
-  .forecast-head h3{font-size:.95rem;color:var(--accent);font-weight:800;}
-  .forecast-head p{font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.5;}
+  .panel-icon.warn{
+    background:linear-gradient(135deg,var(--warn),#c4761a);
+    box-shadow:0 .35rem .9rem rgba(224,139,31,.3);
+  }
+  .panel-head h3{font-size:.95rem;color:var(--accent);font-weight:800;}
+  .panel-icon.warn + div h3{color:var(--warn);}
+  .panel-head p{font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.5;}
 
   .fc-label{font-size:.8rem;color:var(--muted);font-weight:700;display:block;margin-bottom:.5rem;}
   .fc-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
@@ -213,7 +221,65 @@
   .fc-diff span{font-size:.68rem;opacity:.92;font-weight:700;}
   .fc-diff strong{font-size:1rem;font-weight:900;direction:ltr;margin-top:.2rem;}
 
-  .fc-disclaimer{
+  /* ====== قسم الأبيال المتراكمة ====== */
+  .arr-inputs{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+    gap:.7rem;
+    margin-bottom:.9rem;
+  }
+  .arr-field label{
+    display:block;font-size:.78rem;color:var(--muted);
+    font-weight:700;margin-bottom:.35rem;
+  }
+  .arr-input-wrap{
+    display:flex;align-items:center;gap:.4rem;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:.6rem;padding:.4rem .65rem;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .arr-input-wrap:focus-within{
+    border-color:var(--warn);
+    box-shadow:0 0 0 3px rgba(224,139,31,.15);
+  }
+  .arr-input-wrap input{
+    flex:1;min-width:0;
+    background:transparent;border:none;outline:none;
+    color:var(--text);font-weight:800;font-size:.95rem;
+    font-family:inherit;text-align:center;direction:ltr;
+  }
+  .arr-input-wrap span{
+    font-size:.75rem;color:var(--warn);
+    font-weight:800;white-space:nowrap;
+  }
+
+  .arr-results{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));
+    gap:.55rem;
+  }
+  .arr-res{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:.75rem;padding:.65rem .8rem;text-align:center;
+    transition:background .2s,border-color .2s;
+  }
+  .arr-res.highlight{
+    background:linear-gradient(135deg,var(--warn),#c4761a);
+    color:#fff;border-color:transparent;
+    box-shadow:0 .35rem .9rem rgba(224,139,31,.25);
+  }
+  .arr-res span{
+    display:block;font-size:.7rem;color:var(--muted);
+    font-weight:700;margin-bottom:.25rem;
+  }
+  .arr-res.highlight span{color:rgba(255,255,255,.88);}
+  .arr-res strong{
+    display:block;font-size:.95rem;font-weight:900;
+    direction:ltr;letter-spacing:.2px;
+  }
+  .arr-res.highlight strong{font-size:1.05rem;}
+
+  .panel-note{
     margin-top:.8rem;font-size:.7rem;color:var(--muted);
     line-height:1.6;padding-top:.65rem;border-top:1px dashed var(--border);
   }
@@ -260,7 +326,7 @@
     :root, html[data-theme="dark"], html[data-theme="light"]{
       --bg:#fff; --bg2:#fff; --card:#fff; --text:#000; --muted:#555;
       --accent:#0a5cb0; --accent2:#0a5cb0; --border:#bbb;
-      --input-bg:#fff; --shadow:none;
+      --input-bg:#fff; --shadow:none; --warn:#c4761a;
     }
     html{font-size:14px !important;}
     body{background:#fff !important;color:#000 !important;padding:0 !important;}
@@ -276,9 +342,13 @@
       background:#0a5cb0 !important;color:#fff !important;
       -webkit-print-color-adjust:exact;print-color-adjust:exact;
     }
-    .forecast{border:1px solid #999 !important;background:#fff !important;}
+    .panel{border:1px solid #999 !important;background:#fff !important;}
     .fc-diff{
       background:#0a5cb0 !important;color:#fff !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .arr-res.highlight{
+      background:#c4761a !important;color:#fff !important;
       -webkit-print-color-adjust:exact;print-color-adjust:exact;
     }
     .fc-presets,.fc-row input[type=range]{display:none !important;}
@@ -342,9 +412,57 @@
 
     <p class="hint" id="hintTxt">متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة</p>
 
-    <div class="forecast" id="forecastBox">
-      <div class="forecast-head">
-        <div class="forecast-icon">📈</div>
+    <!-- ====== قسم الأبيال المتراكمة ====== -->
+    <div class="panel" id="arrearsBox">
+      <div class="panel-head">
+        <div class="panel-icon warn">💳</div>
+        <div>
+          <h3 id="arrTitle">الأبيال المتراكمة</h3>
+          <p id="arrNote">عليك فواتير متراكمة؟ احسب قسطها الشهري وأثره على متوسطك</p>
+        </div>
+      </div>
+
+      <div class="arr-inputs">
+        <div class="arr-field">
+          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم</label>
+          <div class="arr-input-wrap">
+            <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
+            <span id="arrAmtCur">د.ب</span>
+          </div>
+        </div>
+        <div class="arr-field">
+          <label for="arrMonths" id="arrMonLbl">عدد أشهر السداد</label>
+          <div class="arr-input-wrap">
+            <input type="number" id="arrMonths" min="1" max="60" step="1" inputmode="numeric" value="12">
+            <span id="arrMonUnit">شهر</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arr-results">
+        <div class="arr-res">
+          <span id="arrInstallLbl">القسط الشهري</span>
+          <strong id="arrInstallVal">0.000 د.ب</strong>
+        </div>
+        <div class="arr-res highlight">
+          <span id="arrNewAvgLbl">المتوسط الجديد</span>
+          <strong id="arrNewAvgVal">0.000 د.ب</strong>
+        </div>
+        <div class="arr-res">
+          <span id="arrGrandLbl">إجمالي السداد</span>
+          <strong id="arrGrandVal">0.000 د.ب</strong>
+        </div>
+      </div>
+
+      <p class="panel-note" id="arrNote2">
+        💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.
+      </p>
+    </div>
+
+    <!-- ====== قسم توقع السنة القادمة ====== -->
+    <div class="panel" id="forecastBox">
+      <div class="panel-head">
+        <div class="panel-icon">📈</div>
         <div>
           <h3 id="fcTitle">توقّع السنة القادمة</h3>
           <p id="fcNote">التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر</p>
@@ -386,9 +504,8 @@
         </div>
       </div>
 
-      <p class="fc-disclaimer" id="fcDisclaimer">
+      <p class="panel-note" id="fcDisclaimer">
         ⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء.
-        المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.
       </p>
     </div>
 
@@ -411,7 +528,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v3';
+  const STORE = 'muharraqi_bahrain_elec_v4';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -450,6 +567,7 @@
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
       toastAbort:'تم إلغاء المشاركة',
+      // توقع
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
@@ -457,7 +575,17 @@
       fcNext:'المتوسط المتوقع',
       fcDiff:'الفرق',
       fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
-      arrow:'←'
+      arrow:'←',
+      // تراكمات
+      arrTitle:'الأبيال المتراكمة',
+      arrNote:'عليك فواتير متراكمة؟ احسب قسطها الشهري وأثره على متوسطك',
+      arrAmtLbl:'المبلغ المتراكم',
+      arrMonLbl:'عدد أشهر السداد',
+      arrMonUnit:'شهر',
+      arrInstallLbl:'القسط الشهري',
+      arrNewAvgLbl:'المتوسط الجديد',
+      arrGrandLbl:'إجمالي السداد',
+      arrNote2:'💡 القسط الشهري = المبلغ المتراكم ÷ عدد الأشهر — والمتوسط الجديد = متوسطك الحالي + القسط الشهري.'
     },
     en:{
       title:'Bahrain Electricity Average Price',
@@ -487,7 +615,16 @@
       fcNext:'Projected average',
       fcDiff:'Difference',
       fcDisclaimer:'⚠️ This is an estimate based on the percentage you enter — not an official forecast of the Electricity & Water Authority tariff. The average above reflects your entered figures only.',
-      arrow:'→'
+      arrow:'→',
+      arrTitle:'Accumulated Bills',
+      arrNote:'Have overdue bills? Calculate a monthly installment and its impact on your average',
+      arrAmtLbl:'Accumulated amount',
+      arrMonLbl:'Payment months',
+      arrMonUnit:'mo',
+      arrInstallLbl:'Monthly installment',
+      arrNewAvgLbl:'New average',
+      arrGrandLbl:'Total to pay',
+      arrNote2:'💡 Monthly installment = Accumulated amount ÷ months — New average = your current average + monthly installment.'
     }
   };
 
@@ -517,7 +654,9 @@
         theme: state.theme,
         font : state.font,
         values: getValues(),
-        fcPct: parseFloat($('fcNum').value) || 0
+        fcPct: parseFloat($('fcNum').value) || 0,
+        arrAmount: $('arrAmount').value,
+        arrMonths: $('arrMonths').value
       }));
     }catch(e){}
   }
@@ -551,8 +690,10 @@
     $('valTotal').textContent = fmt(s.total);
     $('valAvg').textContent   = fmt(s.avg);
     updateForecast(s.avg, t);
+    updateArrears(s.avg, s.total, t);
   }
 
+  /* ============ محاكي الزيادة ============ */
   function updateForecast(avg, t){
     t = t || I18N[state.lang];
     const pct  = parseFloat($('fcNum').value) || 0;
@@ -576,6 +717,25 @@
     save();
   }
 
+  /* ============ حساب الأبيال المتراكمة ============ */
+  function updateArrears(avg, total, t){
+    t = t || I18N[state.lang];
+
+    const amount = parseFloat($('arrAmount').value) || 0;
+    let months   = parseFloat($('arrMonths').value) || 1;
+    if(months < 1) months = 1;
+    if(months > 120) months = 120;
+
+    const install = amount / months;
+    const newAvg  = avg + install;
+    const grand   = total + amount;
+
+    $('arrInstallVal').textContent = fmt(install) + ' ' + t.currency;
+    $('arrNewAvgVal').textContent  = fmt(newAvg)  + ' ' + t.currency;
+    $('arrGrandVal').textContent   = fmt(grand)   + ' ' + t.currency;
+  }
+
+  /* ============ رسم الأشهر ============ */
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
@@ -642,6 +802,7 @@
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
 
+    // توقع
     $('fcTitle').textContent      = t.fcTitle;
     $('fcNote').textContent       = t.fcNote;
     $('fcLabel').textContent      = t.fcLabel;
@@ -651,9 +812,22 @@
     $('fcDisclaimer').textContent = t.fcDisclaimer;
     $('fcArrow').textContent      = t.arrow;
 
+    // تراكمات
+    $('arrTitle').textContent     = t.arrTitle;
+    $('arrNote').textContent      = t.arrNote;
+    $('arrAmtLbl').textContent    = t.arrAmtLbl;
+    $('arrMonLbl').textContent    = t.arrMonLbl;
+    $('arrMonUnit').textContent   = t.arrMonUnit;
+    $('arrAmtCur').textContent    = t.currency;
+    $('arrInstallLbl').textContent= t.arrInstallLbl;
+    $('arrNewAvgLbl').textContent = t.arrNewAvgLbl;
+    $('arrGrandLbl').textContent  = t.arrGrandLbl;
+    $('arrNote2').textContent     = t.arrNote2;
+
     renderMonths(getValues());
     updateDate();
     updateForecast(getStats().avg, t);
+    updateArrears(getStats().avg, getStats().total, t);
   }
 
   function applyTheme(){
@@ -670,7 +844,7 @@
     setTimeout(() => window.print(), 300);
   }
 
-  /* ============ توليد PDF كمشاركة للتطبيقات ============ */
+  /* ============ مشاركة للتطبيقات ============ */
   async function sharePDF(){
     const t = I18N[state.lang];
 
@@ -695,16 +869,13 @@
         jsPDF: {unit:'in', format:'a4', orientation:'portrait'}
       };
 
-      // إنشاء الملف
       const blob = await html2pdf().set(opt).from(el).outputPdf('blob');
       const file = new File([blob], filename, {type:'application/pdf'});
 
-      // ---- أولاً: محاولة المشاركة المباشرة للتطبيقات ----
       if(navigator.share){
-        // تحقق من دعم مشاركة الملفات (إن توفر canShare)
         const canShareFiles = navigator.canShare
           ? navigator.canShare({files:[file]})
-          : true; // بعض المتصفحات لا تدعم canShare لكن تدعم المشاركة
+          : true;
 
         if(canShareFiles){
           try{
@@ -718,18 +889,15 @@
             return;
           }catch(err){
             if(err && err.name === 'AbortError'){
-              // المستخدم ألغى المشاركة — لا نفعل شيئاً
               toast(t.toastAbort);
               btn.disabled = false;
               return;
             }
-            // فشلت المشاركة (مثلاً: متصفح سطح مكتب بدون دعم) → ننتقل للتنزيل
             console.warn('Share failed, falling back to download:', err);
           }
         }
       }
 
-      // ---- احتياطي: تنزيل الملف فقط إذا كانت المشاركة غير مدعومة ----
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -771,6 +939,8 @@
   $('btnReset').addEventListener('click', () => {
     if(!confirm(I18N[state.lang].confirmReset)) return;
     document.querySelectorAll('.month input').forEach(i => i.value = '');
+    $('arrAmount').value = '';
+    $('arrMonths').value = '12';
     setPct(0);
     toast(I18N[state.lang].toastReset);
   });
@@ -778,6 +948,7 @@
   $('btnPrint').addEventListener('click', doPrint);
   $('btnShare').addEventListener('click', sharePDF);
 
+  // محاكي الزيادة
   $('fcRange').addEventListener('input', e => setPct(parseFloat(e.target.value)));
 
   $('fcNum').addEventListener('input', e => {
@@ -799,6 +970,17 @@
     setPct(parseFloat(btn.dataset.p));
   });
 
+  // الأبيال المتراكمة
+  $('arrAmount').addEventListener('input', () => { calc(); save(); });
+  $('arrMonths').addEventListener('input', () => { calc(); save(); });
+  $('arrMonths').addEventListener('blur', e => {
+    let v = parseFloat(e.target.value);
+    if(isNaN(v) || v < 1) v = 1;
+    if(v > 120) v = 120;
+    e.target.value = v;
+    calc(); save();
+  });
+
   /* ============ التشغيل ============ */
   $('yearTxt').textContent = new Date().getFullYear();
 
@@ -809,9 +991,13 @@
   if(saved.values && Array.isArray(saved.values)){
     const inputs = document.querySelectorAll('.month input');
     saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
-    if(typeof saved.fcPct === 'number') setPct(saved.fcPct);
-    else calc();
   }
+  if(typeof saved.fcPct === 'number') $('fcNum').value = saved.fcPct;
+  if(saved.fcPct) $('fcRange').value = Math.min(30, saved.fcPct);
+  if(saved.arrAmount !== undefined) $('arrAmount').value = saved.arrAmount;
+  if(saved.arrMonths !== undefined) $('arrMonths').value = saved.arrMonths;
+
+  calc();
 
 })();
 </script>
