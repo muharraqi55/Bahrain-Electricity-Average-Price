@@ -36,7 +36,6 @@
 
   .wrap{max-width:62rem;margin:0 auto;}
 
-  /* ====== الشريط العلوي ====== */
   .topbar{
     display:flex;justify-content:space-between;align-items:center;
     gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem;
@@ -63,7 +62,6 @@
   .tbtn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
   .tbtn:active{transform:translateY(0) scale(.97);}
 
-  /* ====== بطاقة التقرير ====== */
   .report{
     background:var(--card);
     border:1px solid var(--border);
@@ -81,7 +79,6 @@
   .report-head h2{font-size:1.1rem;color:var(--accent);font-weight:800;}
   .report-date{font-size:.82rem;color:var(--muted);}
 
-  /* ====== شبكة الأشهر ====== */
   .months{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(14.5rem,1fr));
@@ -117,7 +114,6 @@
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 
-  /* ====== النتائج ====== */
   .results{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));
     gap:.8rem;margin-top:1.2rem;
@@ -148,7 +144,6 @@
     text-align:center;line-height:1.6;
   }
 
-  /* ====== قسم توقع السنة القادمة ====== */
   .forecast{
     margin-top:1.2rem;
     border:1px solid var(--border);
@@ -229,7 +224,6 @@
   }
   .report-foot strong{color:var(--accent);letter-spacing:.5px;}
 
-  /* ====== الأزرار السفلية ====== */
   .actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;}
   .abtn{
     flex:1 1 9rem;
@@ -250,7 +244,6 @@
   .abtn:active{transform:translateY(0) scale(.98);}
   .abtn:disabled{opacity:.6;cursor:wait;transform:none;}
 
-  /* ====== التوست ====== */
   .toast{
     position:fixed;bottom:1.5rem;left:50%;
     transform:translateX(-50%) translateY(150%);
@@ -263,7 +256,6 @@
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-  /* ====== الطباعة ====== */
   @media print{
     :root, html[data-theme="dark"], html[data-theme="light"]{
       --bg:#fff; --bg2:#fff; --card:#fff; --text:#000; --muted:#555;
@@ -306,7 +298,6 @@
 
 <div class="wrap">
 
-  <!-- الشريط العلوي -->
   <header class="topbar">
     <div class="brand">
       <div class="logo">⚡</div>
@@ -324,7 +315,6 @@
     </div>
   </header>
 
-  <!-- منطقة التقرير -->
   <section class="report" id="report">
     <div class="report-head">
       <h2 id="reportTitle">أشهر السنة</h2>
@@ -352,7 +342,6 @@
 
     <p class="hint" id="hintTxt">متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة</p>
 
-    <!-- ====== قسم محاكي الزيادة المتوقعة ====== -->
     <div class="forecast" id="forecastBox">
       <div class="forecast-head">
         <div class="forecast-icon">📈</div>
@@ -409,10 +398,9 @@
     </div>
   </section>
 
-  <!-- الأزرار -->
   <div class="actions">
     <button class="abtn primary" id="btnPrint">🖨️ <span id="printTxt">طباعة</span></button>
-    <button class="abtn share" id="btnShare">📄 <span id="shareTxt">مشاركة PDF</span></button>
+    <button class="abtn share" id="btnShare">📤 <span id="shareTxt">مشاركة للتطبيقات</span></button>
   </div>
 
 </div>
@@ -423,7 +411,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v2';
+  const STORE = 'muharraqi_bahrain_elec_v3';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -449,19 +437,19 @@
       avg:'متوسط السعر',
       currency:'د.ب',
       print:'طباعة',
-      share:'مشاركة PDF',
+      share:'مشاركة للتطبيقات',
       rights:'جميع الحقوق محفوظة',
       hint:'متوسط السعر = المجمع الكلي ÷ عدد الأشهر المدخلة',
       confirmReset:'هل تريد تفريغ جميع الحقول؟',
       reset:'تفريغ الحقول',
       toastPrint:'جاري تحضير الطباعة...',
-      toastPdf:'جاري إنشاء ملف PDF...',
-      toastShared:'تمت مشاركة الملف بنجاح',
-      toastSaved:'تم تنزيل ملف PDF',
+      toastPdf:'جاري تجهيز الملف للمشاركة...',
+      toastShared:'تمت المشاركة بنجاح',
+      toastSaved:'متصفحك لا يدعم المشاركة، تم تنزيل الملف',
       toastReset:'تم تفريغ جميع الحقول',
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
-      // توقع
+      toastAbort:'تم إلغاء المشاركة',
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
@@ -479,18 +467,19 @@
       avg:'Average Price',
       currency:'BHD',
       print:'Print',
-      share:'Share PDF',
+      share:'Share to Apps',
       rights:'All rights reserved',
       hint:'Average = Grand Total ÷ number of entered months',
       confirmReset:'Clear all fields?',
       reset:'Clear fields',
       toastPrint:'Preparing print...',
-      toastPdf:'Generating PDF...',
-      toastShared:'File shared successfully',
-      toastSaved:'PDF downloaded',
+      toastPdf:'Preparing file to share...',
+      toastShared:'Shared successfully',
+      toastSaved:'Sharing not supported, file downloaded',
       toastReset:'All fields cleared',
       toastErr:'Could not create file, opening print dialog',
       toastNoLib:'PDF library not available',
+      toastAbort:'Share cancelled',
       fcTitle:'Next Year Forecast',
       fcNote:'Tariffs may rise — try an expected increase and see the impact',
       fcLabel:'Expected increase',
@@ -502,7 +491,6 @@
     }
   };
 
-  /* ============ الحالة ============ */
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
@@ -540,10 +528,9 @@
     el.textContent = msg;
     el.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
+    toastTimer = setTimeout(()=> el.classList.remove('show'), 2800);
   }
 
-  /* ============ الإحصائيات ============ */
   function getStats(){
     const inputs = document.querySelectorAll('.month input');
     let total = 0, count = 0;
@@ -558,18 +545,14 @@
     return { total, count, avg: count ? total / count : 0 };
   }
 
-  /* ============ الحساب الرئيسي ============ */
   function calc(){
     const s = getStats();
     const t = I18N[state.lang];
-
     $('valTotal').textContent = fmt(s.total);
     $('valAvg').textContent   = fmt(s.avg);
-
     updateForecast(s.avg, t);
   }
 
-  /* ============ محاكي الزيادة ============ */
   function updateForecast(avg, t){
     t = t || I18N[state.lang];
     const pct  = parseFloat($('fcNum').value) || 0;
@@ -580,13 +563,12 @@
     $('fcNextVal').textContent = fmt(proj) + ' ' + t.currency;
     $('fcDiffVal').textContent = (diff >= 0 ? '+' : '') + fmt(diff) + ' ' + t.currency;
 
-    // إبراز النسبة المختارة
     document.querySelectorAll('#fcPresets button').forEach(b => {
       b.classList.toggle('active', parseFloat(b.dataset.p) === pct);
     });
   }
 
-  function setPct(p, fromRange){
+  function setPct(p){
     p = Math.max(0, Math.min(100, p));
     $('fcNum').value = p;
     $('fcRange').value = Math.min(30, p);
@@ -594,7 +576,6 @@
     save();
   }
 
-  /* ============ رسم الأشهر ============ */
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
@@ -629,7 +610,6 @@
     calc();
   }
 
-  /* ============ التاريخ ============ */
   function updateDate(){
     const d = new Date();
     const loc = state.lang === 'ar' ? 'ar-BH' : 'en-GB';
@@ -640,7 +620,6 @@
     }
   }
 
-  /* ============ اللغة ============ */
   function applyLang(){
     const t  = I18N[state.lang];
     const ar = state.lang === 'ar';
@@ -663,7 +642,6 @@
     $('btnLang').textContent     = ar ? 'EN' : 'ع';
     $('btnReset').title          = t.reset;
 
-    // التوقع
     $('fcTitle').textContent      = t.fcTitle;
     $('fcNote').textContent       = t.fcNote;
     $('fcLabel').textContent      = t.fcLabel;
@@ -678,24 +656,21 @@
     updateForecast(getStats().avg, t);
   }
 
-  /* ============ الثيم ============ */
   function applyTheme(){
     document.documentElement.setAttribute('data-theme', state.theme);
     $('btnTheme').textContent = state.theme === 'light' ? '🌙' : '☀️';
   }
 
-  /* ============ حجم الخط ============ */
   function applyFont(){
     document.documentElement.style.fontSize = state.font + 'px';
   }
 
-  /* ============ الطباعة ============ */
   function doPrint(){
     toast(I18N[state.lang].toastPrint);
     setTimeout(() => window.print(), 300);
   }
 
-  /* ============ مشاركة PDF ============ */
+  /* ============ توليد PDF كمشاركة للتطبيقات ============ */
   async function sharePDF(){
     const t = I18N[state.lang];
 
@@ -720,34 +695,55 @@
         jsPDF: {unit:'in', format:'a4', orientation:'portrait'}
       };
 
+      // إنشاء الملف
       const blob = await html2pdf().set(opt).from(el).outputPdf('blob');
       const file = new File([blob], filename, {type:'application/pdf'});
 
-      if(navigator.canShare && navigator.canShare({files:[file]})){
-        await navigator.share({
-          files:[file],
-          title: t.title,
-          text : t.title + ' — Muharraqi'
-        });
-        toast(t.toastShared);
-      }else{
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(()=> URL.revokeObjectURL(url), 4000);
-        toast(t.toastSaved);
+      // ---- أولاً: محاولة المشاركة المباشرة للتطبيقات ----
+      if(navigator.share){
+        // تحقق من دعم مشاركة الملفات (إن توفر canShare)
+        const canShareFiles = navigator.canShare
+          ? navigator.canShare({files:[file]})
+          : true; // بعض المتصفحات لا تدعم canShare لكن تدعم المشاركة
+
+        if(canShareFiles){
+          try{
+            await navigator.share({
+              files: [file],
+              title: t.title,
+              text : t.title + ' — Muharraqi'
+            });
+            toast(t.toastShared);
+            btn.disabled = false;
+            return;
+          }catch(err){
+            if(err && err.name === 'AbortError'){
+              // المستخدم ألغى المشاركة — لا نفعل شيئاً
+              toast(t.toastAbort);
+              btn.disabled = false;
+              return;
+            }
+            // فشلت المشاركة (مثلاً: متصفح سطح مكتب بدون دعم) → ننتقل للتنزيل
+            console.warn('Share failed, falling back to download:', err);
+          }
+        }
       }
+
+      // ---- احتياطي: تنزيل الملف فقط إذا كانت المشاركة غير مدعومة ----
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(()=> URL.revokeObjectURL(url), 4000);
+      toast(t.toastSaved);
+
     }catch(err){
-      if(err && err.name === 'AbortError'){ /* ألغى المستخدم */ }
-      else{
-        console.error(err);
-        toast(t.toastErr);
-        setTimeout(()=> window.print(), 900);
-      }
+      console.error(err);
+      toast(t.toastErr);
+      setTimeout(()=> window.print(), 900);
     }finally{
       btn.disabled = false;
     }
@@ -782,7 +778,6 @@
   $('btnPrint').addEventListener('click', doPrint);
   $('btnShare').addEventListener('click', sharePDF);
 
-  // محاكي الزيادة
   $('fcRange').addEventListener('input', e => setPct(parseFloat(e.target.value)));
 
   $('fcNum').addEventListener('input', e => {
@@ -809,14 +804,8 @@
 
   applyTheme();
   applyFont();
-
-  if(saved.values && Array.isArray(saved.values)){
-    // سيتم تطبيقها في renderMonths
-  }
-
   applyLang();
 
-  // استرجاع القيم بعد الرسم
   if(saved.values && Array.isArray(saved.values)){
     const inputs = document.querySelectorAll('.month input');
     saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
