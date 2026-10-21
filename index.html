@@ -63,6 +63,66 @@
   .tbtn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
   .tbtn:active{transform:translateY(0) scale(.97);}
 
+  /* ============ TABS ============ */
+  .tabs{
+    display:flex;
+    gap:.4rem;
+    padding:.4rem;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:1rem;
+    box-shadow:var(--shadow);
+    margin-bottom:1.1rem;
+    flex-wrap:wrap;
+    position:relative;
+    overflow:hidden;
+  }
+  .tab-btn{
+    flex:1 1 10rem;
+    min-width:0;
+    padding:.8rem 1rem;
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-family:inherit;
+    font-size:.9rem;
+    font-weight:800;
+    cursor:pointer;
+    border-radius:.7rem;
+    transition:.25s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:.5rem;
+    white-space:nowrap;
+    line-height:1.2;
+    position:relative;
+  }
+  .tab-btn .tab-icon{font-size:1.05rem;line-height:1;flex:0 0 auto;}
+  .tab-btn .tab-label{
+    overflow:hidden;text-overflow:ellipsis;
+  }
+  .tab-btn:hover{
+    color:var(--text);
+    background:var(--input-bg);
+  }
+  .tab-btn.active{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;
+    box-shadow:0 .35rem .9rem rgba(29,120,216,.35);
+  }
+  .tab-btn.active:hover{color:#fff;}
+
+  .tab-pane{display:none;}
+  .tab-pane.active{
+    display:block;
+    animation:tabIn .3s ease;
+  }
+  @keyframes tabIn{
+    from{opacity:0;transform:translateY(6px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
   .report{
     background:var(--card);border:1px solid var(--border);border-radius:1.25rem;
     padding:1.25rem;box-shadow:var(--shadow);
@@ -123,6 +183,9 @@
   }
   .arr-input-wrap input::placeholder{color:var(--muted);opacity:.5;font-weight:400;}
   .arr-input-wrap span{font-size:.75rem;color:var(--warn);font-weight:800;white-space:nowrap;flex:0 0 auto;}
+
+  .slab-calc .arr-input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,120,216,.15);}
+  .slab-calc .arr-input-wrap span{color:var(--accent);}
 
   .legend-bar{
     display:none;align-items:center;gap:.75rem;
@@ -436,6 +499,130 @@
     line-height:1.6;padding-top:.65rem;border-top:1px dashed var(--border);
   }
 
+  .slab-list{
+    display:flex;flex-direction:column;gap:.55rem;
+  }
+
+  .slab-row{
+    display:grid;
+    grid-template-columns:2rem 1fr auto;
+    gap:.75rem;
+    align-items:center;
+    padding:.7rem .85rem;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:.75rem;
+    transition:.25s;
+    position:relative;
+    overflow:hidden;
+  }
+  .slab-row::before{
+    content:'';
+    position:absolute;
+    right:0;top:0;height:100%;width:3px;
+    background:var(--border);
+    transition:.25s;
+  }
+  .slab-row.done::before{background:linear-gradient(180deg,var(--ok),var(--ok2));}
+  .slab-row.active::before{background:linear-gradient(180deg,var(--accent),var(--accent2));}
+
+  .slab-row.done{
+    background:linear-gradient(135deg, rgba(62,207,142,.08), rgba(62,207,142,.01));
+    border-color:rgba(62,207,142,.32);
+  }
+  .slab-row.active{
+    background:linear-gradient(135deg, rgba(78,168,255,.10), rgba(78,168,255,.01));
+    border-color:rgba(78,168,255,.35);
+  }
+  .slab-row.inactive{opacity:.55;}
+
+  .slab-status{
+    width:2rem;height:2rem;border-radius:.55rem;
+    display:grid;place-items:center;
+    font-size:1rem;font-weight:900;
+    background:var(--input-bg);
+    border:1.5px solid var(--border);
+    color:var(--muted);
+    flex:0 0 auto;
+    transition:.25s;
+  }
+  .slab-row.done .slab-status{
+    background:linear-gradient(135deg,var(--ok),var(--ok2));
+    border-color:transparent;color:#fff;
+    box-shadow:0 3px 8px rgba(62,207,142,.35);
+  }
+  .slab-row.active .slab-status{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-color:transparent;color:#fff;
+    box-shadow:0 3px 8px rgba(29,120,216,.35);
+  }
+
+  .slab-info{min-width:0;}
+
+  .slab-name{
+    font-size:.88rem;font-weight:800;color:var(--text);
+    margin-bottom:.12rem;
+    transition:.25s;
+  }
+  .slab-row.done .slab-name{color:var(--ok);}
+  .slab-row.active .slab-name{color:var(--accent);}
+
+  .slab-detail{
+    font-size:.7rem;color:var(--muted);font-weight:700;
+    direction:ltr;text-align:right;
+  }
+  html[dir="ltr"] .slab-detail{text-align:left;}
+
+  .slab-numbers{text-align:center;min-width:6.5rem;}
+
+  .slab-kwh{
+    font-size:.88rem;font-weight:900;color:var(--text);
+    direction:ltr;letter-spacing:.2px;
+    transition:.25s;
+  }
+  .slab-cost{
+    font-size:.72rem;font-weight:700;color:var(--muted);
+    direction:ltr;margin-top:.1rem;
+  }
+  .slab-row.done .slab-kwh{color:var(--ok);}
+  .slab-row.active .slab-kwh{color:var(--accent);}
+
+  .slab-totals{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%, 10rem), 1fr));
+    gap:.6rem;
+    margin-top:.9rem;
+    padding-top:.85rem;
+    border-top:1px dashed var(--border);
+  }
+  .slab-total-item{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:.7rem;
+    padding:.7rem .9rem;
+    text-align:center;
+  }
+  .slab-total-item span{
+    display:block;font-size:.72rem;color:var(--muted);
+    font-weight:700;margin-bottom:.25rem;
+  }
+  .slab-total-item strong{
+    font-size:1.05rem;font-weight:900;color:var(--text);
+    direction:ltr;letter-spacing:.3px;display:inline-block;
+  }
+  .slab-total-item small{
+    font-size:.72rem;font-weight:700;color:var(--muted);
+    margin-inline-start:.2rem;
+  }
+  .slab-total-item.accent{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-color:transparent;color:#fff;
+    box-shadow:0 .35rem .9rem rgba(29,120,216,.28);
+  }
+  .slab-total-item.accent span{color:rgba(255,255,255,.9);}
+  .slab-total-item.accent strong{color:#fff;}
+  .slab-total-item.accent small{color:rgba(255,255,255,.85);}
+
   .report-foot{
     margin-top:1.1rem;padding-top:.8rem;border-top:1px dashed var(--border);
     text-align:center;font-size:.78rem;color:var(--muted);line-height:1.6;
@@ -558,8 +745,10 @@
     }
     html{font-size:14px !important;}
     body{background:#fff !important;color:#000 !important;padding:0 !important;}
-    .topbar,.actions,.toast{display:none !important;}
+    .topbar,.actions,.toast,.tabs{display:none !important;}
     .wrap{max-width:none;}
+    .tab-pane{display:none !important;}
+    .tab-pane.active{display:block !important;}
     .report{box-shadow:none !important;border:none !important;border-radius:0 !important;background:#fff !important;padding:0 !important;}
     .arrears-top{background:#fff !important;border:1px solid #c4761a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .legend-bar{background:#eaf8f0 !important;border:1px solid #1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -578,6 +767,9 @@
     .panel{border:1px solid #999 !important;background:#fff !important;}
     .fc-diff{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .fc-presets,.fc-row input[type=range]{display:none !important;}
+    .slab-row.done{background:#eaf8f0 !important;border-color:#1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .slab-row.active{background:#e8f2fd !important;border-color:#1d78d8 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .slab-total-item.accent{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 
@@ -605,6 +797,11 @@
     .legend-icon{order:1;}
     .legend-text strong{font-size:.82rem;}
     .legend-text span{font-size:.68rem;}
+    .slab-row{grid-template-columns:1.8rem 1fr;gap:.6rem;padding:.6rem .7rem;}
+    .slab-numbers{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;margin-top:.35rem;padding-top:.35rem;border-top:1px dashed var(--border);}
+    .slab-status{width:1.8rem;height:1.8rem;font-size:.9rem;}
+    .slab-totals{grid-template-columns:1fr;}
+    .tab-btn{flex:1 1 100%;font-size:.85rem;padding:.7rem .8rem;}
   }
 </style>
 </head>
@@ -630,158 +827,254 @@
     </div>
   </header>
 
-  <section class="report" id="report">
+  <!-- ============ TABS ============ -->
+  <div class="tabs" role="tablist" id="tabs">
+    <button type="button" class="tab-btn active" role="tab" aria-selected="true"
+            id="tabBtnElectricity" data-tab="electricity">
+      <span class="tab-icon">⚡</span>
+      <span class="tab-label" id="tabLblElectricity">متوسط السعري للكهرباء</span>
+    </button>
+    <button type="button" class="tab-btn" role="tab" aria-selected="false"
+            id="tabBtnCalculator" data-tab="calculator">
+      <span class="tab-icon">🔢</span>
+      <span class="tab-label" id="tabLblCalculator">حسابة الاستهلاك</span>
+    </button>
+  </div>
 
-    <div class="arrears-top" id="arrearsBox">
-      <div class="arrears-top-head">
-        <div class="panel-icon">💳</div>
-        <div style="min-width:0;">
-          <h3 id="arrTitle">الأبيال المتراكمة <span class="badge" id="arrBadge">اختياري</span></h3>
-          <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي</p>
+  <!-- ============ TAB 1: ELECTRICITY REPORT ============ -->
+  <div class="tab-pane active" id="tab-electricity" role="tabpanel">
+
+    <section class="report" id="report">
+
+      <div class="arrears-top" id="arrearsBox">
+        <div class="arrears-top-head">
+          <div class="panel-icon">💳</div>
+          <div style="min-width:0;">
+            <h3 id="arrTitle">الأبيال المتراكمة <span class="badge" id="arrBadge">اختياري</span></h3>
+            <p id="arrNote">أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي</p>
+          </div>
+        </div>
+        <div class="arr-inputs">
+          <div class="arr-field">
+            <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم للعام الماضي أو ما مضى</label>
+            <div class="arr-input-wrap">
+              <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
+              <span id="arrAmtCur">د.ب</span>
+            </div>
+          </div>
+          <div class="arr-field">
+            <label for="arrMonths" id="arrMonLbl">عدد أشهر التقسيط</label>
+            <div class="arr-input-wrap">
+              <input type="number" id="arrMonths" min="1" max="120" step="1" inputmode="numeric" value="12">
+              <span id="arrMonUnit">شهر</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="arr-inputs">
-        <div class="arr-field">
-          <label for="arrAmount" id="arrAmtLbl">المبلغ المتراكم للعام الماضي أو ما مضى</label>
+
+      <div class="legend-bar" id="legendBar">
+        <div class="legend-icon">✓</div>
+        <div class="legend-text">
+          <strong id="legendTitle">دفعت قسط الشهر</strong>
+          <span id="legendSub">اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع</span>
+        </div>
+        <div class="legend-value">
+          <span class="legend-value-num" id="legendValueNum">0.000</span>
+          <span class="legend-value-cur" id="legendValueCur">د.ب</span>
+        </div>
+      </div>
+
+      <div class="report-head">
+        <h2 id="reportTitle">الفاتورة الشهرية للسنة الحالية</h2>
+        <div class="report-date" id="reportDate"></div>
+      </div>
+
+      <div class="months" id="monthsGrid"></div>
+
+      <div class="results">
+        <div class="res-card">
+          <div class="res-label" id="lblGrand">إجمالي السداد</div>
+          <div class="res-value">
+            <span id="valGrand">0.000</span>
+            <span class="cur" id="curGrand">د.ب</span>
+          </div>
+          <div class="res-sub" id="subGrand"></div>
+        </div>
+
+        <div class="res-card accent installment-card" id="installmentCard">
+          <div class="res-label" id="lblInst">قسط الشهر</div>
+          <div class="res-value">
+            <span id="valInst">0.000</span>
+            <span class="cur" id="curInst">د.ب</span>
+          </div>
+          <div class="res-eq" id="instEq"></div>
+          <div class="inst-remaining-inline" id="instRemRow">
+            <span id="instRemLbl">المتبقي:</span>
+            <strong id="instRemaining">0.000 د.ب</strong>
+          </div>
+          <div class="inst-fully-paid" id="instFullyPaidRow" style="display:none">
+            <span>✓</span>
+            <span id="instFullyPaidTxt">تم سداد كامل المبلغ</span>
+          </div>
+          <div class="inst-progress-wrap" id="instProgressWrap">
+            <div class="inst-progress">
+              <div class="inst-progress-fill" id="instProgressFill"></div>
+            </div>
+            <div class="inst-progress-text">
+              <span id="instProgressCount">0 / 12</span>
+              <span class="pct" id="instProgressPct">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paid-info" id="paidInfo">
+        <span class="paid-icon">✓</span>
+        <span id="paidLbl">دفعات مسجلة</span>
+        <strong id="paidVal">0.000 د.ب</strong>
+        <span class="paid-count" id="paidCount"></span>
+      </div>
+
+      <p class="hint" id="hintTxt">اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر</p>
+
+      <div class="panel" id="forecastBox">
+        <div class="panel-head">
+          <div class="panel-icon">📈</div>
+          <div>
+            <h3 id="fcTitle">توقّع السنة القادمة</h3>
+            <p id="fcNote">التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر</p>
+          </div>
+        </div>
+
+        <label class="fc-label" for="fcRange" id="fcLabel">نسبة الزيادة المتوقعة</label>
+        <div class="fc-row">
+          <input type="range" id="fcRange" min="0" max="30" step="1" value="0">
+          <div class="fc-num">
+            <input type="number" id="fcNum" min="0" max="100" step="0.5" value="0" inputmode="decimal">
+            <span>%</span>
+          </div>
+        </div>
+
+        <div class="fc-presets" id="fcPresets">
+          <button type="button" data-p="0">0%</button>
+          <button type="button" data-p="5">5%</button>
+          <button type="button" data-p="10">10%</button>
+          <button type="button" data-p="15">15%</button>
+          <button type="button" data-p="20">20%</button>
+        </div>
+
+        <div class="fc-result">
+          <div class="fc-compare">
+            <div class="fc-col">
+              <span id="fcNowLbl">المتوسط السعري الحالي</span>
+              <strong id="fcNowVal">0.000 د.ب</strong>
+            </div>
+            <div class="fc-arrow" id="fcArrow">←</div>
+            <div class="fc-col highlight">
+              <span id="fcNextLbl">المتوسط السعري المتوقع</span>
+              <strong id="fcNextVal">0.000 د.ب</strong>
+            </div>
+          </div>
+          <div class="fc-diff">
+            <span id="fcDiffLbl">الفرق</span>
+            <strong id="fcDiffVal">+0.000 د.ب</strong>
+          </div>
+        </div>
+
+        <p class="panel-note" id="fcDisclaimer">
+          ⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء.
+        </p>
+      </div>
+
+      <div class="report-foot">
+        <span id="rightsTxt">جميع الحقوق محفوظة</span> © <span id="yearTxt"></span>
+        — <strong>Muharraqi</strong>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="abtn primary" id="btnPrint">🖨️ <span id="printTxt">طباعة</span></button>
+      <button class="abtn share" id="btnShare">📤 <span id="shareTxt">مشاركة PDF</span></button>
+      <button class="abtn sitelink" id="btnSite">🔗 <span id="siteTxt">مشاركة الموقع</span></button>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB 2: CONSUMPTION CALCULATOR ============ -->
+  <div class="tab-pane" id="tab-calculator" role="tabpanel">
+
+    <section class="report">
+
+      <div class="report-head">
+        <h2 id="calcReportTitle">حسابة الاستهلاك</h2>
+      </div>
+
+      <!-- Electricity Slab Calculator -->
+      <div class="panel slab-calc" id="slabCalcBox" style="margin-top:0;">
+        <div class="panel-head">
+          <div class="panel-icon">⚡</div>
+          <div>
+            <h3 id="scTitle">كم شريحة استهلكت - الكهرباء</h3>
+            <p id="scNote">أدخل المبلغ النهائي (د.ب) وسنوزعه على الشرائح تلقائياً من الأولى إلى الرابعة</p>
+          </div>
+        </div>
+
+        <div class="arr-field" style="margin-bottom: .9rem;">
+          <label for="scAmount" id="scAmountLbl">المبلغ النهائي</label>
           <div class="arr-input-wrap">
-            <input type="number" id="arrAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
-            <span id="arrAmtCur">د.ب</span>
+            <input type="number" id="scAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
+            <span id="scCur">د.ب</span>
           </div>
         </div>
-        <div class="arr-field">
-          <label for="arrMonths" id="arrMonLbl">عدد أشهر التقسيط</label>
+
+        <div class="slab-list" id="slabList"></div>
+
+        <div class="slab-totals" id="slabTotals">
+          <div class="slab-total-item">
+            <span id="scTotalKwhLbl">إجمالي الاستهلاك</span>
+            <strong><span id="scTotalKwh">0</span> <small id="scTotalKwhUnit">ك.و.س</small></strong>
+          </div>
+          <div class="slab-total-item accent">
+            <span id="scTotalCostLbl">إجمالي المبلغ</span>
+            <strong><span id="scTotalCost">0.000</span> <small id="scTotalCostUnit">د.ب</small></strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Slab Calculator -->
+      <div class="panel slab-calc" id="waterSlabCalcBox">
+        <div class="panel-head">
+          <div class="panel-icon">💧</div>
+          <div>
+            <h3 id="waterTitle">كم شريحة استهلكت - الماء</h3>
+            <p id="waterNote">أدخل المبلغ النهائي (د.ب) وسنوزعه على شرائح الماء تلقائياً من الأولى إلى الثالثة</p>
+          </div>
+        </div>
+
+        <div class="arr-field" style="margin-bottom: .9rem;">
+          <label for="scWaterAmount" id="waterAmountLbl">المبلغ النهائي</label>
           <div class="arr-input-wrap">
-            <input type="number" id="arrMonths" min="1" max="120" step="1" inputmode="numeric" value="12">
-            <span id="arrMonUnit">شهر</span>
+            <input type="number" id="scWaterAmount" min="0" step="0.001" inputmode="decimal" placeholder="0.000">
+            <span id="scWaterCur">د.ب</span>
+          </div>
+        </div>
+
+        <div class="slab-list" id="waterSlabList"></div>
+
+        <div class="slab-totals" id="waterSlabTotals">
+          <div class="slab-total-item">
+            <span id="scWaterTotalM3Lbl">إجمالي الاستهلاك</span>
+            <strong><span id="scWaterTotalM3">0</span> <small id="scWaterTotalM3Unit">م³</small></strong>
+          </div>
+          <div class="slab-total-item accent">
+            <span id="scWaterTotalCostLbl">إجمالي المبلغ</span>
+            <strong><span id="scWaterTotalCost">0.000</span> <small id="scWaterTotalCostUnit">د.ب</small></strong>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="legend-bar" id="legendBar">
-      <div class="legend-icon">✓</div>
-      <div class="legend-text">
-        <strong id="legendTitle">دفعت قسط الشهر</strong>
-        <span id="legendSub">اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع</span>
-      </div>
-      <div class="legend-value">
-        <span class="legend-value-num" id="legendValueNum">0.000</span>
-        <span class="legend-value-cur" id="legendValueCur">د.ب</span>
-      </div>
-    </div>
+    </section>
 
-    <div class="report-head">
-      <h2 id="reportTitle">الفاتورة الشهرية للسنة الحالية</h2>
-      <div class="report-date" id="reportDate"></div>
-    </div>
-
-    <div class="months" id="monthsGrid"></div>
-
-    <div class="results">
-      <div class="res-card">
-        <div class="res-label" id="lblGrand">إجمالي السداد</div>
-        <div class="res-value">
-          <span id="valGrand">0.000</span>
-          <span class="cur" id="curGrand">د.ب</span>
-        </div>
-        <div class="res-sub" id="subGrand"></div>
-      </div>
-
-      <div class="res-card accent installment-card" id="installmentCard">
-        <div class="res-label" id="lblInst">قسط الشهر</div>
-        <div class="res-value">
-          <span id="valInst">0.000</span>
-          <span class="cur" id="curInst">د.ب</span>
-        </div>
-        <div class="res-eq" id="instEq"></div>
-        <div class="inst-remaining-inline" id="instRemRow">
-          <span id="instRemLbl">المتبقي:</span>
-          <strong id="instRemaining">0.000 د.ب</strong>
-        </div>
-        <div class="inst-fully-paid" id="instFullyPaidRow" style="display:none">
-          <span>✓</span>
-          <span id="instFullyPaidTxt">تم سداد كامل المبلغ</span>
-        </div>
-        <div class="inst-progress-wrap" id="instProgressWrap">
-          <div class="inst-progress">
-            <div class="inst-progress-fill" id="instProgressFill"></div>
-          </div>
-          <div class="inst-progress-text">
-            <span id="instProgressCount">0 / 12</span>
-            <span class="pct" id="instProgressPct">0%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="paid-info" id="paidInfo">
-      <span class="paid-icon">✓</span>
-      <span id="paidLbl">دفعات مسجلة</span>
-      <strong id="paidVal">0.000 د.ب</strong>
-      <span class="paid-count" id="paidCount"></span>
-    </div>
-
-    <p class="hint" id="hintTxt">اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر</p>
-
-    <div class="panel" id="forecastBox">
-      <div class="panel-head">
-        <div class="panel-icon">📈</div>
-        <div>
-          <h3 id="fcTitle">توقّع السنة القادمة</h3>
-          <p id="fcNote">التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر</p>
-        </div>
-      </div>
-
-      <label class="fc-label" for="fcRange" id="fcLabel">نسبة الزيادة المتوقعة</label>
-      <div class="fc-row">
-        <input type="range" id="fcRange" min="0" max="30" step="1" value="0">
-        <div class="fc-num">
-          <input type="number" id="fcNum" min="0" max="100" step="0.5" value="0" inputmode="decimal">
-          <span>%</span>
-        </div>
-      </div>
-
-      <div class="fc-presets" id="fcPresets">
-        <button type="button" data-p="0">0%</button>
-        <button type="button" data-p="5">5%</button>
-        <button type="button" data-p="10">10%</button>
-        <button type="button" data-p="15">15%</button>
-        <button type="button" data-p="20">20%</button>
-      </div>
-
-      <div class="fc-result">
-        <div class="fc-compare">
-          <div class="fc-col">
-            <span id="fcNowLbl">المتوسط السعري الحالي</span>
-            <strong id="fcNowVal">0.000 د.ب</strong>
-          </div>
-          <div class="fc-arrow" id="fcArrow">←</div>
-          <div class="fc-col highlight">
-            <span id="fcNextLbl">المتوسط السعري المتوقع</span>
-            <strong id="fcNextVal">0.000 د.ب</strong>
-          </div>
-        </div>
-        <div class="fc-diff">
-          <span id="fcDiffLbl">الفرق</span>
-          <strong id="fcDiffVal">+0.000 د.ب</strong>
-        </div>
-      </div>
-
-      <p class="panel-note" id="fcDisclaimer">
-        ⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء.
-      </p>
-    </div>
-
-    <div class="report-foot">
-      <span id="rightsTxt">جميع الحقوق محفوظة</span> © <span id="yearTxt"></span>
-      — <strong>Muharraqi</strong>
-    </div>
-  </section>
-
-  <div class="actions">
-    <button class="abtn primary" id="btnPrint">🖨️ <span id="printTxt">طباعة</span></button>
-    <button class="abtn share" id="btnShare">📤 <span id="shareTxt">مشاركة PDF</span></button>
-    <button class="abtn sitelink" id="btnSite">🔗 <span id="siteTxt">مشاركة الموقع</span></button>
   </div>
 
 </div>
@@ -855,7 +1148,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v17';
+  const STORE = 'muharraqi_bahrain_elec_v18';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -870,6 +1163,20 @@
     {ar:'أكتوبر', en:'October'},
     {ar:'نوفمبر', en:'November'},
     {ar:'ديسمبر', en:'December'}
+  ];
+
+  // Slab definitions
+  const SLAB_DEFS = [
+    {min: 0,    max: 3000,     rateFils: 3},
+    {min: 3000, max: 5000,     rateFils: 9},
+    {min: 5000, max: 7000,     rateFils: 16},
+    {min: 7000, max: Infinity, rateFils: 32}
+  ];
+
+  const WATER_SLAB_DEFS = [
+    {min: 0,   max: 60,       rateFils: 25},
+    {min: 60,  max: 100,      rateFils: 80},
+    {min: 100, max: Infinity, rateFils: 775}
   ];
 
   const I18N = {
@@ -903,6 +1210,11 @@
       toastSiteShared:'تمت مشاركة الرابط',
       toastSiteErr:'تعذّر نسخ الرابط',
       siteShareText:'جرّب هذا الموقع لحساب متوسط سعر الكهرباء في البحرين',
+      // Tabs
+      tabElectricity:'متوسط السعري للكهرباء',
+      tabCalculator:'حسابة الاستهلاك',
+      calcReportTitle:'حسابة الاستهلاك',
+      // Forecast
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
@@ -911,6 +1223,7 @@
       fcDiff:'الفرق',
       fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
       arrow:'←',
+      // Arrears
       arrTitle:'الأبيال المتراكمة',
       arrBadge:'اختياري',
       arrNote:'أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي',
@@ -925,6 +1238,7 @@
       paidBtnTitleUnpaid:'اضغط لإلغاء الدفع — سيُفتح حقل الفاتورة',
       legendTitle:'دفعت قسط الشهر',
       legendSub:'اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع',
+      // Info modal
       infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
       infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
       infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
@@ -938,6 +1252,21 @@
       wa1Lbl:'الشريحة الأولى', wa2Lbl:'الشريحة الثانية', wa3Lbl:'الشريحة الثالثة',
       el1Prc:'3 فلس', el2Prc:'9 فلس', el3Prc:'16 فلس', el4Prc:'32 فلس',
       wa1Prc:'25 فلس', wa2Prc:'80 فلس', wa3Prc:'775 فلس',
+      // Slab calc - electricity
+      scTitle:'كم شريحة استهلكت - الكهرباء',
+      scNote:'أدخل المبلغ النهائي (د.ب) وسنوزعه على الشرائح تلقائياً من الأولى إلى الرابعة',
+      scAmountLbl:'المبلغ النهائي',
+      scTotalKwh:'إجمالي الاستهلاك',
+      scTotalCost:'إجمالي المبلغ',
+      scKwhUnit:'ك.و.س',
+      scFils:'فلس',
+      // Slab calc - water
+      waterTitle:'كم شريحة استهلكت - الماء',
+      waterNote:'أدخل المبلغ النهائي (د.ب) وسنوزعه على شرائح الماء تلقائياً من الأولى إلى الثالثة',
+      waterAmountLbl:'المبلغ النهائي',
+      scWaterTotalM3:'إجمالي الاستهلاك',
+      scWaterTotalCost:'إجمالي المبلغ',
+      scM3Unit:'م³',
       infoDisclaimer:'📌 <strong>ملاحظة:</strong> الجداول أعلاه خاصة بفئة <strong>الاستهلاك المنزلي للمواطن البحريني على حساب واحد فقط</strong> (المدعومة حكومياً). للاطلاع على الفئات الأخرى (أكثر من حساب، غير بحريني، تجاري)، يُرجى زيارة الموقع الرسمي لهيئة الكهرباء والماء: <a href="https://www.ewa.bh/ar/tariff" target="_blank" rel="noopener">ewa.bh/ar/tariff</a>.<br><br>⚠️ هذه المعلومات لأغراض التوضيح فقط، وقد تُحدَّث التعرفة من وقت لآخر. يُرجى الرجوع للموقع الرسمي للتأكد من أحدث الأرقام.'
     },
     en:{
@@ -970,6 +1299,11 @@
       toastSiteShared:'Link shared',
       toastSiteErr:'Could not copy link',
       siteShareText:'Try this site to calculate Bahrain electricity average price',
+      // Tabs
+      tabElectricity:'Electricity Average Price',
+      tabCalculator:'Consumption Calculator',
+      calcReportTitle:'Consumption Calculator',
+      // Forecast
       fcTitle:'Next Year Forecast',
       fcNote:'Tariffs may rise — try an expected increase and see the impact',
       fcLabel:'Expected increase',
@@ -978,6 +1312,7 @@
       fcDiff:'Difference',
       fcDisclaimer:'⚠️ This is an estimate based on the percentage you enter — not an official forecast of the Electricity & Water Authority tariff. The average above reflects your entered figures only.',
       arrow:'→',
+      // Arrears
       arrTitle:'Accumulated Bills',
       arrBadge:'Optional',
       arrNote:'Enter the accumulated amount and installment period — or skip for a simple calculation',
@@ -992,6 +1327,7 @@
       paidBtnTitleUnpaid:'Click to remove payment — invoice field will be unlocked',
       legendTitle:'Paid this month\'s installment',
       legendSub:'Tap the ✓ button next to any month to record its installment — the invoice field will be locked',
+      // Info modal
       infoTitle:'📋 Electricity & Water Tariff — Bahrain',
       infoBadgeElec:'Domestic — Bahraini citizen (one account)',
       infoBadgeWater:'Domestic — Bahraini citizen (one account)',
@@ -1005,6 +1341,21 @@
       wa1Lbl:'First band', wa2Lbl:'Second band', wa3Lbl:'Third band',
       el1Prc:'3 fils', el2Prc:'9 fils', el3Prc:'16 fils', el4Prc:'32 fils',
       wa1Prc:'25 fils', wa2Prc:'80 fils', wa3Prc:'775 fils',
+      // Slab calc - electricity
+      scTitle:'How Many Electricity Slabs Consumed',
+      scNote:'Enter the final amount (BHD) and we\'ll distribute it across slabs automatically from first to fourth',
+      scAmountLbl:'Final Amount',
+      scTotalKwh:'Total Consumption',
+      scTotalCost:'Total Amount',
+      scKwhUnit:'kWh',
+      scFils:'fils',
+      // Slab calc - water
+      waterTitle:'How Many Water Slabs Consumed',
+      waterNote:'Enter the final amount (BHD) and we\'ll distribute it across water slabs automatically from first to third',
+      waterAmountLbl:'Final Amount',
+      scWaterTotalM3:'Total Consumption',
+      scWaterTotalCost:'Total Amount',
+      scM3Unit:'m³',
       infoDisclaimer:'📌 <strong>Note:</strong> The tables above apply to the <strong>domestic consumption category for Bahraini citizens with one account only</strong> (government-subsidised). For other categories (multiple accounts, non-Bahraini, commercial), please visit the official Electricity & Water Authority website: <a href="https://www.ewa.bh/en/ewa-tariffs" target="_blank" rel="noopener">ewa.bh/en/ewa-tariffs</a>.<br><br>⚠️ This information is for reference only; tariffs may be updated from time to time. Please refer to the official website for the latest figures.'
     }
   };
@@ -1023,7 +1374,8 @@
     lang : saved.lang  || 'ar',
     theme: saved.theme || 'dark',
     font : saved.font  || 16,
-    paid : initialPaid()
+    paid : initialPaid(),
+    activeTab: saved.activeTab || 'electricity'
   };
 
   const $ = id => document.getElementById(id);
@@ -1032,8 +1384,12 @@
     return Number(n).toLocaleString('en-US',{minimumFractionDigits:3, maximumFractionDigits:3});
   }
 
+  function fmtKwh(n){
+    return Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+  }
+
   function getValues(){
-    return Array.from(document.querySelectorAll('.month input')).map(i => i.value);
+    return Array.from(document.querySelectorAll('#monthsGrid input')).map(i => i.value);
   }
 
   function save(){
@@ -1046,7 +1402,10 @@
         paid : state.paid,
         fcPct: parseFloat($('fcNum').value) || 0,
         arrAmount: $('arrAmount').value,
-        arrMonths: $('arrMonths').value
+        arrMonths: $('arrMonths').value,
+        scAmount: $('scAmount').value,
+        scWaterAmount: $('scWaterAmount').value,
+        activeTab: state.activeTab
       }));
     }catch(e){}
   }
@@ -1062,7 +1421,7 @@
   }
 
   function getStats(){
-    const inputs = document.querySelectorAll('.month input');
+    const inputs = document.querySelectorAll('#monthsGrid input');
     let total = 0, count = 0;
     inputs.forEach(inp => {
       const raw = inp.value.trim();
@@ -1075,14 +1434,24 @@
     return { total, count };
   }
 
-  /* ============ الحساب ============
-     - إن كان هناك مبلغ متراكم:
-         القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر
-         إجمالي السداد = (المتراكم + الفواتير) − (عدد الدفعات × القسط)
-     - إن لم يكن هناك متراكم:
-         المتوسط الشهري = مجموع الفواتير ÷ عدد الأشهر
-         إجمالي السداد = مجموع الفواتير (بدون قسائم)
-  ============================================ */
+  /* ============ Tabs ============ */
+  function switchTab(tab){
+    state.activeTab = tab;
+
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const active = b.dataset.tab === tab;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('.tab-pane').forEach(p => {
+      p.classList.toggle('active', p.id === 'tab-' + tab);
+    });
+
+    save();
+  }
+
+  /* ============ Main calculation ============ */
   function calc(){
     const s = getStats();
     const t = I18N[state.lang];
@@ -1097,13 +1466,11 @@
     const initialTotal = initialDebt + s.total;
     const installment  = initialTotal / months;
 
-    // في حال عدم وجود متراكم، نتجاهل الدفعات تماماً
     const paidCount = hasDebt ? state.paid.filter(Boolean).length : 0;
     const totalPaid = hasDebt ? Math.min(initialTotal, installment * paidCount) : 0;
     const grand     = Math.max(0, initialTotal - totalPaid);
     const finalAvg  = grand / months;
 
-    // ---- بطاقة إجمالي السداد ----
     $('valGrand').textContent = fmt(grand);
     if(hasDebt){
       $('subGrand').innerHTML =
@@ -1112,13 +1479,11 @@
       $('subGrand').innerHTML = `<span>${fmt(s.total)}</span>`;
     }
 
-    // ---- بطاقة القسط / المتوسط ----
     if(s.total > 0 || initialDebt > 0){
       $('installmentCard').style.display = '';
       $('valInst').textContent = fmt(installment);
 
       if(hasDebt){
-        // الوضع الطبيعي مع متراكم
         $('lblInst').textContent = t.instLabel;
         $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
 
@@ -1135,14 +1500,12 @@
           $('instRemaining').textContent = fmt(grand) + ' ' + t.currency;
         }
 
-        // شريط التقدم
         $('instProgressWrap').style.display = '';
         const pct = Math.min(100, (paidCount / months) * 100);
         $('instProgressFill').style.width = pct + '%';
         $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
         $('instProgressPct').textContent = Math.round(pct) + '%';
       } else {
-        // بدون متراكم → المتوسط الشهري
         $('lblInst').textContent = t.avgLabel;
         $('instEq').textContent  = `${fmt(s.total)} ÷ ${months}`;
         $('instRemRow').style.display = 'none';
@@ -1153,7 +1516,6 @@
       $('installmentCard').style.display = 'none';
     }
 
-    // ---- شريط Legend ----
     if(hasDebt){
       $('legendBar').classList.add('show');
       $('legendTitle').textContent = t.legendTitle;
@@ -1164,7 +1526,6 @@
       $('legendBar').classList.remove('show');
     }
 
-    // ---- شارة الدفعات ----
     if(paidCount > 0 && hasDebt){
       $('paidInfo').style.display = 'flex';
       $('paidVal').textContent = fmt(totalPaid) + ' ' + t.currency;
@@ -1174,12 +1535,10 @@
       $('paidInfo').style.display = 'none';
     }
 
-    // ---- إظهار/إخفاء أزرار ✓ على الأشهر ----
-    document.querySelectorAll('.month .paid-btn').forEach(btn => {
+    document.querySelectorAll('#monthsGrid .paid-btn').forEach(btn => {
       btn.classList.toggle('hidden', !hasDebt);
     });
 
-    // ---- نص التلميح ----
     $('hintTxt').innerHTML = hasDebt ? t.hint : t.hintNoDebt;
 
     updateForecast(finalAvg, t);
@@ -1268,6 +1627,111 @@
     calc();
   }
 
+  /* ============ Generic Slab Calculator ============ */
+  function calcSlabData(defs, amountBHD){
+    let remainingFils = Math.round(amountBHD * 1000);
+    let totalKwh = 0;
+    let totalFils = 0;
+    const out = [];
+
+    defs.forEach(s => {
+      const maxKwh = s.max - s.min;
+      const maxCostFils = isFinite(maxKwh) ? maxKwh * s.rateFils : Infinity;
+
+      let kwh = 0, costFils = 0, status;
+
+      if (remainingFils <= 0){
+        status = 'inactive';
+      } else if (isFinite(maxCostFils) && remainingFils >= maxCostFils){
+        kwh = maxKwh;
+        costFils = maxCostFils;
+        remainingFils -= maxCostFils;
+        status = 'done';
+      } else {
+        kwh = remainingFils / s.rateFils;
+        costFils = remainingFils;
+        remainingFils = 0;
+        status = 'active';
+      }
+
+      totalKwh += kwh;
+      totalFils += costFils;
+      out.push({ kwh, costFils, status });
+    });
+
+    return { out, totalKwh, totalFils };
+  }
+
+  function formatRangeDisplay(s, index, isLast){
+    const minDisp = index === 0 ? s.min : s.min + 1;
+    if (isLast || !isFinite(s.max)) return minDisp.toLocaleString('en-US') + '+';
+    return minDisp.toLocaleString('en-US') + ' – ' + s.max.toLocaleString('en-US');
+  }
+
+  function renderSlabList(defs, labels, listEl, amountStr, totalKwhEl, totalCostEl, unit){
+    const t = I18N[state.lang];
+    const amountBHD = parseFloat(amountStr) || 0;
+    const { out, totalKwh, totalFils } = calcSlabData(defs, amountBHD);
+
+    listEl.innerHTML = '';
+
+    out.forEach((r, i) => {
+      const s = defs[i];
+      const isLast = i === defs.length - 1;
+      const row = document.createElement('div');
+      row.className = 'slab-row ' + r.status;
+
+      const icon = r.status === 'done' ? '✓' : r.status === 'active' ? '●' : '○';
+      const rangeLbl = formatRangeDisplay(s, i, isLast);
+      const rateLbl = s.rateFils + ' ' + t.scFils;
+
+      const kwhText = r.status === 'inactive' ? '—' : fmtKwh(r.kwh) + ' ' + unit;
+      const costText = r.status === 'inactive' ? '—' : fmt(r.costFils / 1000) + ' ' + t.currency;
+
+      row.innerHTML =
+        '<div class="slab-status">' + icon + '</div>' +
+        '<div class="slab-info">' +
+          '<div class="slab-name">' + labels[i] + '</div>' +
+          '<div class="slab-detail">' + rangeLbl + ' ' + unit + ' · ' + rateLbl + '</div>' +
+        '</div>' +
+        '<div class="slab-numbers">' +
+          '<div class="slab-kwh">' + kwhText + '</div>' +
+          '<div class="slab-cost">' + costText + '</div>' +
+        '</div>';
+
+      listEl.appendChild(row);
+    });
+
+    totalKwhEl.textContent = fmtKwh(totalKwh);
+    totalCostEl.textContent = fmt(totalFils / 1000);
+  }
+
+  function renderSlabs(){
+    const t = I18N[state.lang];
+    renderSlabList(
+      SLAB_DEFS,
+      [t.el1Lbl, t.el2Lbl, t.el3Lbl, t.el4Lbl],
+      $('slabList'),
+      $('scAmount').value,
+      $('scTotalKwh'),
+      $('scTotalCost'),
+      t.scKwhUnit
+    );
+  }
+
+  function renderWaterSlabs(){
+    const t = I18N[state.lang];
+    renderSlabList(
+      WATER_SLAB_DEFS,
+      [t.wa1Lbl, t.wa2Lbl, t.wa3Lbl],
+      $('waterSlabList'),
+      $('scWaterAmount').value,
+      $('scWaterTotalM3'),
+      $('scWaterTotalCost'),
+      t.scM3Unit
+    );
+  }
+
   function updateDate(){
     const d = new Date();
     const loc = state.lang === 'ar' ? 'ar-BH' : 'en-GB';
@@ -1301,6 +1765,11 @@
     $('btnReset').title          = t.reset;
     $('btnInfo').title           = ar ? 'تعليمات التعرفة' : 'Tariff Info';
 
+    // Tabs
+    $('tabLblElectricity').textContent = t.tabElectricity;
+    $('tabLblCalculator').textContent  = t.tabCalculator;
+    $('calcReportTitle').textContent   = t.calcReportTitle;
+
     $('arrTitle').innerHTML = t.arrTitle + ' <span class="badge">' + t.arrBadge + '</span>';
     $('arrNote').textContent = t.arrNote;
     $('arrAmtLbl').textContent = t.arrAmtLbl;
@@ -1320,6 +1789,26 @@
     $('fcDiffLbl').textContent    = t.fcDiff;
     $('fcDisclaimer').textContent = t.fcDisclaimer;
     $('fcArrow').textContent      = t.arrow;
+
+    // Electricity slab calc
+    $('scTitle').textContent        = t.scTitle;
+    $('scNote').textContent         = t.scNote;
+    $('scAmountLbl').textContent    = t.scAmountLbl;
+    $('scCur').textContent          = t.currency;
+    $('scTotalKwhLbl').textContent  = t.scTotalKwh;
+    $('scTotalCostLbl').textContent = t.scTotalCost;
+    $('scTotalKwhUnit').textContent = t.scKwhUnit;
+    $('scTotalCostUnit').textContent = t.currency;
+
+    // Water slab calc
+    $('waterTitle').textContent            = t.waterTitle;
+    $('waterNote').textContent             = t.waterNote;
+    $('waterAmountLbl').textContent        = t.waterAmountLbl;
+    $('scWaterCur').textContent            = t.currency;
+    $('scWaterTotalM3Lbl').textContent     = t.scWaterTotalM3;
+    $('scWaterTotalCostLbl').textContent   = t.scWaterTotalCost;
+    $('scWaterTotalM3Unit').textContent    = t.scM3Unit;
+    $('scWaterTotalCostUnit').textContent  = t.currency;
 
     $('infoModalTitle').textContent = t.infoTitle;
     $('badgeElec').textContent = t.infoBadgeElec;
@@ -1351,6 +1840,8 @@
     renderMonths(getValues());
     updateDate();
     calc();
+    renderSlabs();
+    renderWaterSlabs();
   }
 
   function applyTheme(){
@@ -1482,6 +1973,7 @@
     document.body.style.overflow = '';
   }
 
+  /* ============ Event bindings ============ */
   $('btnInfo').addEventListener('click', openInfo);
   $('infoClose').addEventListener('click', closeInfo);
   $('infoModal').addEventListener('click', e => {
@@ -1490,6 +1982,10 @@
   document.addEventListener('keydown', e => {
     if(e.key === 'Escape' && $('infoModal').classList.contains('open')) closeInfo();
   });
+
+  // Tab buttons
+  $('tabBtnElectricity').addEventListener('click', () => switchTab('electricity'));
+  $('tabBtnCalculator').addEventListener('click', () => switchTab('calculator'));
 
   $('btnLang').addEventListener('click', () => {
     state.lang = state.lang === 'ar' ? 'en' : 'ar';
@@ -1512,16 +2008,20 @@
   $('btnReset').addEventListener('click', () => {
     if(!confirm(I18N[state.lang].confirmReset)) return;
     state.paid = new Array(12).fill(false);
-    document.querySelectorAll('.month input').forEach(i => { i.value = ''; i.disabled = false; });
-    document.querySelectorAll('.month').forEach(m => m.classList.remove('paid'));
-    document.querySelectorAll('.paid-btn').forEach(b => {
+    document.querySelectorAll('#monthsGrid input').forEach(i => { i.value = ''; i.disabled = false; });
+    document.querySelectorAll('#monthsGrid .month').forEach(m => m.classList.remove('paid'));
+    document.querySelectorAll('#monthsGrid .paid-btn').forEach(b => {
       b.setAttribute('aria-label', I18N[state.lang].paidBtnTitle);
       b.setAttribute('title', I18N[state.lang].paidBtnTitle);
     });
     $('arrAmount').value = '';
     $('arrMonths').value = '12';
+    $('scAmount').value = '';
+    $('scWaterAmount').value = '';
     setPct(0);
     calc();
+    renderSlabs();
+    renderWaterSlabs();
     save();
     toast(I18N[state.lang].toastReset);
   });
@@ -1561,22 +2061,33 @@
     calc(); save();
   });
 
+  $('scAmount').addEventListener('input', () => { renderSlabs(); save(); });
+  $('scWaterAmount').addEventListener('input', () => { renderWaterSlabs(); save(); });
+
   $('yearTxt').textContent = new Date().getFullYear();
 
+  /* ============ Init ============ */
   applyTheme();
   applyFont();
   applyLang();
 
   if(saved.values && Array.isArray(saved.values)){
-    const inputs = document.querySelectorAll('.month input');
+    const inputs = document.querySelectorAll('#monthsGrid input');
     saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
   }
   if(typeof saved.fcPct === 'number') $('fcNum').value = saved.fcPct;
   if(saved.fcPct) $('fcRange').value = Math.min(30, saved.fcPct);
   if(saved.arrAmount !== undefined) $('arrAmount').value = saved.arrAmount;
   if(saved.arrMonths !== undefined) $('arrMonths').value = saved.arrMonths;
+  if(saved.scAmount !== undefined) $('scAmount').value = saved.scAmount;
+  if(saved.scWaterAmount !== undefined) $('scWaterAmount').value = saved.scWaterAmount;
+
+  // Apply saved tab (defaults to 'electricity')
+  switchTab(state.activeTab === 'calculator' ? 'calculator' : 'electricity');
 
   calc();
+  renderSlabs();
+  renderWaterSlabs();
 
 })();
 </script>
