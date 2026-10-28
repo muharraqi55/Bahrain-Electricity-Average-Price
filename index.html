@@ -63,7 +63,6 @@
   .tbtn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
   .tbtn:active{transform:translateY(0) scale(.97);}
 
-  /* ============ TABS ============ */
   .tabs{
     display:flex;
     gap:.4rem;
@@ -1148,7 +1147,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v18';
+  const STORE = 'muharraqi_bahrain_elec_v19';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -1165,7 +1164,6 @@
     {ar:'ديسمبر', en:'December'}
   ];
 
-  // Slab definitions
   const SLAB_DEFS = [
     {min: 0,    max: 3000,     rateFils: 3},
     {min: 3000, max: 5000,     rateFils: 9},
@@ -1210,11 +1208,9 @@
       toastSiteShared:'تمت مشاركة الرابط',
       toastSiteErr:'تعذّر نسخ الرابط',
       siteShareText:'جرّب هذا الموقع لحساب متوسط سعر الكهرباء في البحرين',
-      // Tabs
       tabElectricity:'متوسط السعري للكهرباء',
       tabCalculator:'حسابة الاستهلاك',
       calcReportTitle:'حسابة الاستهلاك',
-      // Forecast
       fcTitle:'توقّع السنة القادمة',
       fcNote:'التعرفة قد ترتفع — جرّب نسبة الزيادة المتوقعة وشاهد الأثر',
       fcLabel:'نسبة الزيادة المتوقعة',
@@ -1223,7 +1219,6 @@
       fcDiff:'الفرق',
       fcDisclaimer:'⚠️ هذه محاكاة تقديرية بناءً على النسبة التي تُدخلها، وليست توقعاً رسمياً لتعرفة هيئة الكهرباء والماء. المتوسط المحسوب أعلاه يعكس الأرقام المُدخلة فقط.',
       arrow:'←',
-      // Arrears
       arrTitle:'الأبيال المتراكمة',
       arrBadge:'اختياري',
       arrNote:'أدخل المبلغ المتراكم وعدد أشهر التقسيط — أو تجاهلها للحساب العادي',
@@ -1238,7 +1233,6 @@
       paidBtnTitleUnpaid:'اضغط لإلغاء الدفع — سيُفتح حقل الفاتورة',
       legendTitle:'دفعت قسط الشهر',
       legendSub:'اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع',
-      // Info modal
       infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
       infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
       infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
@@ -1252,7 +1246,6 @@
       wa1Lbl:'الشريحة الأولى', wa2Lbl:'الشريحة الثانية', wa3Lbl:'الشريحة الثالثة',
       el1Prc:'3 فلس', el2Prc:'9 فلس', el3Prc:'16 فلس', el4Prc:'32 فلس',
       wa1Prc:'25 فلس', wa2Prc:'80 فلس', wa3Prc:'775 فلس',
-      // Slab calc - electricity
       scTitle:'كم شريحة استهلكت - الكهرباء',
       scNote:'أدخل المبلغ النهائي (د.ب) وسنوزعه على الشرائح تلقائياً من الأولى إلى الرابعة',
       scAmountLbl:'المبلغ النهائي',
@@ -1260,7 +1253,6 @@
       scTotalCost:'إجمالي المبلغ',
       scKwhUnit:'ك.و.س',
       scFils:'فلس',
-      // Slab calc - water
       waterTitle:'كم شريحة استهلكت - الماء',
       waterNote:'أدخل المبلغ النهائي (د.ب) وسنوزعه على شرائح الماء تلقائياً من الأولى إلى الثالثة',
       waterAmountLbl:'المبلغ النهائي',
@@ -1299,11 +1291,9 @@
       toastSiteShared:'Link shared',
       toastSiteErr:'Could not copy link',
       siteShareText:'Try this site to calculate Bahrain electricity average price',
-      // Tabs
       tabElectricity:'Electricity Average Price',
       tabCalculator:'Consumption Calculator',
       calcReportTitle:'Consumption Calculator',
-      // Forecast
       fcTitle:'Next Year Forecast',
       fcNote:'Tariffs may rise — try an expected increase and see the impact',
       fcLabel:'Expected increase',
@@ -1312,7 +1302,6 @@
       fcDiff:'Difference',
       fcDisclaimer:'⚠️ This is an estimate based on the percentage you enter — not an official forecast of the Electricity & Water Authority tariff. The average above reflects your entered figures only.',
       arrow:'→',
-      // Arrears
       arrTitle:'Accumulated Bills',
       arrBadge:'Optional',
       arrNote:'Enter the accumulated amount and installment period — or skip for a simple calculation',
@@ -1327,7 +1316,6 @@
       paidBtnTitleUnpaid:'Click to remove payment — invoice field will be unlocked',
       legendTitle:'Paid this month\'s installment',
       legendSub:'Tap the ✓ button next to any month to record its installment — the invoice field will be locked',
-      // Info modal
       infoTitle:'📋 Electricity & Water Tariff — Bahrain',
       infoBadgeElec:'Domestic — Bahraini citizen (one account)',
       infoBadgeWater:'Domestic — Bahraini citizen (one account)',
@@ -1341,7 +1329,6 @@
       wa1Lbl:'First band', wa2Lbl:'Second band', wa3Lbl:'Third band',
       el1Prc:'3 fils', el2Prc:'9 fils', el3Prc:'16 fils', el4Prc:'32 fils',
       wa1Prc:'25 fils', wa2Prc:'80 fils', wa3Prc:'775 fils',
-      // Slab calc - electricity
       scTitle:'How Many Electricity Slabs Consumed',
       scNote:'Enter the final amount (BHD) and we\'ll distribute it across slabs automatically from first to fourth',
       scAmountLbl:'Final Amount',
@@ -1349,7 +1336,6 @@
       scTotalCost:'Total Amount',
       scKwhUnit:'kWh',
       scFils:'fils',
-      // Slab calc - water
       waterTitle:'How Many Water Slabs Consumed',
       waterNote:'Enter the final amount (BHD) and we\'ll distribute it across water slabs automatically from first to third',
       waterAmountLbl:'Final Amount',
@@ -1363,18 +1349,26 @@
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
-  function initialPaid(){
-    if(Array.isArray(saved.paid) && saved.paid.length === 12){
-      return saved.paid.map(v => !!v);
+  // ===== NEW: initialize state.paid with correct length =====
+  function initialPaid(count){
+    const arr = new Array(count).fill(false);
+    if(Array.isArray(saved.paid)){
+      const n = Math.min(count, saved.paid.length);
+      for(let i = 0; i < n; i++) arr[i] = !!saved.paid[i];
     }
-    return new Array(12).fill(false);
+    return arr;
   }
+
+  let initMonthsCount = parseInt(saved.arrMonths);
+  if(isNaN(initMonthsCount) || initMonthsCount < 1) initMonthsCount = 12;
+  if(initMonthsCount > 120) initMonthsCount = 120;
+  initMonthsCount = Math.floor(initMonthsCount);
 
   const state = {
     lang : saved.lang  || 'ar',
     theme: saved.theme || 'dark',
     font : saved.font  || 16,
-    paid : initialPaid(),
+    paid : initialPaid(initMonthsCount),
     activeTab: saved.activeTab || 'electricity'
   };
 
@@ -1390,6 +1384,18 @@
 
   function getValues(){
     return Array.from(document.querySelectorAll('#monthsGrid input')).map(i => i.value);
+  }
+
+  // ===== NEW: resize state.paid to match months count =====
+  function resizePaidArray(newCount){
+    if(newCount < 1) newCount = 1;
+    if(newCount > 120) newCount = 120;
+    const cur = state.paid;
+    if(newCount > cur.length){
+      for(let i = cur.length; i < newCount; i++) cur.push(false);
+    } else if(newCount < cur.length){
+      cur.length = newCount;
+    }
   }
 
   function save(){
@@ -1437,17 +1443,14 @@
   /* ============ Tabs ============ */
   function switchTab(tab){
     state.activeTab = tab;
-
     document.querySelectorAll('.tab-btn').forEach(b => {
       const active = b.dataset.tab === tab;
       b.classList.toggle('active', active);
       b.setAttribute('aria-selected', active ? 'true' : 'false');
     });
-
     document.querySelectorAll('.tab-pane').forEach(p => {
       p.classList.toggle('active', p.id === 'tab-' + tab);
     });
-
     save();
   }
 
@@ -1462,7 +1465,6 @@
     if(months > 120) months = 120;
 
     const hasDebt = initialDebt > 0;
-
     const initialTotal = initialDebt + s.total;
     const installment  = initialTotal / months;
 
@@ -1488,7 +1490,6 @@
         $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
 
         const fullyPaid = grand <= 0 && paidCount > 0;
-
         if(fullyPaid){
           $('instRemRow').style.display = 'none';
           $('instFullyPaidRow').style.display = 'flex';
@@ -1501,7 +1502,7 @@
         }
 
         $('instProgressWrap').style.display = '';
-        const pct = Math.min(100, (paidCount / months) * 100);
+        const pct = Math.min(100, (Math.min(paidCount, months) / months) * 100);
         $('instProgressFill').style.width = pct + '%';
         $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
         $('instProgressPct').textContent = Math.round(pct) + '%';
@@ -1540,7 +1541,6 @@
     });
 
     $('hintTxt').innerHTML = hasDebt ? t.hint : t.hintNoDebt;
-
     updateForecast(finalAvg, t);
   }
 
@@ -1567,20 +1567,33 @@
     save();
   }
 
+  // ===== NEW: dynamic month label =====
+  function getMonthLabel(i){
+    const m = MONTHS[i % 12];
+    const yearOffset = Math.floor(i / 12);
+    let name = state.lang === 'ar' ? m.ar : m.en;
+    if(yearOffset > 0){
+      name += ' ' + (new Date().getFullYear() + yearOffset);
+    }
+    return name;
+  }
+
+  // ===== NEW: renderMonths now uses dynamic count from state.paid =====
   function renderMonths(values){
     const t   = I18N[state.lang];
     const grid = $('monthsGrid');
     grid.innerHTML = '';
 
     const hasDebt = (parseFloat($('arrAmount').value) || 0) > 0;
+    const count = state.paid.length;
 
-    MONTHS.forEach((m, i) => {
+    for(let i = 0; i < count; i++){
       const row = document.createElement('div');
       row.className = 'month';
       if(state.paid[i] && hasDebt) row.classList.add('paid');
 
       const lbl = document.createElement('label');
-      lbl.textContent = state.lang === 'ar' ? m.ar : m.en;
+      lbl.textContent = getMonthLabel(i);
 
       const inp = document.createElement('input');
       inp.type = 'number';
@@ -1622,7 +1635,7 @@
 
       row.append(lbl, inp, cur, btn);
       grid.appendChild(row);
-    });
+    }
 
     calc();
   }
@@ -1637,7 +1650,6 @@
     defs.forEach(s => {
       const maxKwh = s.max - s.min;
       const maxCostFils = isFinite(maxKwh) ? maxKwh * s.rateFils : Infinity;
-
       let kwh = 0, costFils = 0, status;
 
       if (remainingFils <= 0){
@@ -1765,7 +1777,6 @@
     $('btnReset').title          = t.reset;
     $('btnInfo').title           = ar ? 'تعليمات التعرفة' : 'Tariff Info';
 
-    // Tabs
     $('tabLblElectricity').textContent = t.tabElectricity;
     $('tabLblCalculator').textContent  = t.tabCalculator;
     $('calcReportTitle').textContent   = t.calcReportTitle;
@@ -1790,7 +1801,6 @@
     $('fcDisclaimer').textContent = t.fcDisclaimer;
     $('fcArrow').textContent      = t.arrow;
 
-    // Electricity slab calc
     $('scTitle').textContent        = t.scTitle;
     $('scNote').textContent         = t.scNote;
     $('scAmountLbl').textContent    = t.scAmountLbl;
@@ -1800,7 +1810,6 @@
     $('scTotalKwhUnit').textContent = t.scKwhUnit;
     $('scTotalCostUnit').textContent = t.currency;
 
-    // Water slab calc
     $('waterTitle').textContent            = t.waterTitle;
     $('waterNote').textContent             = t.waterNote;
     $('waterAmountLbl').textContent        = t.waterAmountLbl;
@@ -1983,7 +1992,6 @@
     if(e.key === 'Escape' && $('infoModal').classList.contains('open')) closeInfo();
   });
 
-  // Tab buttons
   $('tabBtnElectricity').addEventListener('click', () => switchTab('electricity'));
   $('tabBtnCalculator').addEventListener('click', () => switchTab('calculator'));
 
@@ -2005,21 +2013,17 @@
     if(state.font > 13){ state.font -= 1; applyFont(); save(); }
   });
 
+  // ===== NEW: reset preserves current month count =====
   $('btnReset').addEventListener('click', () => {
     if(!confirm(I18N[state.lang].confirmReset)) return;
-    state.paid = new Array(12).fill(false);
-    document.querySelectorAll('#monthsGrid input').forEach(i => { i.value = ''; i.disabled = false; });
-    document.querySelectorAll('#monthsGrid .month').forEach(m => m.classList.remove('paid'));
-    document.querySelectorAll('#monthsGrid .paid-btn').forEach(b => {
-      b.setAttribute('aria-label', I18N[state.lang].paidBtnTitle);
-      b.setAttribute('title', I18N[state.lang].paidBtnTitle);
-    });
+    const keepCount = state.paid.length;
+    state.paid = new Array(keepCount).fill(false);
     $('arrAmount').value = '';
-    $('arrMonths').value = '12';
+    $('arrMonths').value = String(keepCount);
     $('scAmount').value = '';
     $('scWaterAmount').value = '';
     setPct(0);
-    calc();
+    renderMonths();
     renderSlabs();
     renderWaterSlabs();
     save();
@@ -2052,13 +2056,21 @@
   });
 
   $('arrAmount').addEventListener('input', () => { calc(); save(); });
+
+  // ===== NEW: arrMonths input (live calc) + change (re-render) =====
   $('arrMonths').addEventListener('input', () => { calc(); save(); });
-  $('arrMonths').addEventListener('blur', e => {
+
+  $('arrMonths').addEventListener('change', e => {
     let v = parseFloat(e.target.value);
     if(isNaN(v) || v < 1) v = 12;
     if(v > 120) v = 120;
+    v = Math.floor(v);
     e.target.value = v;
-    calc(); save();
+
+    const currentValues = getValues();
+    resizePaidArray(v);
+    renderMonths(currentValues);
+    save();
   });
 
   $('scAmount').addEventListener('input', () => { renderSlabs(); save(); });
@@ -2067,24 +2079,37 @@
   $('yearTxt').textContent = new Date().getFullYear();
 
   /* ============ Init ============ */
-  applyTheme();
-  applyFont();
-  applyLang();
-
-  if(saved.values && Array.isArray(saved.values)){
-    const inputs = document.querySelectorAll('#monthsGrid input');
-    saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
-  }
-  if(typeof saved.fcPct === 'number') $('fcNum').value = saved.fcPct;
-  if(saved.fcPct) $('fcRange').value = Math.min(30, saved.fcPct);
+  // 1) Load raw values FIRST (so renderMonths sees correct arrAmount/arrMonths)
   if(saved.arrAmount !== undefined) $('arrAmount').value = saved.arrAmount;
   if(saved.arrMonths !== undefined) $('arrMonths').value = saved.arrMonths;
   if(saved.scAmount !== undefined) $('scAmount').value = saved.scAmount;
   if(saved.scWaterAmount !== undefined) $('scWaterAmount').value = saved.scWaterAmount;
+  if(typeof saved.fcPct === 'number') $('fcNum').value = saved.fcPct;
+  if(saved.fcPct) $('fcRange').value = Math.min(30, saved.fcPct);
 
-  // Apply saved tab (defaults to 'electricity')
+  // 2) Ensure state.paid matches arrMonths
+  let initCount = parseInt($('arrMonths').value);
+  if(isNaN(initCount) || initCount < 1) initCount = 12;
+  if(initCount > 120) initCount = 120;
+  initCount = Math.floor(initCount);
+  $('arrMonths').value = initCount;
+  resizePaidArray(initCount);
+
+  // 3) Apply theme/font/lang (applyLang → renderMonths)
+  applyTheme();
+  applyFont();
+  applyLang();
+
+  // 4) Restore saved month values
+  if(saved.values && Array.isArray(saved.values)){
+    const inputs = document.querySelectorAll('#monthsGrid input');
+    saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
+  }
+
+  // 5) Apply saved tab
   switchTab(state.activeTab === 'calculator' ? 'calculator' : 'electricity');
 
+  // 6) Recalc with restored values
   calc();
   renderSlabs();
   renderWaterSlabs();
