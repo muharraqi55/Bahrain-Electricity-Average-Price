@@ -247,30 +247,37 @@
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
     gap:.7rem;width:100%;max-width:100%;
+    align-items:start;
   }
   .month{
-    display:flex;align-items:center;gap:.5rem;
+    display:flex;flex-direction:column;
     background:var(--input-bg);border:1px solid var(--border);
-    border-radius:.8rem;padding:.45rem .6rem;
+    border-radius:.8rem;
     transition:border-color .2s,box-shadow .2s,background .3s;
     min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box;
+    position:relative;
   }
-  .month:not(.paid):focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,120,216,.15);}
-  .month label{
+
+  .month-main{
+    display:flex;align-items:center;gap:.5rem;
+    padding:.45rem .6rem;
+    min-width:0;
+  }
+  .month-main label{
     font-size:.85rem;color:var(--muted);font-weight:700;
     flex:0 1 auto;min-width:0;max-width:40%;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     transition:color .25s;
   }
-  .month input{
+  .month-main input{
     flex:1 1 0;min-width:0;width:100%;
     background:transparent;border:none;outline:none;
     color:var(--text);font-size:1rem;font-weight:800;
     font-family:inherit;text-align:center;padding:.3rem .1rem;
     letter-spacing:.4px;transition:color .25s,opacity .25s;
   }
-  .month input::placeholder{color:var(--muted);opacity:.45;font-weight:400;}
-  .month .cur{
+  .month-main input::placeholder{color:var(--muted);opacity:.45;font-weight:400;}
+  .month-main .cur{
     font-size:.75rem;color:var(--accent);font-weight:800;
     white-space:nowrap;flex:0 0 auto;transition:color .25s,opacity .25s;
   }
@@ -294,7 +301,8 @@
     background:linear-gradient(135deg, rgba(30,167,106,.08), rgba(30,167,106,.01));
     border-color:rgba(30,167,106,.35);
   }
-  .month.paid label{color:var(--ok);}
+  .month.paid .month-main label{color:var(--ok);}
+  .month.paid .month-main .cur{color:var(--ok);opacity:.7;}
   .month.paid .paid-btn{
     background:linear-gradient(135deg,var(--ok),var(--ok2));
     border-color:transparent;color:#fff;
@@ -307,29 +315,53 @@
     border:2px solid var(--ok);
   }
 
-  .month.paid input{
+  .month.paid .month-main input[type=number]:disabled{
     cursor:not-allowed;
     color:var(--ok);
     -webkit-text-fill-color:var(--ok);
-    opacity:.85;
+    opacity:.7;
   }
-  .month.paid input:focus{cursor:not-allowed;outline:none;}
-  .month.paid::after{
-    content:'🔒';
-    position:absolute;
-    top:50%;left:.35rem;
-    transform:translateY(-50%);
-    font-size:.6rem;
-    opacity:.55;
-    pointer-events:none;
-  }
-  .month.paid{position:relative;}
-  .month.paid input::-webkit-outer-spin-button,
-  .month.paid input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .month.paid .month-main input[type=number]:disabled:focus{outline:none;}
+  .month.paid input[type=number]::-webkit-outer-spin-button,
+  .month.paid input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input[type=number]{-moz-appearance:textfield;appearance:textfield;}
+
+  .month-payment{
+    display:none;
+    align-items:center;gap:.4rem;
+    padding:.5rem .6rem;
+    border-top:1px dashed rgba(62,207,142,.35);
+    background:rgba(62,207,142,.05);
+  }
+  .month.paid .month-payment{display:flex;}
+
+  .month-payment .pay-lbl{
+    font-size:.72rem;color:var(--ok);font-weight:800;
+    white-space:nowrap;flex:0 0 auto;
+  }
+  .month-payment input{
+    flex:1 1 0;min-width:0;width:100%;
+    background:var(--card);
+    border:1px solid rgba(62,207,142,.4);
+    border-radius:.4rem;
+    color:var(--ok);font-size:.95rem;font-weight:800;
+    font-family:inherit;text-align:center;
+    padding:.28rem .4rem;direction:ltr;
+    -webkit-text-fill-color:var(--ok);
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .month-payment input:focus{
+    outline:none;
+    border-color:var(--ok);
+    box-shadow:0 0 0 2px rgba(62,207,142,.22);
+  }
+  .month-payment .pay-cur{
+    font-size:.72rem;color:var(--ok);font-weight:800;
+    white-space:nowrap;flex:0 0 auto;
+  }
 
   .results{
     display:grid;
@@ -403,8 +435,10 @@
   .installment-card .inst-progress-text{
     display:flex;justify-content:space-between;align-items:center;
     font-size:.68rem;color:rgba(255,255,255,.88);font-weight:700;margin-top:.4rem;
+    gap:.4rem;flex-wrap:wrap;
   }
   .installment-card .inst-progress-text .pct{color:#fff;font-weight:900;direction:ltr;}
+  .installment-card .inst-progress-text .amt{direction:ltr;}
 
   .paid-info{
     display:none;margin-top:.7rem;
@@ -422,6 +456,36 @@
   }
   .paid-info strong{font-size:.98rem;direction:ltr;font-weight:900;}
   .paid-info .paid-count{color:var(--muted);font-weight:700;font-size:.72rem;}
+
+  .overpay-info{
+    display:none;
+    align-items:center;justify-content:center;
+    gap:.5rem;margin-top:.7rem;padding:.6rem .9rem;
+    background:linear-gradient(135deg, rgba(78,168,255,.14), rgba(78,168,255,.03));
+    border:1px solid rgba(78,168,255,.4);
+    border-radius:.75rem;
+    color:var(--accent);
+    font-size:.82rem;font-weight:800;
+    flex-wrap:wrap;line-height:1.55;text-align:center;
+    animation:overpayIn .35s ease;
+  }
+  html[data-theme="light"] .overpay-info{
+    background:linear-gradient(135deg, rgba(29,120,216,.08), rgba(29,120,216,.02));
+    border-color:rgba(29,120,216,.35);
+  }
+  @keyframes overpayIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+  .overpay-info .overpay-icon{
+    width:1.6rem;height:1.6rem;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;display:grid;place-items:center;
+    font-size:.85rem;flex:0 0 auto;
+    box-shadow:0 .2rem .5rem rgba(29,120,216,.35);
+  }
+  .overpay-info .overpay-text{flex:1 1 auto;min-width:0;}
+  .overpay-info strong{
+    color:var(--accent);font-weight:900;direction:ltr;
+    display:inline-block;margin:0 .1rem;
+  }
 
   .hint{
     margin-top:.9rem;font-size:.76rem;color:var(--muted);
@@ -516,108 +580,47 @@
     overflow:hidden;
   }
   .slab-row::before{
-    content:'';
-    position:absolute;
-    right:0;top:0;height:100%;width:3px;
-    background:var(--border);
-    transition:.25s;
+    content:'';position:absolute;right:0;top:0;height:100%;width:3px;
+    background:var(--border);transition:.25s;
   }
   .slab-row.done::before{background:linear-gradient(180deg,var(--ok),var(--ok2));}
   .slab-row.active::before{background:linear-gradient(180deg,var(--accent),var(--accent2));}
-
-  .slab-row.done{
-    background:linear-gradient(135deg, rgba(62,207,142,.08), rgba(62,207,142,.01));
-    border-color:rgba(62,207,142,.32);
-  }
-  .slab-row.active{
-    background:linear-gradient(135deg, rgba(78,168,255,.10), rgba(78,168,255,.01));
-    border-color:rgba(78,168,255,.35);
-  }
+  .slab-row.done{background:linear-gradient(135deg, rgba(62,207,142,.08), rgba(62,207,142,.01));border-color:rgba(62,207,142,.32);}
+  .slab-row.active{background:linear-gradient(135deg, rgba(78,168,255,.10), rgba(78,168,255,.01));border-color:rgba(78,168,255,.35);}
   .slab-row.inactive{opacity:.55;}
 
   .slab-status{
     width:2rem;height:2rem;border-radius:.55rem;
-    display:grid;place-items:center;
-    font-size:1rem;font-weight:900;
-    background:var(--input-bg);
-    border:1.5px solid var(--border);
-    color:var(--muted);
-    flex:0 0 auto;
-    transition:.25s;
+    display:grid;place-items:center;font-size:1rem;font-weight:900;
+    background:var(--input-bg);border:1.5px solid var(--border);
+    color:var(--muted);flex:0 0 auto;transition:.25s;
   }
-  .slab-row.done .slab-status{
-    background:linear-gradient(135deg,var(--ok),var(--ok2));
-    border-color:transparent;color:#fff;
-    box-shadow:0 3px 8px rgba(62,207,142,.35);
-  }
-  .slab-row.active .slab-status{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border-color:transparent;color:#fff;
-    box-shadow:0 3px 8px rgba(29,120,216,.35);
-  }
+  .slab-row.done .slab-status{background:linear-gradient(135deg,var(--ok),var(--ok2));border-color:transparent;color:#fff;box-shadow:0 3px 8px rgba(62,207,142,.35);}
+  .slab-row.active .slab-status{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 3px 8px rgba(29,120,216,.35);}
 
   .slab-info{min-width:0;}
-
-  .slab-name{
-    font-size:.88rem;font-weight:800;color:var(--text);
-    margin-bottom:.12rem;
-    transition:.25s;
-  }
+  .slab-name{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:.12rem;transition:.25s;}
   .slab-row.done .slab-name{color:var(--ok);}
   .slab-row.active .slab-name{color:var(--accent);}
 
-  .slab-detail{
-    font-size:.7rem;color:var(--muted);font-weight:700;
-    direction:ltr;text-align:right;
-  }
+  .slab-detail{font-size:.7rem;color:var(--muted);font-weight:700;direction:ltr;text-align:right;}
   html[dir="ltr"] .slab-detail{text-align:left;}
 
   .slab-numbers{text-align:center;min-width:6.5rem;}
-
-  .slab-kwh{
-    font-size:.88rem;font-weight:900;color:var(--text);
-    direction:ltr;letter-spacing:.2px;
-    transition:.25s;
-  }
-  .slab-cost{
-    font-size:.72rem;font-weight:700;color:var(--muted);
-    direction:ltr;margin-top:.1rem;
-  }
+  .slab-kwh{font-size:.88rem;font-weight:900;color:var(--text);direction:ltr;letter-spacing:.2px;transition:.25s;}
+  .slab-cost{font-size:.72rem;font-weight:700;color:var(--muted);direction:ltr;margin-top:.1rem;}
   .slab-row.done .slab-kwh{color:var(--ok);}
   .slab-row.active .slab-kwh{color:var(--accent);}
 
   .slab-totals{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(min(100%, 10rem), 1fr));
-    gap:.6rem;
-    margin-top:.9rem;
-    padding-top:.85rem;
-    border-top:1px dashed var(--border);
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%, 10rem), 1fr));
+    gap:.6rem;margin-top:.9rem;padding-top:.85rem;border-top:1px dashed var(--border);
   }
-  .slab-total-item{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:.7rem;
-    padding:.7rem .9rem;
-    text-align:center;
-  }
-  .slab-total-item span{
-    display:block;font-size:.72rem;color:var(--muted);
-    font-weight:700;margin-bottom:.25rem;
-  }
-  .slab-total-item strong{
-    font-size:1.05rem;font-weight:900;color:var(--text);
-    direction:ltr;letter-spacing:.3px;display:inline-block;
-  }
-  .slab-total-item small{
-    font-size:.72rem;font-weight:700;color:var(--muted);
-    margin-inline-start:.2rem;
-  }
-  .slab-total-item.accent{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border-color:transparent;color:#fff;
-    box-shadow:0 .35rem .9rem rgba(29,120,216,.28);
-  }
+  .slab-total-item{background:var(--card);border:1px solid var(--border);border-radius:.7rem;padding:.7rem .9rem;text-align:center;}
+  .slab-total-item span{display:block;font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.25rem;}
+  .slab-total-item strong{font-size:1.05rem;font-weight:900;color:var(--text);direction:ltr;letter-spacing:.3px;display:inline-block;}
+  .slab-total-item small{font-size:.72rem;font-weight:700;color:var(--muted);margin-inline-start:.2rem;}
+  .slab-total-item.accent{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 .35rem .9rem rgba(29,120,216,.28);}
   .slab-total-item.accent span{color:rgba(255,255,255,.9);}
   .slab-total-item.accent strong{color:#fff;}
   .slab-total-item.accent small{color:rgba(255,255,255,.85);}
@@ -756,13 +759,14 @@
     .month.paid{background:#eaf8f0 !important;border-color:#1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .month.paid .paid-btn{background:#1ea76a !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .month.paid .paid-btn::after{display:none !important;}
-    .month.paid::after{display:none !important;}
+    .month-payment{border-top:1px dashed #1ea76a !important;}
     .paid-btn{display:none !important;}
     .res-card{border:1px solid #999 !important;background:#fff !important;}
     .res-card.accent{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .installment-card .inst-progress{background:rgba(255,255,255,.3) !important;}
     .installment-card .inst-progress-fill{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .paid-info{background:#eaf8f0 !important;border:1px solid #1ea76a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .overpay-info{background:#e8f2fd !important;border:1px solid #1d78d8 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .panel{border:1px solid #999 !important;background:#fff !important;}
     .fc-diff{background:#0a5cb0 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .fc-presets,.fc-row input[type=range]{display:none !important;}
@@ -775,11 +779,13 @@
   @media (max-width:520px){
     body{padding:.8rem;}
     .months{grid-template-columns:1fr;gap:.55rem;}
-    .month{padding:.5rem .55rem;gap:.4rem;}
-    .month label{font-size:.8rem;max-width:38%;}
-    .month input{font-size:.95rem;padding:.3rem 0;}
-    .month.paid::after{left:.3rem;font-size:.55rem;}
+    .month-main{padding:.5rem .55rem;gap:.4rem;}
+    .month-main label{font-size:.8rem;max-width:38%;}
+    .month-main input{font-size:.95rem;padding:.3rem 0;}
     .paid-btn{width:1.85rem;height:1.85rem;font-size:.85rem;}
+    .month-payment{padding:.45rem .55rem;gap:.35rem;}
+    .month-payment input{font-size:.9rem;}
+    .month-payment .pay-lbl,.month-payment .pay-cur{font-size:.68rem;}
     .brand-txt h1{font-size:1rem;}
     .report{padding:.9rem;border-radius:1rem;}
     .arrears-top{padding:.75rem .85rem;margin-bottom:.9rem;}
@@ -801,6 +807,7 @@
     .slab-status{width:1.8rem;height:1.8rem;font-size:.9rem;}
     .slab-totals{grid-template-columns:1fr;}
     .tab-btn{flex:1 1 100%;font-size:.85rem;padding:.7rem .8rem;}
+    .overpay-info{font-size:.76rem;padding:.55rem .75rem;}
   }
 </style>
 </head>
@@ -826,7 +833,6 @@
     </div>
   </header>
 
-  <!-- ============ TABS ============ -->
   <div class="tabs" role="tablist" id="tabs">
     <button type="button" class="tab-btn active" role="tab" aria-selected="true"
             id="tabBtnElectricity" data-tab="electricity">
@@ -840,7 +846,6 @@
     </button>
   </div>
 
-  <!-- ============ TAB 1: ELECTRICITY REPORT ============ -->
   <div class="tab-pane active" id="tab-electricity" role="tabpanel">
 
     <section class="report" id="report">
@@ -875,7 +880,7 @@
         <div class="legend-icon">✓</div>
         <div class="legend-text">
           <strong id="legendTitle">دفعت قسط الشهر</strong>
-          <span id="legendSub">اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع</span>
+          <span id="legendSub">اضغط الزر ✓ بجانب أي شهر لتأكيد دفعه — ثم عدّل المبلغ المدفوع إذا دفعت أكثر</span>
         </div>
         <div class="legend-value">
           <span class="legend-value-num" id="legendValueNum">0.000</span>
@@ -920,7 +925,7 @@
               <div class="inst-progress-fill" id="instProgressFill"></div>
             </div>
             <div class="inst-progress-text">
-              <span id="instProgressCount">0 / 12</span>
+              <span class="amt" id="instProgressCount">0.000 / 0.000</span>
               <span class="pct" id="instProgressPct">0%</span>
             </div>
           </div>
@@ -934,7 +939,12 @@
         <span class="paid-count" id="paidCount"></span>
       </div>
 
-      <p class="hint" id="hintTxt">اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر</p>
+      <div class="overpay-info" id="overpayInfo" style="display:none">
+        <span class="overpay-icon">⚡</span>
+        <span class="overpay-text" id="overpayText"></span>
+      </div>
+
+      <p class="hint" id="hintTxt">اضغط <kbd>✓</kbd> لتأكيد دفع الشهر (يُملأ تلقائياً بالقسط) — ثم عدّل المبلغ إذا دفعت أكثر لإنهاء أسرع</p>
 
       <div class="panel" id="forecastBox">
         <div class="panel-head">
@@ -999,7 +1009,6 @@
 
   </div>
 
-  <!-- ============ TAB 2: CONSUMPTION CALCULATOR ============ -->
   <div class="tab-pane" id="tab-calculator" role="tabpanel">
 
     <section class="report">
@@ -1008,7 +1017,6 @@
         <h2 id="calcReportTitle">حسابة الاستهلاك</h2>
       </div>
 
-      <!-- Electricity Slab Calculator -->
       <div class="panel slab-calc" id="slabCalcBox" style="margin-top:0;">
         <div class="panel-head">
           <div class="panel-icon">⚡</div>
@@ -1040,7 +1048,6 @@
         </div>
       </div>
 
-      <!-- Water Slab Calculator -->
       <div class="panel slab-calc" id="waterSlabCalcBox">
         <div class="panel-head">
           <div class="panel-icon">💧</div>
@@ -1147,7 +1154,7 @@
 (function(){
   'use strict';
 
-  const STORE = 'muharraqi_bahrain_elec_v19';
+  const STORE = 'muharraqi_bahrain_elec_v22';
 
   const MONTHS = [
     {ar:'يناير',  en:'January'},
@@ -1190,8 +1197,8 @@
       share:'مشاركة PDF',
       shareSite:'مشاركة الموقع',
       rights:'جميع الحقوق محفوظة',
-      hint:'اضغط <kbd>✓</kbd> بجانب الشهر لتأكيد دفع قسطه — القسط = (المتراكم + مجموع الفواتير) ÷ عدد الأشهر',
-      hintNoDebt:'أدخل الفواتير الشهرية للحصول على المجموع والمتوسط الشهري — ولا حاجة لأي إعدادات إضافية',
+      hint:'اضغط <kbd>✓</kbd> لتأكيد دفع الشهر (يُملأ تلقائياً بالقسط) — ثم عدّل المبلغ إذا دفعت أكثر لإنهاء أسرع',
+      hintNoDebt:'أدخل الفواتير الشهرية ثم اضغط <kbd>✓</kbd> لتسجيل المبلغ المدفوع فعلياً',
       confirmReset:'هل تريد تفريغ جميع الحقول وإلغاء كل الدفعات؟',
       reset:'تفريغ الحقول',
       toastPrint:'جاري تحضير الطباعة...',
@@ -1199,7 +1206,7 @@
       toastShared:'تمت المشاركة بنجاح',
       toastSaved:'متصفحك لا يدعم المشاركة، تم تنزيل الملف',
       toastReset:'تم تفريغ جميع الحقول',
-      toastPaid:'تم تسجيل دفع القسط — تم قفل حقل الفاتورة',
+      toastPaid:'تم تأكيد الدفع — يُفتح حقل المبلغ المدفوع',
       toastUnpaid:'تم إلغاء الدفع — يمكنك الآن تعديل الفاتورة',
       toastErr:'تعذّر إنشاء الملف، سيتم فتح نافذة الطباعة',
       toastNoLib:'مكتبة PDF غير متوفرة',
@@ -1228,11 +1235,14 @@
       instRemLbl:'المتبقي:',
       instFullyPaid:'تم سداد كامل المبلغ',
       paidLbl:'دفعات مسجلة',
-      paidUnit:'دفعة',
-      paidBtnTitle:'اضغط لتسجيل دفع قسط هذا الشهر — سيُقفل حقل الفاتورة',
+      paidBtnTitle:'اضغط لتأكيد الدفع — يُفتح حقل لتعديل المبلغ المدفوع',
       paidBtnTitleUnpaid:'اضغط لإلغاء الدفع — سيُفتح حقل الفاتورة',
+      payLabel:'المدفوع:',
       legendTitle:'دفعت قسط الشهر',
-      legendSub:'اضغط الزر ✓ بجانب أي شهر لتسجيل دفع قسطه — سيُقفل حقل الفاتورة بعد الدفع',
+      legendSub:'اضغط الزر ✓ بجانب أي شهر لتأكيد دفعه — ثم عدّل المبلغ المدفوع إذا دفعت أكثر',
+      legendTitleAvg:'سجّل ما دفعته',
+      legendSubAvg:'اضغط ✓ بجانب أي شهر لتسجيل المبلغ المدفوع فعلياً',
+      overpay:'تجاوزت القسط بـ <strong>{amt}</strong> — أسرع بـ <strong>{months} شهر</strong>',
       infoTitle:'📋 تعرفة الكهرباء والماء — البحرين',
       infoBadgeElec:'المنزلي — مواطن بحريني (حساب واحد)',
       infoBadgeWater:'المنزلي — مواطن بحريني (حساب واحد)',
@@ -1273,8 +1283,8 @@
       share:'Share PDF',
       shareSite:'Share Site',
       rights:'All rights reserved',
-      hint:'Tap <kbd>✓</kbd> next to a month to confirm its installment — installment = (accumulated + total bills) ÷ months',
-      hintNoDebt:'Enter monthly bills to get the total and monthly average — no extra setup required',
+      hint:'Tap <kbd>✓</kbd> to confirm a month\'s payment (auto-filled with the installment) — adjust the amount if you paid more to finish faster',
+      hintNoDebt:'Enter monthly bills then tap <kbd>✓</kbd> to record the actual amount paid',
       confirmReset:'Clear all fields and remove all payments?',
       reset:'Clear fields',
       toastPrint:'Preparing print...',
@@ -1282,7 +1292,7 @@
       toastShared:'Shared successfully',
       toastSaved:'Sharing not supported, file downloaded',
       toastReset:'All fields cleared',
-      toastPaid:'Installment recorded — invoice field is now locked',
+      toastPaid:'Payment confirmed — amount field is now open',
       toastUnpaid:'Payment removed — invoice field is now editable',
       toastErr:'Could not create file, opening print dialog',
       toastNoLib:'PDF library not available',
@@ -1311,11 +1321,14 @@
       instRemLbl:'Remaining:',
       instFullyPaid:'Fully paid off',
       paidLbl:'Payments recorded',
-      paidUnit:'payment(s)',
-      paidBtnTitle:'Click to record this month\'s installment — invoice field will be locked',
-      paidBtnTitleUnpaid:'Click to remove payment — invoice field will be unlocked',
-      legendTitle:'Paid this month\'s installment',
-      legendSub:'Tap the ✓ button next to any month to record its installment — the invoice field will be locked',
+      paidBtnTitle:'Click to confirm payment — a field opens to adjust the amount paid',
+      paidBtnTitleUnpaid:'Click to remove payment — invoice field unlocked',
+      payLabel:'Paid:',
+      legendTitle:'Paid this month',
+      legendSub:'Tap ✓ next to any month to confirm it — then adjust the amount if you paid more',
+      legendTitleAvg:'Record what you paid',
+      legendSubAvg:'Tap ✓ next to any month to record the actual amount paid',
+      overpay:'Paid <strong>{amt}</strong> over the installment — <strong>{months} months</strong> ahead',
       infoTitle:'📋 Electricity & Water Tariff — Bahrain',
       infoBadgeElec:'Domestic — Bahraini citizen (one account)',
       infoBadgeWater:'Domestic — Bahraini citizen (one account)',
@@ -1349,12 +1362,16 @@
   let saved = {};
   try{ saved = JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ saved = {}; }
 
-  // ===== NEW: initialize state.paid with correct length =====
-  function initialPaid(count){
-    const arr = new Array(count).fill(false);
-    if(Array.isArray(saved.paid)){
-      const n = Math.min(count, saved.paid.length);
-      for(let i = 0; i < n; i++) arr[i] = !!saved.paid[i];
+  function initialPayments(count){
+    const arr = new Array(count).fill(null);
+    if(Array.isArray(saved.payments)){
+      const n = Math.min(count, saved.payments.length);
+      for(let i = 0; i < n; i++){
+        const v = saved.payments[i];
+        if(typeof v === 'number' && isFinite(v) && v >= 0){
+          arr[i] = v;
+        }
+      }
     }
     return arr;
   }
@@ -1368,7 +1385,7 @@
     lang : saved.lang  || 'ar',
     theme: saved.theme || 'dark',
     font : saved.font  || 16,
-    paid : initialPaid(initMonthsCount),
+    payments: initialPayments(initMonthsCount),
     activeTab: saved.activeTab || 'electricity'
   };
 
@@ -1383,16 +1400,14 @@
   }
 
   function getValues(){
-    return Array.from(document.querySelectorAll('#monthsGrid input')).map(i => i.value);
+    return Array.from(document.querySelectorAll('#monthsGrid .invoice-input')).map(i => i.value);
   }
 
-  // ===== NEW: resize state.paid to match months count =====
-  function resizePaidArray(newCount){
-    if(newCount < 1) newCount = 1;
-    if(newCount > 120) newCount = 120;
-    const cur = state.paid;
+  function resizePaymentsArray(newCount){
+    newCount = Math.max(1, Math.min(120, Math.floor(newCount)));
+    const cur = state.payments;
     if(newCount > cur.length){
-      for(let i = cur.length; i < newCount; i++) cur.push(false);
+      for(let i = cur.length; i < newCount; i++) cur.push(null);
     } else if(newCount < cur.length){
       cur.length = newCount;
     }
@@ -1405,7 +1420,7 @@
         theme: state.theme,
         font : state.font,
         values: getValues(),
-        paid : state.paid,
+        payments: state.payments,
         fcPct: parseFloat($('fcNum').value) || 0,
         arrAmount: $('arrAmount').value,
         arrMonths: $('arrMonths').value,
@@ -1426,10 +1441,9 @@
     toastTimer = setTimeout(()=> el.classList.remove('show'), 2400);
   }
 
-  function getStats(){
-    const inputs = document.querySelectorAll('#monthsGrid input');
+  function getInvoiceStats(){
     let total = 0, count = 0;
-    inputs.forEach(inp => {
+    document.querySelectorAll('#monthsGrid .invoice-input').forEach(inp => {
       const raw = inp.value.trim();
       if(raw === '') return;
       const v = parseFloat(raw);
@@ -1440,7 +1454,30 @@
     return { total, count };
   }
 
-  /* ============ Tabs ============ */
+  /* ===== UPDATED: القسط = المتبقي ÷ الأشهر المتبقية ===== */
+  function getInstallmentValue(){
+    const inv = getInvoiceStats();
+    const debt = parseFloat($('arrAmount').value) || 0;
+    let m = parseFloat($('arrMonths').value);
+    if(isNaN(m) || m < 1) m = 12;
+    if(m > 120) m = 120;
+    m = Math.floor(m);
+
+    let totalPaid = 0, paidMonths = 0;
+    state.payments.forEach(p => {
+      if(p !== null && !isNaN(p)){
+        totalPaid += p;
+        paidMonths++;
+      }
+    });
+
+    const initialTotal = debt + inv.total;
+    const remaining = Math.max(0, initialTotal - totalPaid);
+    const remainingMonths = Math.max(1, m - paidMonths);
+
+    return remaining > 0 ? remaining / remainingMonths : 0;
+  }
+
   function switchTab(tab){
     state.activeTab = tab;
     document.querySelectorAll('.tab-btn').forEach(b => {
@@ -1454,94 +1491,133 @@
     save();
   }
 
-  /* ============ Main calculation ============ */
+  /* ===== UPDATED: القسط معتمد على المتبقي والأشهر المتبقية ===== */
   function calc(){
-    const s = getStats();
+    const inv = getInvoiceStats();
     const t = I18N[state.lang];
 
     const initialDebt = parseFloat($('arrAmount').value) || 0;
-    let months   = parseFloat($('arrMonths').value);
+    let months = parseFloat($('arrMonths').value);
     if(isNaN(months) || months < 1) months = 12;
     if(months > 120) months = 120;
+    months = Math.floor(months);
 
     const hasDebt = initialDebt > 0;
-    const initialTotal = initialDebt + s.total;
-    const installment  = initialTotal / months;
+    const initialTotal = initialDebt + inv.total;
 
-    const paidCount = hasDebt ? state.paid.filter(Boolean).length : 0;
-    const totalPaid = hasDebt ? Math.min(initialTotal, installment * paidCount) : 0;
-    const grand     = Math.max(0, initialTotal - totalPaid);
-    const finalAvg  = grand / months;
+    let totalPaid = 0, paidMonths = 0;
+    state.payments.forEach(p => {
+      if(p !== null && !isNaN(p)){
+        totalPaid += p;
+        paidMonths++;
+      }
+    });
 
-    $('valGrand').textContent = fmt(grand);
-    if(hasDebt){
+    const remaining = Math.max(0, initialTotal - totalPaid);
+    const remainingMonths = Math.max(1, months - paidMonths);
+
+    // ✅ القسط الجديد = المتبقي ÷ الأشهر المتبقية
+    const installment = remaining > 0 ? remaining / remainingMonths : 0;
+
+    // للعرض فقط: هل تجاوز المستخدم الخطة الأصلية؟
+    const plannedInstallment = initialTotal / months;
+    const overpaid = Math.max(0, totalPaid - initialTotal);
+    const isFullyPaid = remaining <= 0.0005 && totalPaid > 0;
+
+    // بطاقة الإجمالي
+    $('valGrand').textContent = fmt(remaining);
+    if(hasDebt || totalPaid > 0){
       $('subGrand').innerHTML =
         `<span>${fmt(initialTotal)}</span><span class="sep">−</span><span>${fmt(totalPaid)}</span>`;
     } else {
-      $('subGrand').innerHTML = `<span>${fmt(s.total)}</span>`;
+      $('subGrand').innerHTML = `<span>${fmt(inv.total)}</span>`;
     }
 
-    if(s.total > 0 || initialDebt > 0){
+    // بطاقة القسط
+    if(inv.total > 0 || initialDebt > 0){
       $('installmentCard').style.display = '';
       $('valInst').textContent = fmt(installment);
 
       if(hasDebt){
         $('lblInst').textContent = t.instLabel;
-        $('instEq').textContent  = `(${fmt(initialDebt)} + ${fmt(s.total)}) ÷ ${months}`;
-
-        const fullyPaid = grand <= 0 && paidCount > 0;
-        if(fullyPaid){
-          $('instRemRow').style.display = 'none';
-          $('instFullyPaidRow').style.display = 'flex';
-          $('instFullyPaidTxt').textContent = t.instFullyPaid;
-        } else {
-          $('instRemRow').style.display = 'flex';
-          $('instFullyPaidRow').style.display = 'none';
-          $('instRemLbl').textContent = t.instRemLbl;
-          $('instRemaining').textContent = fmt(grand) + ' ' + t.currency;
-        }
-
-        $('instProgressWrap').style.display = '';
-        const pct = Math.min(100, (Math.min(paidCount, months) / months) * 100);
-        $('instProgressFill').style.width = pct + '%';
-        $('instProgressCount').textContent = `${paidCount} / ${months} ${t.paidUnit}`;
-        $('instProgressPct').textContent = Math.round(pct) + '%';
       } else {
         $('lblInst').textContent = t.avgLabel;
-        $('instEq').textContent  = `${fmt(s.total)} ÷ ${months}`;
-        $('instRemRow').style.display = 'none';
-        $('instFullyPaidRow').style.display = 'none';
-        $('instProgressWrap').style.display = 'none';
       }
+
+      // معادلة العرض
+      if(totalPaid === 0){
+        if(hasDebt && inv.total > 0){
+          $('instEq').textContent = `(${fmt(initialDebt)} + ${fmt(inv.total)}) ÷ ${months}`;
+        } else if(hasDebt){
+          $('instEq').textContent = `${fmt(initialDebt)} ÷ ${months}`;
+        } else {
+          $('instEq').textContent = `${fmt(inv.total)} ÷ ${months}`;
+        }
+      } else if(remaining > 0){
+        $('instEq').textContent = `${fmt(remaining)} ÷ ${remainingMonths} ${t.arrMonUnit}`;
+      } else {
+        $('instEq').textContent = '0';
+      }
+
+      if(isFullyPaid){
+        $('instRemRow').style.display = 'none';
+        $('instFullyPaidRow').style.display = 'flex';
+        $('instFullyPaidTxt').textContent = t.instFullyPaid;
+      } else {
+        $('instRemRow').style.display = 'flex';
+        $('instFullyPaidRow').style.display = 'none';
+        $('instRemLbl').textContent = t.instRemLbl;
+        $('instRemaining').textContent = fmt(remaining) + ' ' + t.currency;
+      }
+
+      $('instProgressWrap').style.display = '';
+      const pct = initialTotal > 0 ? Math.min(100, (totalPaid / initialTotal) * 100) : 0;
+      $('instProgressFill').style.width = pct + '%';
+      $('instProgressCount').textContent = `${fmt(totalPaid)} / ${fmt(initialTotal)}`;
+      $('instProgressPct').textContent = Math.round(pct) + '%';
     } else {
       $('installmentCard').style.display = 'none';
     }
 
-    if(hasDebt){
+    // الشريط الأخضر
+    if(inv.total > 0 || initialDebt > 0){
       $('legendBar').classList.add('show');
-      $('legendTitle').textContent = t.legendTitle;
-      $('legendSub').textContent = t.legendSub;
+      if(hasDebt){
+        $('legendTitle').textContent = t.legendTitle;
+        $('legendSub').textContent = t.legendSub;
+      } else {
+        $('legendTitle').textContent = t.legendTitleAvg;
+        $('legendSub').textContent = t.legendSubAvg;
+      }
       $('legendValueNum').textContent = fmt(installment);
       $('legendValueCur').textContent = t.currency;
     } else {
       $('legendBar').classList.remove('show');
     }
 
-    if(paidCount > 0 && hasDebt){
+    // شريط الدفعات
+    if(paidMonths > 0){
       $('paidInfo').style.display = 'flex';
       $('paidVal').textContent = fmt(totalPaid) + ' ' + t.currency;
-      $('paidCount').textContent =
-        `(${paidCount} ${t.paidUnit} × ${fmt(installment)})`;
+      $('paidCount').textContent = `${paidMonths} / ${months}`;
     } else {
       $('paidInfo').style.display = 'none';
     }
 
-    document.querySelectorAll('#monthsGrid .paid-btn').forEach(btn => {
-      btn.classList.toggle('hidden', !hasDebt);
-    });
+    // شريط الدفع الزائد
+    const overpayEl = $('overpayInfo');
+    if(overpaid > 0.0005){
+      overpayEl.style.display = 'flex';
+      const savedMonths = plannedInstallment > 0 ? overpaid / plannedInstallment : 0;
+      $('overpayText').innerHTML = t.overpay
+        .replace('{amt}', fmt(overpaid) + ' ' + t.currency)
+        .replace('{months}', savedMonths.toFixed(1));
+    } else {
+      overpayEl.style.display = 'none';
+    }
 
     $('hintTxt').innerHTML = hasDebt ? t.hint : t.hintNoDebt;
-    updateForecast(finalAvg, t);
+    updateForecast(installment, t);
   }
 
   function updateForecast(avg, t){
@@ -1567,7 +1643,6 @@
     save();
   }
 
-  // ===== NEW: dynamic month label =====
   function getMonthLabel(i){
     const m = MONTHS[i % 12];
     const yearOffset = Math.floor(i / 12);
@@ -1578,69 +1653,117 @@
     return name;
   }
 
-  // ===== NEW: renderMonths now uses dynamic count from state.paid =====
   function renderMonths(values){
-    const t   = I18N[state.lang];
+    const t = I18N[state.lang];
     const grid = $('monthsGrid');
     grid.innerHTML = '';
 
-    const hasDebt = (parseFloat($('arrAmount').value) || 0) > 0;
-    const count = state.paid.length;
+    const count = state.payments.length;
 
     for(let i = 0; i < count; i++){
       const row = document.createElement('div');
       row.className = 'month';
-      if(state.paid[i] && hasDebt) row.classList.add('paid');
+      const isPaid = state.payments[i] !== null;
+      if(isPaid) row.classList.add('paid');
+
+      const main = document.createElement('div');
+      main.className = 'month-main';
 
       const lbl = document.createElement('label');
       lbl.textContent = getMonthLabel(i);
 
       const inp = document.createElement('input');
       inp.type = 'number';
+      inp.className = 'invoice-input';
       inp.step = '0.001';
       inp.min = '0';
       inp.inputMode = 'decimal';
       inp.placeholder = '0.000';
       inp.setAttribute('aria-label', lbl.textContent);
       if(values && values[i] !== undefined) inp.value = values[i];
-
-      if(state.paid[i] && hasDebt) inp.disabled = true;
-
+      if(isPaid) inp.disabled = true;
       inp.addEventListener('input', () => { calc(); save(); });
 
       const cur = document.createElement('span');
       cur.className = 'cur';
       cur.textContent = t.currency;
 
+      const payRow = document.createElement('div');
+      payRow.className = 'month-payment';
+
+      const payLbl = document.createElement('span');
+      payLbl.className = 'pay-lbl';
+      payLbl.textContent = t.payLabel;
+
+      const payInput = document.createElement('input');
+      payInput.type = 'number';
+      payInput.className = 'payment-input';
+      payInput.step = '0.001';
+      payInput.min = '0';
+      payInput.inputMode = 'decimal';
+      payInput.placeholder = '0.000';
+      if(isPaid && state.payments[i] !== null){
+        payInput.value = Number(state.payments[i]).toFixed(3);
+      }
+      payInput.addEventListener('input', () => {
+        const raw = payInput.value.trim();
+        if(raw === ''){
+          state.payments[i] = null;
+        } else {
+          const v = parseFloat(raw);
+          state.payments[i] = (isNaN(v) || v < 0) ? null : v;
+        }
+        calc();
+        save();
+      });
+
+      const payCur = document.createElement('span');
+      payCur.className = 'pay-cur';
+      payCur.textContent = t.currency;
+
+      payRow.append(payLbl, payInput, payCur);
+
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'paid-btn';
       btn.textContent = '✓';
-      btn.setAttribute('aria-label', state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
-      btn.setAttribute('title',      state.paid[i] ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
-      if(!hasDebt) btn.classList.add('hidden');
+      btn.setAttribute('aria-label', isPaid ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
+      btn.setAttribute('title', isPaid ? t.paidBtnTitleUnpaid : t.paidBtnTitle);
 
       btn.addEventListener('click', () => {
-        state.paid[i] = !state.paid[i];
-        row.classList.toggle('paid', state.paid[i]);
-
-        inp.disabled = state.paid[i];
-        btn.setAttribute('aria-label', state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
-        btn.setAttribute('title',      state.paid[i] ? I18N[state.lang].paidBtnTitleUnpaid : I18N[state.lang].paidBtnTitle);
+        const nowPaid = state.payments[i] !== null;
+        if(nowPaid){
+          state.payments[i] = null;
+          row.classList.remove('paid');
+          inp.disabled = false;
+          payInput.value = '';
+          btn.setAttribute('title', I18N[state.lang].paidBtnTitle);
+          btn.setAttribute('aria-label', I18N[state.lang].paidBtnTitle);
+        } else {
+          const inst = getInstallmentValue();
+          const v = inst > 0 ? inst : 0;
+          state.payments[i] = v;
+          row.classList.add('paid');
+          inp.disabled = true;
+          payInput.value = v.toFixed(3);
+          btn.setAttribute('title', I18N[state.lang].paidBtnTitleUnpaid);
+          btn.setAttribute('aria-label', I18N[state.lang].paidBtnTitleUnpaid);
+        }
 
         calc();
         save();
-        toast(state.paid[i] ? I18N[state.lang].toastPaid : I18N[state.lang].toastUnpaid, state.paid[i] ? 'ok' : '');
+        toast(nowPaid ? I18N[state.lang].toastUnpaid : I18N[state.lang].toastPaid, nowPaid ? '' : 'ok');
       });
 
-      row.append(lbl, inp, cur, btn);
+      main.append(lbl, inp, cur, btn);
+      row.appendChild(main);
+      row.appendChild(payRow);
       grid.appendChild(row);
     }
 
     calc();
   }
 
-  /* ============ Generic Slab Calculator ============ */
   function calcSlabData(defs, amountBHD){
     let remainingFils = Math.round(amountBHD * 1000);
     let totalKwh = 0;
@@ -1982,7 +2105,6 @@
     document.body.style.overflow = '';
   }
 
-  /* ============ Event bindings ============ */
   $('btnInfo').addEventListener('click', openInfo);
   $('infoClose').addEventListener('click', closeInfo);
   $('infoModal').addEventListener('click', e => {
@@ -2013,11 +2135,10 @@
     if(state.font > 13){ state.font -= 1; applyFont(); save(); }
   });
 
-  // ===== NEW: reset preserves current month count =====
   $('btnReset').addEventListener('click', () => {
     if(!confirm(I18N[state.lang].confirmReset)) return;
-    const keepCount = state.paid.length;
-    state.paid = new Array(keepCount).fill(false);
+    const keepCount = state.payments.length;
+    state.payments = new Array(keepCount).fill(null);
     $('arrAmount').value = '';
     $('arrMonths').value = String(keepCount);
     $('scAmount').value = '';
@@ -2057,7 +2178,6 @@
 
   $('arrAmount').addEventListener('input', () => { calc(); save(); });
 
-  // ===== NEW: arrMonths input (live calc) + change (re-render) =====
   $('arrMonths').addEventListener('input', () => { calc(); save(); });
 
   $('arrMonths').addEventListener('change', e => {
@@ -2068,7 +2188,7 @@
     e.target.value = v;
 
     const currentValues = getValues();
-    resizePaidArray(v);
+    resizePaymentsArray(v);
     renderMonths(currentValues);
     save();
   });
@@ -2079,7 +2199,6 @@
   $('yearTxt').textContent = new Date().getFullYear();
 
   /* ============ Init ============ */
-  // 1) Load raw values FIRST (so renderMonths sees correct arrAmount/arrMonths)
   if(saved.arrAmount !== undefined) $('arrAmount').value = saved.arrAmount;
   if(saved.arrMonths !== undefined) $('arrMonths').value = saved.arrMonths;
   if(saved.scAmount !== undefined) $('scAmount').value = saved.scAmount;
@@ -2087,29 +2206,24 @@
   if(typeof saved.fcPct === 'number') $('fcNum').value = saved.fcPct;
   if(saved.fcPct) $('fcRange').value = Math.min(30, saved.fcPct);
 
-  // 2) Ensure state.paid matches arrMonths
   let initCount = parseInt($('arrMonths').value);
   if(isNaN(initCount) || initCount < 1) initCount = 12;
   if(initCount > 120) initCount = 120;
   initCount = Math.floor(initCount);
   $('arrMonths').value = initCount;
-  resizePaidArray(initCount);
+  resizePaymentsArray(initCount);
 
-  // 3) Apply theme/font/lang (applyLang → renderMonths)
   applyTheme();
   applyFont();
   applyLang();
 
-  // 4) Restore saved month values
   if(saved.values && Array.isArray(saved.values)){
-    const inputs = document.querySelectorAll('#monthsGrid input');
+    const inputs = document.querySelectorAll('#monthsGrid .invoice-input');
     saved.values.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
   }
 
-  // 5) Apply saved tab
   switchTab(state.activeTab === 'calculator' ? 'calculator' : 'electricity');
 
-  // 6) Recalc with restored values
   calc();
   renderSlabs();
   renderWaterSlabs();
